@@ -31,7 +31,7 @@ const tableStudents = `
         matricule TEXT    UNIQUE NOT NULL,
         nom       TEXT    NOT NULL,
         prenom    TEXT    NOT NULL,
-        age       INTEGER NOT NULL,
+        date_naissance       TEXT NOT NULL,
         classe_id INTEGER NOT NULL,
         user_id   INTEGER UNIQUE,
         FOREIGN KEY (classe_id) REFERENCES classes(id),
