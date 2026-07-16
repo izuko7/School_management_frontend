@@ -45,7 +45,9 @@ db.exec(tableStudents);
 const tableTeachers = `
     CREATE TABLE IF NOT EXISTS teachers (
         id      INTEGER PRIMARY KEY AUTOINCREMENT,
+        matricule TEXT    UNIQUE NOT NULL,
         nom     TEXT    NOT NULL,
+        prenom    TEXT    NOT NULL,
         user_id INTEGER UNIQUE,
         FOREIGN KEY (user_id) REFERENCES users(id)
     )

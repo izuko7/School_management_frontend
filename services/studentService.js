@@ -1,5 +1,5 @@
-import db from "../db/database";
-import Student from "../models/studentModel";
+import db from "../db/database.js";
+import Student from "../models/studentModel.js";
 
 
 // Créer un étudiant
@@ -16,8 +16,8 @@ const createStudent = (matricule, nom, prenom, date_naissance, classe_id, user_i
 
     // Vérifier si cet utilisateur n'est pas déjà lié à un étudiant
     const dejaLie = db.prepare(`SELECT * FROM students WHERE user_id = ?`).get(user_id);
-    if(!dejaLie){
-        throw new Error(`Ce compte est déjà lié à l'étudiant ${dejaLie.nom} ${dejaLie.prenom}`);
+    if(dejaLie){
+        throw new Error(`Ce compte est lié à l'étudiant`);
     }
 
     const student = new Student(matricule, nom, prenom, date_naissance, classe_id, user_id);
@@ -61,7 +61,8 @@ const updateStudent = (matricule, data) => {
 
     const result = db.prepare(`
             UPDATE students SET nom = ?, prenom = ?, date_naissance = ?
-        `).run(nom, prenom, date_naissance);
+            WHERE id = ?
+        `).run(nom, prenom, date_naissance, currentStudent.id);
     return result;
 };
 
@@ -75,3 +76,5 @@ const deleteStudent = (matricule) =>{
     const result = db.prepare(`DELETE FROM students WHERE matricule = ?`).run(matricule);
     return result;
 };
+
+export { createStudent, getAllStudents, getStudentByMatricule, updateStudent, deleteStudent }
