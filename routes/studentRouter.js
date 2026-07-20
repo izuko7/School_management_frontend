@@ -7,6 +7,8 @@ const router = express.Router();
 
 // méthode GET 
 router.get('/', (req, res) => {
-    console.log(`Succès`)
     res.json(getAllStudents());
 })
+
+
+export default router;
