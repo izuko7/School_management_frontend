@@ -4,7 +4,7 @@
   "description": "",
   "main": "seed.js",
   "scripts": {
-    "test": "node --watch server.js ",
+    "dev": "node --watch server.js ",
     "start": "node server.js",
     "seed": "node seed.js"
   },
@@ -16,6 +16,7 @@
     "better-sqlite3": "^12.11.1",
     "cors": "^2.8.6",
     "dayjs": "^1.11.21",
+    "express": "^5.2.1",
     "jsonwebtoken": "^9.0.3"
   }
 }

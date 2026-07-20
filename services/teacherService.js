@@ -22,7 +22,7 @@ const createTeacher = (matricule, nom, prenom, user_id) => {
 
     const teacher = new Teacher(matricule, nom, prenom, user_id);
     const insertTeacher = db.prepare(`
-            INSERT OR IGNORE INTO teachers(matricule, nom, prenom, user_id)
+            INSERT OR IGNORE INTO  (matricule, nom, prenom, user_id)
             VALUES(?, ?, ?, ?)
         `);
     const result = insertTeacher.run(teacher.matricule, teacher.nom, teacher.prenom, teacher.user_id);
