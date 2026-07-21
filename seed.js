@@ -26,6 +26,7 @@ try {
     console.log("Admin créé avec succès");
 
     const userProf = createUser("Koffi", "prof", "BigK", "koffi1983");
+    const userEtudiant = createUser("Kouadio", "etudiant", "palmer10", "palmer1005");
     
 
     const teacher = createTeacher("12345678", "Koffi", "Armand", userProf.lastInsertRowid);
@@ -33,8 +34,19 @@ try {
 
     const classe1 = createClasse("6ème", "premier cycle",30);
     console.log('classe créé avec succès');
-    createSubject("Français", classe1.lastInsertRowid, teacher.lastInsertRowid)
+
+    const elève = createStudent("14033212G", "Koudio", "tyson", "30/04/2005", classe1.lastInsertRowid, userEtudiant.lastInsertRowid)
+    console.log('Elève créé avec succès');
+
+    const subject1 = createSubject("Français", classe1.lastInsertRowid, teacher.lastInsertRowid)
     console.log('Matière créé avec succès');
+
+    createGrade(elève.lastInsertRowid, subject1.lastInsertRowid, 12, "23/07/26", "devoir");
+    console.log('Note créer avec succès');
+
+    createAbsence(elève.lastInsertRowid, "21/06/26", "absent", 0)
+    console.log('Absence créer avec succès');
+
 } catch (error) {
 
     console.log("Erreur : ", error.message);
