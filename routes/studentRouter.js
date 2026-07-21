@@ -1,5 +1,5 @@
 import express from 'express';
-import { getStudents, getStudent } from '../controllers/studentController.js';
+import { getStudents, getStudent, createStudentHandler } from '../controllers/studentController.js';
 
 
 // Conteneur de route 
@@ -8,7 +8,11 @@ const router = express.Router();
 // méthode GET 
 router.get('/', getStudents);
 
-router.get('/:id', getStudent)
+// méthode GET avec id
+router.get('/:id', getStudent);
+
+// méthode POST 
+router.post('/', createStudentHandler);
 
 
 export default router;

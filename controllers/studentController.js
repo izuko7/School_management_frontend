@@ -1,6 +1,8 @@
-import { getAllStudents, getStudentById } from "../services/studentService.js";
+import { getAllStudents, getStudentById, createStudent } from "../services/studentService.js";
 
 // Contrôller étudiant 
+
+// avoir tout les étuidiants 
 const getStudents = (req, res) => {
     try {
         const students = (getAllStudents());
@@ -8,9 +10,9 @@ const getStudents = (req, res) => {
     } catch (error) {
         res.status(500).json({ error: "Une erreur est survenue" });
     }
-}
+};
 
-
+// avoir un seul étudiant 
 const getStudent = (req, res) =>  {
     try {
         const id = req.params.id;
@@ -25,11 +27,21 @@ const getStudent = (req, res) =>  {
     } catch (error) {
         res.status(500).json({ error: "Une erreur est survenue"});
     }
-}
+};
+
+
+// créer un étudiant 
+const createStudentHandler = (req, res) => {
+
+    try {
+        const { matricule, nom, prenom, date_naissance, classe_id, user_id } = req.body;
+        const result = createStudent(matricule, nom, prenom, date_naissance, classe_id, user_id);
+        res.status(201).json({ message: "Élève créé avec succès", result });
+    } catch (error) {
+        res.status(400).json({message: error.message});
+    }
+};
 
 
 
-
-
-
-export { getStudents, getStudent };
+export { getStudents, getStudent, createStudentHandler };
