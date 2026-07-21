@@ -42,6 +42,13 @@ const getAllStudents = () => {
     return db.prepare(`SELECT * FROM students`).all();
 };
 
+// Afficher un étudiant grâce a son id 
+
+const getStudentById = (id) => {
+    const student = db.prepare(`SELECT * FROM students WHERE id = ?`).get(id);
+    return student;
+};
+
 // Afficher un étudiant grâce à son matricule
 
 const getStudentByMatricule = (matricule)=> {
@@ -77,4 +84,4 @@ const deleteStudent = (matricule) =>{
     return result;
 };
 
-export { createStudent, getAllStudents, getStudentByMatricule, updateStudent, deleteStudent }
+export { createStudent, getAllStudents, getStudentById, getStudentByMatricule, updateStudent, deleteStudent }
