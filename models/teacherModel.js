@@ -2,7 +2,9 @@
 
 class Teacher{
     constructor(matricule, nom, prenom, user_id){
+        this.matricule = matricule;
         this.nom = nom;
+        this.prenom = prenom;
         this.user_id = user_id;
     }
 }
