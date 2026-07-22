@@ -62,7 +62,7 @@ const deleteStudentHandler = (req, res) => {
      res.json({message: `Étudiant supprimé avec succès`, result})
    } catch (error) {
     res.status(400).json({error: error.message});
-   };
-}
+   }
+};
 
 export { getStudents, getStudent, createStudentHandler, updateStudentHandler, deleteStudentHandler };

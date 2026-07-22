@@ -5,6 +5,7 @@ import cors from 'cors';
 
 // Routes 
 import studentRouter from './routes/studentRouter.js';
+import teacherRouter from './routes/teacherRouter.js';
 
 
 
@@ -16,6 +17,7 @@ app.use(cors());
 
 // Route api 
 app.use('/students', studentRouter);
+app.use('/teachers', teacherRouter);
 
 // Port d'écoute du serveur
 

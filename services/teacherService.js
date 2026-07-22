@@ -47,9 +47,20 @@ const getTeacherByMatricule = (matricule)=> {
     return teacher;
 };
 
+// afficher un enseignant grâce à son id 
+const getTeacherById = (id)=> {
+    const teacher = db.prepare(`SELECT * FROM teachers WHERE id = ?`).get(id);
+    return teacher;
+}
+
 // Modifier un enseignant
-const upadateTeacher = (matricule, data) =>{
-    const currentTeacher = getTeacherByMatricule(matricule);
+const updateTeacher = (id, data) =>{
+    const currentTeacher = getTeacherById(id);
+
+    // Sécurité : vérifier si l'enseignant existe
+    if (!currentTeacher) {
+        throw new Error(`Enseignant avec l'id ${id} introuvable`);
+    }
 
     const nom = data.nom ?? currentTeacher.nom;
     const prenom = data.prenom ?? currentTeacher.prenom;
@@ -57,19 +68,19 @@ const upadateTeacher = (matricule, data) =>{
     const result = db.prepare(`
             UPDATE teachers SET nom = ?, prenom = ?
             WHERE id = ?
-        `).run(nom, prenom, currentTeacher.id);
+        `).run(nom, prenom, id);
     return result;
 };
 
 // Supprimer un enseignant
-const deleteTeacher = (matricule)=> {
-    const current = getTeacherByMatricule(matricule);
+const deleteTeacher = (id)=> {
+    const current = getTeacherById(id);
     if(!current){
-        throw new Error(`Enseignant avec le matricule ${matricule} introuvable`);
+        throw new Error(`Enseignant avec l'id ${id} introuvable`);
     }
-    const result = db.prepare(`DELETE FROM teachers WHERE matricule = ?`).run(matricule);
+    const result = db.prepare(`DELETE FROM teachers WHERE id = ?`).run(id);
     return result;
 };
 
 
-export{ createTeacher, getAllTeachers, getTeacherByMatricule, upadateTeacher, deleteTeacher}  
+export{ createTeacher, getAllTeachers, getTeacherByMatricule, getTeacherById, updateTeacher, deleteTeacher}  
