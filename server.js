@@ -7,6 +7,7 @@ import cors from 'cors';
 import studentRouter from './routes/studentRouter.js';
 import teacherRouter from './routes/teacherRouter.js';
 import classesRouter from './routes/classesRouter.js';
+import subjectRouter from './routes/subjectRouter.js';
 
 
 
@@ -20,6 +21,7 @@ app.use(cors());
 app.use('/students', studentRouter);
 app.use('/teachers', teacherRouter);
 app.use('/classes', classesRouter);
+app.use('/subjects', subjectRouter);
 
 // Port d'écoute du serveur
 

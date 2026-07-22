@@ -31,9 +31,9 @@ const getAllSubject = () => {
 };
 
 
-// Chercher une matière grâce au nom 
+// Chercher une matière grâce a l'id 
 
-const getSubjectByName = (id) =>{
+const getSubjectById = (id) =>{
     const subject = db.prepare(`SELECT * FROM subjects WHERE id = ?`).get(id);
     return subject
 };
@@ -41,7 +41,7 @@ const getSubjectByName = (id) =>{
 
 // Modifier une matière
 const updateSubject = (id, data)=>{
-    const currentSubject = getSubjectByName(id);
+    const currentSubject = getSubjectById(id);
     if(!currentSubject) throw new Error(`Matière introuvable`);
 
     const newNom = data.nom ?? currentSubject.nom;
@@ -55,11 +55,11 @@ const updateSubject = (id, data)=>{
 
 // Supprimer une matière
 const deleteSubject = (id) => {
-    const current = getSubjectByName(id);
+    const current = getSubjectById(id);
     if (!current) throw new Error(`Matière avec l'id ${id} introuvable.`);
 
     const result = db.prepare(`DELETE FROM subjects WHERE id = ?`).run(id);
     return result;
 }
 
-export { createSubject, getAllSubject, getSubjectByName, updateSubject, deleteSubject }
+export { createSubject, getAllSubject, getSubjectById, updateSubject, deleteSubject }
