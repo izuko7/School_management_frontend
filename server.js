@@ -8,6 +8,7 @@ import studentRouter from './routes/studentRouter.js';
 import teacherRouter from './routes/teacherRouter.js';
 import classesRouter from './routes/classesRouter.js';
 import subjectRouter from './routes/subjectRouter.js';
+import gradeRouter from './routes/gradeRouter.js';
 
 
 
@@ -22,6 +23,7 @@ app.use('/students', studentRouter);
 app.use('/teachers', teacherRouter);
 app.use('/classes', classesRouter);
 app.use('/subjects', subjectRouter);
+app.use('/grades', gradeRouter);
 
 // Port d'écoute du serveur
 
