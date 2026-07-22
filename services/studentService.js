@@ -59,8 +59,8 @@ const getStudentByMatricule = (matricule)=> {
 
 // Modifier un étudiant
 
-const updateStudent = (matricule, data) => {
-    const currentStudent = getStudentByMatricule(matricule);
+const updateStudent = (id, data) => {
+    const currentStudent = getStudentById(id);
 
     const nom = data.nom ?? currentStudent.nom;
     const prenom = data.prenom ?? currentStudent.prenom;
@@ -69,18 +69,18 @@ const updateStudent = (matricule, data) => {
     const result = db.prepare(`
             UPDATE students SET nom = ?, prenom = ?, date_naissance = ?
             WHERE id = ?
-        `).run(nom, prenom, date_naissance, currentStudent.id);
+        `).run(nom, prenom, date_naissance, id);
     return result;
 };
 
 // Supprimer un étudiant
 
-const deleteStudent = (matricule) =>{
-    const current = getStudentByMatricule(matricule);
+const deleteStudent = (id) =>{
+    const current = getStudentById(id);
     if(!current){
-        throw new Error(`Etudiant avec le matricule ${matricule} introuvable`);
+        throw new Error(`Etudiant avec l'id ${id} introuvable`);
     }
-    const result = db.prepare(`DELETE FROM students WHERE matricule = ?`).run(matricule);
+    const result = db.prepare(`DELETE FROM students WHERE id = ?`).run(id);
     return result;
 };
 

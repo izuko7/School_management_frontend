@@ -1,4 +1,4 @@
-import { getAllStudents, getStudentById, createStudent } from "../services/studentService.js";
+import { getAllStudents, getStudentById, createStudent, updateStudent, deleteStudent } from "../services/studentService.js";
 
 // Contrôller étudiant 
 
@@ -42,6 +42,27 @@ const createStudentHandler = (req, res) => {
     }
 };
 
+// mettre à jour un étudiant 
+const updateStudentHandler =(req, res) => {
+    try {
+        const id = req.params.id;
+        const data = req.body;
+        const result = updateStudent(id, data);
+        res.json({ message: "Étudiant modifié avec succès", result });
+    } catch (error) {
+        res.status(400).json({error: error.message});
+    }
+};
 
+// supprimer un étudiant 
+const deleteStudentHandler = (req, res) => {
+   try {
+     const id = req.params.id;
+     const result = deleteStudent(id);
+     res.json({message: `Étudiant supprimé avec succès`, result})
+   } catch (error) {
+    res.status(400).json({error: error.message});
+   };
+}
 
-export { getStudents, getStudent, createStudentHandler };
+export { getStudents, getStudent, createStudentHandler, updateStudentHandler, deleteStudentHandler };

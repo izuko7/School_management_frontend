@@ -27,6 +27,7 @@ try {
 
     const userProf = createUser("Koffi", "prof", "BigK", "koffi1983");
     const userEtudiant = createUser("Kouadio", "etudiant", "palmer10", "palmer1005");
+    const userEtudiant1 = createUser("Kouassi", "etudiant", "KKJ21", "kouakgouwap");
     
 
     const teacher = createTeacher("12345678", "Koffi", "Armand", userProf.lastInsertRowid);
