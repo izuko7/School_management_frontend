@@ -26,6 +26,7 @@ try {
     console.log("Admin créé avec succès");
 
     const userProf = createUser("Koffi", "prof", "BigK", "koffi1983");
+    const userProf1 = createUser("Fabien", "prof", "Fabsky", "fabbi198433");
     const userEtudiant = createUser("Kouadio", "etudiant", "palmer10", "palmer1005");
     const userEtudiant1 = createUser("Kouassi", "etudiant", "KKJ21", "kouakgouwap");
     

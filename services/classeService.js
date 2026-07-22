@@ -23,6 +23,12 @@ const getAllClasses = () => {
     return db.prepare(`SELECT * FROM classes`).all();
 };
 
+// Afficher la classe grâce à l'id 
+const getClasseById = (id) => {
+    const classe = db.prepare(`SELECT * FROM classes WHERE id = ?`).get(id);
+    return classe;
+}
+
 
 // Afficher une classe grâce à son nom
 const getClasseByNom = (nom)=> {
@@ -32,29 +38,35 @@ const getClasseByNom = (nom)=> {
 
 
 // Modifier une classe
-const updateClasse = (nom, data) =>{
-    const currentClasse = getClasseByNom(nom);
+const updateClasse = (id, data) =>{
+    const currentClasse = getClasseById(id);
 
+    // Sécurité : vérifier si la classe existe
+    if (!currentClasse) {
+        throw new Error(`Classe avec l'id ${id} introuvable`);
+    }
+
+    const nom = data.nom ?? currentClasse.nom;
     const niveau = data.niveau ?? currentClasse.niveau;
     const capacite = data.capacite ?? currentClasse.capacite;
 
     const result = db.prepare(`
-            UPDATE classes SET niveau = ?, capacite = ?
+            UPDATE classes SET nom = ?, niveau = ?, capacite = ?
             WHERE id = ?
-        `).run(niveau, capacite, currentClasse.id);
+        `).run(nom, niveau, capacite, id);
     return result;
 }
 
 
 // Supprimer une classe 
-const deleteClasse = (nom)=> {
-    const current = getClasseByNom(nom);
+const deleteClasse = (id)=> {
+    const current = getClasseById(id);
     if(!current){
-        throw new Error(`Classe avec le nom ${nom} introuvable`);
+        throw new Error(`Classe avec l'id ${id} introuvable`);
     }
-    const result = db.prepare(`DELETE FROM classes WHERE nom = ?`).run(nom);
+    const result = db.prepare(`DELETE FROM classes WHERE id = ?`).run(id);
     return result;
 };
 
 
-export { createClasse, getAllClasses, getClasseByNom, updateClasse, deleteClasse }
+export { createClasse, getAllClasses, getClasseById, getClasseByNom, updateClasse, deleteClasse }
