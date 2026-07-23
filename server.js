@@ -10,6 +10,7 @@ import classesRouter from './routes/classesRouter.js';
 import subjectRouter from './routes/subjectRouter.js';
 import gradeRouter from './routes/gradeRouter.js';
 import absenceRouter from './routes/absenceRouter.js';
+import userRouter from './routes/userRouter.js';
 
 
 
@@ -26,6 +27,7 @@ app.use('/classes', classesRouter);
 app.use('/subjects', subjectRouter);
 app.use('/grades', gradeRouter);
 app.use('/absences', absenceRouter);
+app.use('/users', userRouter);
 
 // Port d'écoute du serveur
 

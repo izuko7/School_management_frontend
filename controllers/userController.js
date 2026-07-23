@@ -5,9 +5,9 @@ import { getAllUsers, getUserById, createUser, updateUser, deleteUser } from "..
 // avoir tout les utilisateurs 
 const getUsers = (req, res) =>{
     try {
-        const {motdepasse, ...userSansMotDePasse} = users
         const users = (getAllUsers());
-        res.json(users);
+        const usersSansMotDePasse = users.map(({motdepasse, ...rest}) => (rest));
+        res.json(usersSansMotDePasse);
     } catch (error) {
         res.status(500).json({error: `Une erreur est survenue`});
     }
@@ -17,7 +17,6 @@ const getUsers = (req, res) =>{
 // avoir un utilisateur grâce à son id 
 const getUser = (req, res) => {
     try {
-        const {motdepasse, ...userSansMotDePasse} = user
         const id = req.params.id;
         const user = getUserById(id);
 
@@ -25,7 +24,9 @@ const getUser = (req, res) => {
             return res.status(404).json({error: `L'utilisateur avec id ${id} introuvable`});
         }
 
-        res.json(user);
+        const {motdepasse, ...userSansMotDePasse} = user
+
+        res.json(userSansMotDePasse);
     } catch (error) {
         res.status(500).json({message: error.message});
     }
@@ -62,7 +63,7 @@ const deleteUserHandler = (req, res) => {
     try {
         const id = req.params.id;
         const result = deleteUser(id);
-        res.json({message: `Absence supprimé avec succès`, result});
+        res.json({message: `Utilisateur supprimé avec succès`, result});
     } catch (error) {
         res.status(400).json({message: error.message});
     }
