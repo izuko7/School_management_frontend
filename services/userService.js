@@ -20,6 +20,11 @@ const getAllUsers = () => {
     return db.prepare('SELECT * FROM users').all();
 };
 
+// Rechercher un utilisateur grâce à son id 
+const getUserById = (id) => {
+    const user = db.prepare('SELECT * FROM users WHERE id = ?').get(id);
+    return user;
+}
 
 // Rechercher un Utilisateur grâce à son pseudo
 
@@ -31,8 +36,8 @@ const getUserByPseudo = (pseudoname) => {
 
 // Modifier un utilisateur
 
-const updateUser = (pseudoname, data) => {
-    const currentUser = getUserByPseudo(pseudoname);
+const updateUser = (id, data) => {
+    const currentUser = getUserById(id);
 
     const name = data.name ?? currentUser.name;
     const role = data.role ?? currentUser.role;
@@ -42,20 +47,20 @@ const updateUser = (pseudoname, data) => {
     const result = db.prepare(`
             UPDATE users SET name = ?, role = ?, pseudoname = ?, motdepasse = ?
             WHERE id = ?
-        `).run(name, role, newPseudoname, motdepasse, currentUser.id);
+        `).run(name, role, newPseudoname, motdepasse, id);
         return result;
 };
 
 
 // Supprimer un utilisateur
 
-const deleteUser = (pseudoname) => {
-    const curent = getUserByPseudo(pseudoname);
+const deleteUser = (id) => {
+    const curent = getUserById(id);
     if(!curent){
-        throw new Error(`Utilisateur avec le pseudo ${pseudoname} introuvable`);
+        throw new Error(`Utilisateur avec l'id ${id} introuvable`);
     }
-    const result = db.prepare(`DELETE FROM users WHERE pseudoname = ?`).run(pseudoname);
+    const result = db.prepare(`DELETE FROM users WHERE id = ?`).run(id);
     return result;
 }
 
-export { createUser, getAllUsers, getUserByPseudo, updateUser, deleteUser }
+export { createUser, getAllUsers, getUserById, getUserByPseudo, updateUser, deleteUser }
