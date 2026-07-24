@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+import 'dotenv/config';
 
 
 
@@ -11,6 +12,10 @@ import subjectRouter from './routes/subjectRouter.js';
 import gradeRouter from './routes/gradeRouter.js';
 import absenceRouter from './routes/absenceRouter.js';
 import userRouter from './routes/userRouter.js';
+
+// route d'authententification 
+import authRouter from './routes/authRouter.js';
+import { login } from './controllers/authController.js';
 
 
 
@@ -28,6 +33,9 @@ app.use('/subjects', subjectRouter);
 app.use('/grades', gradeRouter);
 app.use('/absences', absenceRouter);
 app.use('/users', userRouter);
+
+// route api auth 
+app.use('/auth', authRouter);
 
 // Port d'écoute du serveur
 
