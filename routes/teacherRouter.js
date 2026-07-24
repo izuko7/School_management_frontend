@@ -1,22 +1,23 @@
 import express from 'express';
 import { getTeacher, getTeachers, createTeacherHandler, updateTeacherHandler, deleteTeacherHandler } from '../controllers/teacherController.js';
+import { verifyToken } from '../middleware/authVerify.js';
 
 
 const router = express.Router();
 
 // GET 
-router.get('/', getTeachers);
+router.get('/', verifyToken, getTeachers);
 
 // GET avec id 
-router.get('/:id', getTeacher);
+router.get('/:id', verifyToken, getTeacher);
 
 // POST 
-router.post('/', createTeacherHandler);
+router.post('/', verifyToken, createTeacherHandler);
 
 // PUT 
-router.put('/:id', updateTeacherHandler);
+router.put('/:id', verifyToken, updateTeacherHandler);
 
 // DELETE 
-router.delete('/:id', deleteTeacherHandler);
+router.delete('/:id', verifyToken, deleteTeacherHandler);
 
 export default router;

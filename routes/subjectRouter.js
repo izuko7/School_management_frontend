@@ -1,23 +1,24 @@
 import express from 'express';
 import { getSubject, getSubjects, createSubjectHandler, updateSubjectHandler, deleteSubjectHandler } from '../controllers/subjectController.js';
+import { verifyToken } from '../middleware/authVerify.js';
 
 // conteneur de router 
 const router = express.Router();
 
 // GET 
-router.get('/', getSubjects);
+router.get('/', verifyToken, getSubjects);
 
 // GET avec un id 
-router.get('/:id', getSubject);
+router.get('/:id', verifyToken, getSubject);
 
 // POST 
-router.post('/', createSubjectHandler);
+router.post('/', verifyToken, createSubjectHandler);
 
 // PUT 
-router.put('/:id', updateSubjectHandler);
+router.put('/:id', verifyToken, updateSubjectHandler);
 
 // DELETE 
-router.delete('/:id', deleteSubjectHandler);
+router.delete('/:id', verifyToken, deleteSubjectHandler);
 
 
 export default router;

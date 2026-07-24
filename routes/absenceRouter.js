@@ -1,23 +1,24 @@
 import express from 'express';
 import { getAbsence, getAbsences, createAbsenceHandler, updateAbsenceHandler, deleteAbsenceHandler } from '../controllers/absenceController.js';
+import { verifyToken } from '../middleware/authVerify.js';
 
 
 const router = express.Router();
 
 // GET 
-router.get('/',getAbsences);
+router.get('/', verifyToken, getAbsences);
 
 // GET with id 
-router.get('/:id', getAbsence);
+router.get('/:id', verifyToken, getAbsence);
 
 // POST 
-router.post('/', createAbsenceHandler);
+router.post('/', verifyToken, createAbsenceHandler);
 
 // PUT 
-router.put('/:id', updateAbsenceHandler);
+router.put('/:id', verifyToken, updateAbsenceHandler);
 
 // DELETE 
-router.delete('/:id', deleteAbsenceHandler);
+router.delete('/:id', verifyToken, deleteAbsenceHandler);
 
 
 export default router;

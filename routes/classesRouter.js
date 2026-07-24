@@ -1,25 +1,26 @@
 import express from 'express';
 import { getClasses, getclasse, createClasseHandler, updateClasseHandler, deleteClasseHandler } from '../controllers/classesController.js';
+import { verifyToken } from '../middleware/authVerify.js';
 
 
 const router = express.Router();
 
 // GET 
-router.get('/', getClasses);
+router.get('/', verifyToken, getClasses);
 
 
 // GET avec id 
-router.get('/:id', getclasse);
+router.get('/:id', verifyToken, getclasse);
 
 // POST 
-router.post('/', createClasseHandler);
+router.post('/', verifyToken, createClasseHandler);
 
 
 // PUT 
-router.put('/:id', updateClasseHandler);
+router.put('/:id', verifyToken, updateClasseHandler);
 
 // DELETE 
-router.delete('/:id', deleteClasseHandler);
+router.delete('/:id', verifyToken, deleteClasseHandler);
 
 
 export default router;
