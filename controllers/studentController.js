@@ -22,6 +22,10 @@ const getStudent = (req, res) =>  {
            return res.status(404).json({ error: `Etuidant avec id : ${id}  introuvable `});
         }
 
+        if(req.user.role === 'etudiant' && student.user_id !== req.user.id){
+            return res.status(403).json({error: 'Vous ne pouvez consulter que votre propre profil'});
+        }
+
         res.json(student);
 
     } catch (error) {

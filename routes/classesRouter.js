@@ -1,6 +1,7 @@
 import express from 'express';
 import { getClasses, getclasse, createClasseHandler, updateClasseHandler, deleteClasseHandler } from '../controllers/classesController.js';
 import { verifyToken } from '../middleware/authVerify.js';
+import { checkRole } from '../middleware/roleCheck.js';
 
 
 const router = express.Router();
@@ -20,7 +21,7 @@ router.post('/', verifyToken, createClasseHandler);
 router.put('/:id', verifyToken, updateClasseHandler);
 
 // DELETE 
-router.delete('/:id', verifyToken, deleteClasseHandler);
+router.delete('/:id', verifyToken, checkRole('admin'), deleteClasseHandler);
 
 
 export default router;
