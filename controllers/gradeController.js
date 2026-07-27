@@ -1,4 +1,5 @@
 import { getAllGrades, getGradeById, createGrade, updateGrade, deleteGrade } from "../services/gradeService.js";
+import { getStudentById } from "../services/studentService.js";
 
 // Controlleurs notes 
 
@@ -20,6 +21,11 @@ const getGrade = (req,res) => {
         
         if(!grade){
             return res.status(404).json({error: `Note avec id ${id} introuvable`});
+        }
+
+        const student = getStudentById(grade.student_id);
+        if(req.user.role === 'etudiant' && student.user_id !== req.user.id){
+            return res.status(403).json({error: 'Vous ne pouvez consulter que votre propre profil'});
         }
 
         res.json(grade);
