@@ -1,4 +1,5 @@
 import { getAllTeachers, getTeacherById, createTeacher, updateTeacher, deleteTeacher } from "../services/teacherService.js";
+import { logInfo, logSuccess, logWarn, logError } from "../utils/logger.js";
 
 // Contrôller Student 
 
@@ -8,6 +9,7 @@ const getTeachers = (req, res) => {
         const teachers = (getAllTeachers());
         res.json(teachers)
     } catch (error) {
+        logError(`Erreur lors de la récupération des enseignants : ${error.message}`);
         res.status(500).json({error: `Une erreur est survenue`})
     }
 };
@@ -19,12 +21,14 @@ const getTeacher = (req, res) => {
         const teacher = getTeacherById(id);
 
         if(!teacher){
-            return res.status(404).json({error: `Enseinant avec id :${id} introuvable`})
+            logWarn(`Enseignant introuvable`);
+            return res.status(404).json({error: `Enseignant avec id :${id} introuvable`})
         }
 
         res.json(teacher);
 
     } catch (error) {
+        logError(`Erreur lors de la récupération de l'enseignant`);
         res.status(500).json({error: 'Une erreur est survenue'});
     }
 };
@@ -35,8 +39,10 @@ const createTeacherHandler = (req, res)=> {
     try {
         const { matricule, nom, prenom, user_id } = req.body;
         const result = createTeacher(matricule, nom, prenom, user_id);
+        logSuccess(`Enseignant créé : ${nom}, ${prenom}, ${matricule}`);
         res.status(201).json({ message: `Enseignant créer avec succès`, result});
     } catch (error) {
+        logWarn(`Echec de création d'un enseignant : ${error.message}`);
         res.status(400).json({message: error.message});
     }
 }
@@ -47,8 +53,10 @@ const updateTeacherHandler = (req, res)=> {
         const id = req.params.id;
         const data = req.body;
         const result = updateTeacher(id, data);
+        logSuccess(`Enseignant modifié`);
         res.json({ message: "Étudiant modifié avec succès", result });
     } catch (error) {
+        logWarn(`Échec de modification de l'enseignant (id: ${req.params.id}) : ${error.message}`);
         res.status(400).json({ message: error.message });
     }
 };
@@ -59,8 +67,10 @@ const deleteTeacherHandler = (req, res) => {
     try {
         const id = req.params.id;
         const result = deleteTeacher(id);
+        logSuccess(`Enseignant supprimé`);
         res.json({message : `Enseignant supprimé avec succès`, result});
     } catch (error) {
+        logWarn(`Échec de suppression de l'enseignant (id: ${req.params.id}) : ${error.message}`);
         res.status(400).json({message: error.message});
     }
 };
