@@ -1,9 +1,14 @@
 import db from "../db/database.js";
 import Student from "../models/studentModel.js";
+import dayjs from "dayjs";
 
 
 // Créer un étudiant
 const createStudent = (matricule, nom, prenom, date_naissance, classe_id, user_id) => {
+
+    if(!dayjs(date_naissance, "DD/MM/YYYY", true).isValid()){
+        throw new Error(`Date de naissance invalide : ${date_naissance}`);
+    }
 
     // Vérifier si l'utilisateur avec le rôle étudiant existe
     const user = db.prepare(`SELECT * FROM users WHERE id = ?`).get(user_id);
@@ -65,6 +70,9 @@ const updateStudent = (id, data) => {
     const nom = data.nom ?? currentStudent.nom;
     const prenom = data.prenom ?? currentStudent.prenom;
     const date_naissance = data.date_naissance ?? currentStudent.date_naissance;
+     if(!dayjs(date_naissance, "DD/MM/YYYY", true).isValid()){
+        throw new Error(`Date de naissance invalide : ${date_naissance}`);
+    }
 
     const result = db.prepare(`
             UPDATE students SET nom = ?, prenom = ?, date_naissance = ?

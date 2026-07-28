@@ -1,9 +1,14 @@
 import db from "../db/database.js";
 import Grade from "../models/gradeModel.js";
+import dayjs from "dayjs";
 
 
 // Créer une nouvelle note 
 const createGrade = (student_id, subject_id, note, date, type) => {
+
+    if(!dayjs(date, "DD/MM/YYYY", true).isValid()){
+        throw new Error(`Date invalide : ${date}`)
+    }
 
     // Vérifier si l'étudiant existe 
     const student = db.prepare(`SELECT * FROM students WHERE id = ?`).get(student_id);
@@ -52,6 +57,10 @@ const updateGrade = (id, data) => {
 
     const note = data.note ?? currentGrade.note;
     const date = data.date ?? currentGrade.date;
+
+    if(!dayjs(date, "DD/MM/YYYY", true).isValid()){
+        throw new Error(`Date invalide : ${date}`)
+    }
 
     const result = db.prepare(`
             UPDATE grades SET note = ?, date = ?

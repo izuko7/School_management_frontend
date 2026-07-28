@@ -1,8 +1,13 @@
+import dayjs from "dayjs";
 import db from "../db/database.js";
 import Absence from "../models/absenceModel.js";
 
 // Créer une nouvelle absence 
 const createAbsence = (student_id, date, status, justifie, motif) =>{
+
+    if(!dayjs(date, "DD/MM/YYYY", true).isValid()){
+        throw new Error(`Date invalide : ${date}`)
+    }
 
     // Vérifier si l'utilisateur existe 
     const student = db.prepare(`SELECT * FROM students WHERE id = ?`).get(student_id);
@@ -39,6 +44,11 @@ const updateAbsence = (id, data) => {
 
     const student_id = data.student_id ?? currentAbsence.student_id;
     const date = data.date ?? currentAbsence.date;
+
+    if(!dayjs(date, "DD/MM/YYYY", true).isValid()){
+        throw new Error(`Date invalide : ${date}`)
+    }
+
     const status = data.status ?? currentAbsence.status;
     const justifie = data.justifie ?? currentAbsence.justifie;
     const motif = data.motif ?? currentAbsence.motif;
