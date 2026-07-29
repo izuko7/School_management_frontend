@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EduSmart — Connexion</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+    <link rel="stylesheet" href="../css/login.css" />
+</head>
+
+<body>
+    <div class="conteneur">
+        <!-- Panneau gauche : identité de marque -->
+        <section class="panneau-gauche">
+            <div class="forme-decorative forme-1"></div>
+            <div class="forme-decorative forme-2"></div>
+
+            <div class="contenu-gauche">
+                <div class="logo">
+                    <span class="logo-icone"><i class="fa-solid fa-graduation-cap"></i></span>
+                    <div class="logo-texte">
+                        <span class="logo-nom">EduSmart</span>
+                        <span class="logo-slogan">Système de gestion scolaire</span>
+                    </div>
+                </div>
+
+                <h1 class="titre-hero">
+                    Autonomiser<br />
+                    l'éducation<br />
+                    <span class="accent">dans le monde entier</span>
+                </h1>
+
+                <p class="description-hero">
+                    Gérez votre établissement en toute confiance. Suivez les élèves, les
+                    enseignants et les performances depuis un tableau de bord unique et
+                    performant.
+                </p>
+
+                <div class="grille-stats">
+                    <div class="carte-stat">
+                        <span class="stat-label">Nombre total d'élèves</span>
+                        <span class="stat-valeur">847</span>
+                        <span class="stat-variation">+12% ce mois-ci</span>
+                    </div>
+                    <div class="carte-stat">
+                        <span class="stat-label">Taux de présence</span>
+                        <span class="stat-valeur">94.2%</span>
+                        <span class="stat-variation">Au-dessus de la moyenne</span>
+                    </div>
+                    <div class="carte-stat">
+                        <span class="stat-label">Enseignants actifs</span>
+                        <span class="stat-valeur">13</span>
+                    </div>
+                    <div class="carte-stat">
+                        <span class="stat-label">Taux de réussite scolaire</span>
+                        <span class="stat-valeur">98.7%</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Panneau droit : formulaire de connexion -->
+        <section class="panneau-droit">
+            <div class="carte-formulaire">
+                <h2 class="titre-bienvenue">
+                    Content de te revoir <span class="emoji-main">👋</span>
+                </h2>
+                <p class="sous-titre">
+                    Connectez-vous à votre portail de gestion scolaire
+                </p>
+
+                <form id="formulaireConnexion" class="formulaire-connexion" novalidate>
+                    <div class="groupe-champ">
+                        <label for="text">Pseudo</label>
+                        <div class="champ-icone">
+                            <i class="fa-regular fa-envelope"></i>
+                            <input type="text" id="pseudoname" name="text" placeholder="edusmart.edu" required />
+                    </div>
+
+                    <div class="groupe-champ">
+                        <label for="motDePasse">Mot de passe</label>
+                        <div class="champ-icone">
+                            <i class="fa-solid fa-lock"></i>
+                            <input type="password" id="motDePasse" name="motDePasse" placeholder="••••••••••"
+                                required />
+                            <button type="button" class="bouton-oeil" id="boutonOeil"
+                                aria-label="Afficher le mot de passe">
+                                <i class="fa-regular fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="ligne-options">
+                        <label class="case-souvenir">
+                            <input type="checkbox" id="seSouvenir" />
+                            <span>Souviens-toi de moi</span>
+                        </label>
+                    </div>
+
+                    <button type="submit" class="bouton-connexion">
+                        Se connecter au tableau de bord
+                    </button>
+
+                    <p class="lien-inscription">
+                        Vous n'avez pas de compte ? Contactez l'administrateur.
+                    </p>
+                    <a class="bouton-retour" href="/accueil">Page d'accueil</a>
+                </form>
+            </div>
+        </section>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

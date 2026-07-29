@@ -32,8 +32,14 @@ app.use(cors());
 app.use(express.static(path.join(import.meta.dirname, 'public')));
 
 
+// route page accueil 
 app.get('/accueil', (req,res) => {
     res.sendFile(path.join(import.meta.dirname, 'public/html/index.html'));
+})
+
+// route page login 
+app.get('/login', (req,res) => {
+    res.sendFile(path.join(import.meta.dirname, 'public/html/login.html'));
 })
 
 // Route api 
