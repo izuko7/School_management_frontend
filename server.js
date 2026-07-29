@@ -1,6 +1,9 @@
 import express from 'express';
 import cors from 'cors';
 import 'dotenv/config';
+import path from 'path';
+
+
 
 
 
@@ -25,6 +28,14 @@ app.use(express.json());
 app.use(cors());
 
 
+// express static 
+app.use(express.static(path.join(import.meta.dirname, 'public')));
+
+
+app.get('/accueil', (req,res) => {
+    res.sendFile(path.join(import.meta.dirname, 'public/html/index.html'));
+})
+
 // Route api 
 app.use('/students', studentRouter);
 app.use('/teachers', teacherRouter);
@@ -34,11 +45,13 @@ app.use('/grades', gradeRouter);
 app.use('/absences', absenceRouter);
 app.use('/users', userRouter);
 
+
+
 // route api auth 
 app.use('/auth', authRouter);
 
 // Port d'écoute du serveur
 
 app.listen(3000, () => {
-    console.log(`Serveur démarré sur http://localhost:3000/`)
+    console.log(`Serveur démarré sur http://localhost:3000/accueil`)
 });
