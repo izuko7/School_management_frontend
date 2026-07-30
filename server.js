@@ -42,6 +42,18 @@ app.get('/login', (req,res) => {
     res.sendFile(path.join(import.meta.dirname, 'public/html/login.html'));
 })
 
+// route dashboard 
+app.get('/dashboard/admin', (req, res) => {
+    res.sendFile(path.join(import.meta.dirname, 'public/html/dashboardAdmin.html'));
+})
+app.get('/dashboard/prof', (req, res) => {
+    res.sendFile(path.join(import.meta.dirname, 'public/html/dashboardProf.html'));
+})
+app.get('/dashboard/etudiant', (req, res) => {
+    res.sendFile(path.join(import.meta.dirname, 'public/html/dashboardEtudiant.html'));
+})
+
+
 // Route api 
 app.use('/students', studentRouter);
 app.use('/teachers', teacherRouter);
