@@ -18,7 +18,12 @@ formulaire.addEventListener('submit', async (e)=>{
 
         if(!reponse.ok){
             messageErreur.textContent = donnees.error;
+        }else{
+            localStorage.setItem('token', donnees.token);
+            localStorage.setItem('role', donnees.role);
+            console.log(localStorage);
         }
+
     } catch (error) {
         messageErreur.textContent = `Impossible de contacter le serveur. Vérifiez votre connexion.`
     }

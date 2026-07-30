@@ -27,7 +27,7 @@ const login = (req,res) => {
 
         logAuth(`connexion réussie : utilisateur ${pseudoname}`)
 
-        res.json({ token });
+        res.json({ token, role: user.role });
 
     } catch (error) {
         logError(`Erreur lors de la connexion : ${error.message}`);
