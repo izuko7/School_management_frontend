@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduSmart — Tableau de bord</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <link rel="stylesheet" href="../css/dashboardAdmin.css">
+</head>
+
+<body>
+
+    <div class="mise-en-page">
+
+        <!-- ---------- SIDEBAR ---------- -->
+        <aside class="sidebar">
+            <button class="bouton-fermer-sidebar" id="boutonFermerSidebar" aria-label="Fermer le menu">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div class="logo">
+                <span class="logo-icone"><i class="fa-solid fa-graduation-cap"></i></span>
+                <div class="logo-texte">
+                    <span class="logo-nom">EduSmart</span>
+                    <span class="logo-slogan">Gestion scolaire</span>
+                </div>
+            </div>
+
+            <nav class="nav-sidebar">
+                <a href="/dashboard/admin" class="nav-item actif">
+                    <i class="fa-solid fa-table-cells"></i>
+                    <span>Tableau de bord</span>
+                    <span class="point-actif"></span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fa-solid fa-user-graduate"></i>
+                    <span>Élèves</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fa-solid fa-chalkboard-user"></i>
+                    <span>Enseignants</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fa-solid fa-layer-group"></i>
+                    <span>Classes</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fa-solid fa-book"></i>
+                    <span>Matières</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fa-solid fa-calendar-check"></i>
+                    <span>Présences</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fa-solid fa-chart-simple"></i>
+                    <span>Notes</span>
+                </a>
+            </nav>
+
+            <div class="nav-sidebar nav-sidebar-bas">
+                <a href="#" class="nav-item">
+                    <i class="fa-solid fa-gear"></i>
+                    <span>Paramètres</span>
+                </a>
+                <a href="/accueil" id="boutonDeconnexion" class="nav-item">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <span>Déconnexion</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- ---------- CONTENU PRINCIPAL ---------- -->
+        <div class="contenu-principal">
+
+            <!-- Barre du haut -->
+            <header class="barre-haut">
+                <button class="bouton-burger" id="boutonBurger" aria-label="Ouvrir le menu">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+
+                <div>
+                    <h1>Tableau de bord</h1>
+                    <p class="date-jour" id="dateJour"></p>
+                </div>
+
+                <div class="recherche">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" placeholder="Rechercher...">
+                </div>
+
+                <div class="actions-haut">
+                    <div class="profil">
+                        <div class="profil-texte">
+                            <span class="profil-nom">Campbell Davis</span>
+                            <span class="profil-role">Administrateur</span>
+                        </div>
+                        <div class="avatar">CD</div>
+                    </div>
+                </div>
+            </header>
+
+            <main class="zone-scroll">
+
+                <!-- Message de bienvenue -->
+                <section class="bienvenue">
+                    <div>
+                        <h2>Bonjour, Campbell ! <span class="emoji-main">👋</span></h2>
+                        <p>Bienvenue sur votre tableau de bord de gestion scolaire</p>
+                    </div>
+                </section>
+
+                <!-- Cartes statistiques -->
+                <section class="grille-stats-dash">
+                    <div class="carte-stat-dash">
+                        <div class="stat-entete">
+                            <div class="icone-stat icone-indigo"><i class="fa-solid fa-users"></i></div>
+                            <span class="variation positive"><i class="fa-solid fa-arrow-trend-up"></i> +12%</span>
+                        </div>
+                        <span class="stat-chiffre">2 847</span>
+                        <span class="stat-titre">Total des élèves</span>
+                        <span class="stat-sous-titre">Inscrits cette année</span>
+                    </div>
+
+                    <div class="carte-stat-dash">
+                        <div class="stat-entete">
+                            <div class="icone-stat icone-violet"><i class="fa-solid fa-user-check"></i></div>
+                            <span class="variation positive"><i class="fa-solid fa-arrow-trend-up"></i> +4%</span>
+                        </div>
+                        <span class="stat-chiffre">189</span>
+                        <span class="stat-titre">Total des enseignants</span>
+                        <span class="stat-sous-titre">Corps enseignant actif</span>
+                    </div>
+
+                    <div class="carte-stat-dash">
+                        <div class="stat-entete">
+                            <div class="icone-stat icone-bleu"><i class="fa-solid fa-layer-group"></i></div>
+                            <span class="variation positive"><i class="fa-solid fa-arrow-trend-up"></i> +2%</span>
+                        </div>
+                        <span class="stat-chiffre">64</span>
+                        <span class="stat-titre">Classes</span>
+                        <span class="stat-sous-titre">Classes actives</span>
+                    </div>
+
+                    <div class="carte-stat-dash">
+                        <div class="stat-entete">
+                            <div class="icone-stat icone-rose"><i class="fa-solid fa-award"></i></div>
+                            <span class="variation positive"><i class="fa-solid fa-arrow-trend-up"></i> +0.5%</span>
+                        </div>
+                        <span class="stat-chiffre">98.7%</span>
+                        <span class="stat-titre">Taux de réussite</span>
+                        <span class="stat-sous-titre">Promotion 2024</span>
+                    </div>
+                </section>
+
+                <!-- Grille principale : contenu large + colonne latérale -->
+                <div class="grille-contenu">
+
+                    <!-- Colonne large -->
+                    <div class="colonne-large">
+
+                        <!-- Graphiques -->
+                        <section class="grille-graphiques grille-graphiques-simple">
+                            <div class="carte-panneau carte-graphique">
+                                <div class="panneau-entete">
+                                    <div>
+                                        <h3>Croissance des élèves</h3>
+                                        <p>Tendance des inscriptions cette année</p>
+                                    </div>
+                                    <select class="selecteur-annee">
+                                        <option>2026</option>
+                                        <option>2025</option>
+                                        <option>2024</option>
+                                    </select>
+                                </div>
+                                <div class="graphique-barres" id="graphiqueBarres"></div>
+                            </div>
+                        </section>
+
+                        <!-- Élèves récents -->
+                        <section class="carte-panneau">
+                            <div class="panneau-entete">
+                                <div>
+                                    <h3>Élèves récents</h3>
+                                    <p>Dernières inscriptions</p>
+                                </div>
+                                <a href="#" class="lien-voir-tout">Voir tout <i
+                                        class="fa-solid fa-chevron-right"></i></a>
+                            </div>
+
+                            <table class="tableau-eleves">
+                                <thead>
+                                    <tr>
+                                        <th>Élève</th>
+                                        <th>Classe</th>
+                                        <th>Email</th>
+                                        <th>Statut</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <div class="eleve-cell">
+                                                <span class="avatar-eleve avatar-indigo">SA</span>
+                                                Sophia Anderson
+                                            </div>
+                                        </td>
+                                        <td>10-A</td>
+                                        <td>sophia.a@email.com</td>
+                                        <td><span class="badge badge-actif">Actif</span></td>
+                                        <td><button class="bouton-action"><i class="fa-solid fa-ellipsis"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="eleve-cell">
+                                                <span class="avatar-eleve avatar-violet">MJ</span>
+                                                Marcus Johnson
+                                            </div>
+                                        </td>
+                                        <td>11-B</td>
+                                        <td>m.johnson@email.com</td>
+                                        <td><span class="badge badge-actif">Actif</span></td>
+                                        <td><button class="bouton-action"><i class="fa-solid fa-ellipsis"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="eleve-cell">
+                                                <span class="avatar-eleve avatar-rose">ER</span>
+                                                Emma Rodriguez
+                                            </div>
+                                        </td>
+                                        <td>9-C</td>
+                                        <td>emma.r@email.com</td>
+                                        <td><span class="badge badge-actif">Actif</span></td>
+                                        <td><button class="bouton-action"><i class="fa-solid fa-ellipsis"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="eleve-cell">
+                                                <span class="avatar-eleve avatar-bleu">JL</span>
+                                                James Liu
+                                            </div>
+                                        </td>
+                                        <td>12-A</td>
+                                        <td>j.liu@email.com</td>
+                                        <td><span class="badge badge-inactif">Inactif</span></td>
+                                        <td><button class="bouton-action"><i class="fa-solid fa-ellipsis"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="eleve-cell">
+                                                <span class="avatar-eleve avatar-vert">OB</span>
+                                                Olivia Brown
+                                            </div>
+                                        </td>
+                                        <td>10-B</td>
+                                        <td>o.brown@email.com</td>
+                                        <td><span class="badge badge-actif">Actif</span></td>
+                                        <td><button class="bouton-action"><i class="fa-solid fa-ellipsis"></i></button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </section>
+
+                    </div>
+
+                    <!-- Colonne latérale -->
+                    <div class="colonne-laterale">
+
+                        <section class="carte-panneau">
+                            <h3>Événements à venir</h3>
+                            <ul class="liste-evenements">
+                                <li>
+                                    <span class="date-evenement date-rouge">15 déc.</span>
+                                    <span>Examens finaux</span>
+                                </li>
+                                <li>
+                                    <span class="date-evenement date-bleue">18 déc.</span>
+                                    <span>Réunion parents-enseignants</span>
+                                </li>
+                                <li>
+                                    <span class="date-evenement date-verte">22 déc.</span>
+                                    <span>Début des vacances d'hiver</span>
+                                </li>
+                                <li>
+                                    <span class="date-evenement date-violette">8 janv.</span>
+                                    <span>Foire aux sciences</span>
+                                </li>
+                                <li>
+                                    <span class="date-evenement date-orange">13 janv.</span>
+                                    <span>Début du nouveau semestre</span>
+                                </li>
+                            </ul>
+                        </section>
+
+                        <section class="carte-panneau carte-actions-rapides">
+                            <h3>Actions rapides</h3>
+                            <div class="grille-actions-rapides">
+                                <button class="action-rapide">
+                                    <i class="fa-solid fa-user-plus"></i>
+                                    Ajouter un élève
+                                </button>
+                                <button class="action-rapide">
+                                    <i class="fa-solid fa-chalkboard-user"></i>
+                                    Ajouter un enseignant
+                                </button>
+                                <button class="action-rapide">
+                                    <i class="fa-solid fa-calendar-check"></i>
+                                    Présences
+                                </button>
+                                <button class="action-rapide">
+                                    <i class="fa-solid fa-file-lines"></i>
+                                    Rapport
+                                </button>
+                            </div>
+                        </section>
+
+                    </div>
+                </div>
+
+                <!-- Activité récente -->
+                <section class="carte-panneau">
+                    <h3>Activité récente</h3>
+                    <ul class="liste-activite">
+                        <li>
+                            <span class="icone-activite icone-indigo"><i class="fa-solid fa-users"></i></span>
+                            <span class="activite-texte">Emily Watson a été inscrite</span>
+                            <span class="activite-temps">Il y a 2 min</span>
+                        </li>
+                        <li>
+                            <span class="icone-activite icone-violet"><i class="fa-solid fa-file-lines"></i></span>
+                            <span class="activite-texte">M. Smith a mis à jour les notes de mathématiques</span>
+                            <span class="activite-temps">Il y a 15 min</span>
+                        </li>
+                        <li>
+                            <span class="icone-activite icone-jaune"><i class="fa-regular fa-bell"></i></span>
+                            <span class="activite-texte">Annonce du calendrier des vacances publiée</span>
+                            <span class="activite-temps">Il y a 3 h</span>
+                        </li>
+                        <li>
+                            <span class="icone-activite icone-bleu"><i class="fa-solid fa-circle-check"></i></span>
+                            <span class="activite-texte">Présence classe 10-A : 98% présents</span>
+                            <span class="activite-temps">Hier</span>
+                        </li>
+                    </ul>
+                </section>
+
+            </main>
+        </div>
+    </div>
+
+    <script src="../js/dashboardAdmin.js"></script>
+</body>
+
+</html>
