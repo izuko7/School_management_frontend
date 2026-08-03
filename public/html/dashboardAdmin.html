@@ -112,7 +112,7 @@
                 <!-- Message de bienvenue -->
                 <section class="bienvenue">
                     <div>
-                        <h2>Bonjour, Campbell ! <span class="emoji-main">👋</span></h2>
+                        <h2 id="bienvenue-name"><span class="emoji-main">👋</span></h2>
                         <p>Bienvenue sur votre tableau de bord de gestion scolaire</p>
                     </div>
                 </section>
@@ -156,7 +156,6 @@
                         </div>
                         <span class="stat-chiffre">98.7%</span>
                         <span class="stat-titre">Taux de réussite</span>
-                        <span class="stat-sous-titre">Promotion 2024</span>
                     </div>
                 </section>
 
@@ -166,23 +165,6 @@
                     <!-- Colonne large -->
                     <div class="colonne-large">
 
-                        <!-- Graphiques -->
-                        <section class="grille-graphiques grille-graphiques-simple">
-                            <div class="carte-panneau carte-graphique">
-                                <div class="panneau-entete">
-                                    <div>
-                                        <h3>Croissance des élèves</h3>
-                                        <p>Tendance des inscriptions cette année</p>
-                                    </div>
-                                    <select class="selecteur-annee">
-                                        <option>2026</option>
-                                        <option>2025</option>
-                                        <option>2024</option>
-                                    </select>
-                                </div>
-                                <div class="graphique-barres" id="graphiqueBarres"></div>
-                            </div>
-                        </section>
 
                         <!-- Élèves récents -->
                         <section class="carte-panneau">
@@ -215,31 +197,6 @@
                     <!-- Colonne latérale -->
                     <div class="colonne-laterale">
 
-                        <section class="carte-panneau">
-                            <h3>Événements à venir</h3>
-                            <ul class="liste-evenements">
-                                <li>
-                                    <span class="date-evenement date-rouge">15 déc.</span>
-                                    <span>Examens finaux</span>
-                                </li>
-                                <li>
-                                    <span class="date-evenement date-bleue">18 déc.</span>
-                                    <span>Réunion parents-enseignants</span>
-                                </li>
-                                <li>
-                                    <span class="date-evenement date-verte">22 déc.</span>
-                                    <span>Début des vacances d'hiver</span>
-                                </li>
-                                <li>
-                                    <span class="date-evenement date-violette">8 janv.</span>
-                                    <span>Foire aux sciences</span>
-                                </li>
-                                <li>
-                                    <span class="date-evenement date-orange">13 janv.</span>
-                                    <span>Début du nouveau semestre</span>
-                                </li>
-                            </ul>
-                        </section>
 
                         <section class="carte-panneau carte-actions-rapides">
                             <h3>Actions rapides</h3>
@@ -272,8 +229,8 @@
                     <ul class="liste-activite">
                         <li>
                             <span class="icone-activite icone-indigo"><i class="fa-solid fa-users"></i></span>
-                            <span class="activite-texte">Emily Watson a été inscrite</span>
-                            <span class="activite-temps">Il y a 2 min</span>
+                            <span class="activite-texte"></span>
+                            <span class="activite-temps"></span>
                         </li>
                         <li>
                             <span class="icone-activite icone-violet"><i class="fa-solid fa-file-lines"></i></span>

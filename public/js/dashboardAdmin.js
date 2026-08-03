@@ -85,6 +85,28 @@ const chargerElevesRecents = async () => {
 
 chargerElevesRecents();
 
+// fonction activité 
+const chargerActivite = async () => {
+    const activites = await fetchAuth('/activites');
+
+    const listeHTML = activites.map((activite) => {
+        return `
+            <li>
+                <span class="icone-activite icone-indigo"><i class="fa-solid fa-bell"></i></span>
+                <span class="activite-texte">${activite.message}</span>
+                <span class="activite-temps">${activite.date_creation}</span>
+            </li>
+        `;
+    }).join('');
+
+    const listeElement = document.querySelector('.liste-activite');
+    if (listeElement) {
+        listeElement.innerHTML = listeHTML;
+    }
+};
+
+chargerActivite();
+
 
 function decoderToken(token) {
     const playLoad = token.split('.')[1];
@@ -110,10 +132,12 @@ const donneUsers = async () => {
     const profilNom = document.getElementById('spanprofilNom');
     const profilRole = document.getElementById('spanprofilRole');
     const profilInitial = document.getElementById('profilAvatar');
+    const messageBienvenue = document.getElementById('bienvenue-name');
 
     profilNom.textContent = users.name;
     profilRole.textContent = users.role;
     profilInitial.textContent = initial;
+    messageBienvenue.textContent = `Bonjour, ${users.name} ! `
 }
 
 donneUsers();
