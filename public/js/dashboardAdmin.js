@@ -1,10 +1,28 @@
-// Vérification d'accès admin
+// Vérification d'accès admin (de base)
 const token = localStorage.getItem('token');
 const role = localStorage.getItem('role');
 
 if (!token || role !== 'admin') {
     window.location.href = '/login';
 }
+
+const fetchAuth = async (url) => {
+    const reponse = await fetch(url, {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    });
+
+   
+    if (reponse.status === 401) {
+        localStorage.removeItem('token');
+        localStorage.removeItem('role');
+        window.location.href = '/login';
+        throw new Error("Token expiré"); 
+    }
+
+    return reponse.json();
+};
 
 
 const logOut = document.getElementById('boutonDeconnexion');
@@ -29,35 +47,11 @@ boutonFermerSidebar.addEventListener('click', function () {
 });
 
 
-// const chargerStats = async () => {
-//         const reponse = await fetch('/students', {
-//         headers: {
-//             'Authorization': `Bearer ${token}`
-//         }
-//     });
-
-//     const students = await reponse.json();
-
-//     const statStudents = document.getElementById('stat-chiffre');
-//     statStudents.textContent = students.length;
-    
-// }
-
-// chargerStats();
-
-const chargerUneStat = async(url, idElement)=> {
-
-    const reponse = await fetch(url, {
-        headers: {
-            'Authorization': `Bearer ${token}`
-        }
-    });
-
-    const students = await reponse.json();
-
+// Plus besoin de réécrire les headers, ni le check 401 !
+const chargerUneStat = async (url, idElement) => {
+    const students = await fetchAuth(url); 
     const statStudents = document.getElementById(idElement);
     statStudents.textContent = students.length;
-
 }
 
 chargerUneStat('/students', 'stat-chiffre-etudiant');
@@ -66,19 +60,10 @@ chargerUneStat('/classes', 'stat-chiffre-classe');
 
 
 const chargerElevesRecents = async () => {
-    // 1. Récupérer les étudiants
-    const reponseStudents = await fetch('/students', {
-        headers: { 'Authorization': `Bearer ${token}` }
-    });
-    const students = await reponseStudents.json();
+    // Super clean !
+    const students = await fetchAuth('/students');
+    const classes = await fetchAuth('/classes');
 
-    // 2. Récupérer les classes
-    const reponseClasses = await fetch('/classes', {
-        headers: { 'Authorization': `Bearer ${token}` }
-    });
-    const classes = await reponseClasses.json();
-
-    // 3. Construire les lignes HTML
     const lignesHTML = students.map((student) => {
         const classe = classes.find(c => c.id === student.classe_id);
         const nomClasse = classe ? classe.nom : "Non assignée";
@@ -94,12 +79,12 @@ const chargerElevesRecents = async () => {
         `;
     }).join('');
 
-    // 4. Injecter dans le tableau
     const tbody = document.querySelector('.tableau-eleves tbody');
     tbody.innerHTML = lignesHTML;
 };
 
 chargerElevesRecents();
+
 
 function decoderToken(token) {
     const playLoad = token.split('.')[1];
@@ -110,15 +95,17 @@ function decoderToken(token) {
 const utilisateur = decoderToken(token);
 
 const donneUsers = async () => {
-    const reponseUser = await fetch(`/users/${utilisateur.id}`, {
-        headers: { 'Authorization': `Bearer ${token}` }
-    });
+    // Encore plus clean !
+    const users = await fetchAuth(`/users/${utilisateur.id}`);
 
-    const users = await reponseUser.json();
-
+    let initial;
     const mot = users.name.split(' ');
-    const initial = `${mot[0][0]}${mot[1][0]}`
 
+    if(mot.length >= 2){
+        initial = `${mot[0][0]}${mot[1][0]}`
+    } else{
+        initial = mot[0].substring(0, 2).toUpperCase();
+    }
 
     const profilNom = document.getElementById('spanprofilNom');
     const profilRole = document.getElementById('spanprofilRole');
@@ -127,10 +114,6 @@ const donneUsers = async () => {
     profilNom.textContent = users.name;
     profilRole.textContent = users.role;
     profilInitial.textContent = initial;
-
-
 }
 
 donneUsers();
-
-

@@ -99,3 +99,15 @@ const tableAbsences = `
     )
 `;
 db.exec(tableAbsences);
+
+// TABLE ACTIVITE 
+const tableActivities = `
+    CREATE TABLE IF NOT EXISTS activites (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        message TEXT NOT NULL,
+        type TEXT NOT NULL,
+        date_creation TEXT NOT NULL
+    )
+`;
+db.exec(tableActivities);
+
