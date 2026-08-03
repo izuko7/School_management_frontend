@@ -15,6 +15,7 @@ import subjectRouter from './routes/subjectRouter.js';
 import gradeRouter from './routes/gradeRouter.js';
 import absenceRouter from './routes/absenceRouter.js';
 import userRouter from './routes/userRouter.js';
+import activiteRouter from './routes/activiteRouter.js';
 
 // route d'authententification 
 import authRouter from './routes/authRouter.js';
@@ -67,6 +68,7 @@ app.use('/subjects', subjectRouter);
 app.use('/grades', gradeRouter);
 app.use('/absences', absenceRouter);
 app.use('/users', userRouter);
+app.use('/activites', activiteRouter);
 
 
 

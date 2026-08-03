@@ -1,4 +1,5 @@
 import { getAllStudents, getStudentById, createStudent, updateStudent, deleteStudent } from "../services/studentService.js";
+import { creerActivite } from "../services/activiteService.js";
 import { logSuccess, logWarn, logError } from "../utils/logger.js";
 
 // Contrôller étudiant 
@@ -46,7 +47,11 @@ const createStudentHandler = (req, res) => {
         const { matricule, nom, prenom, date_naissance, classe_id, user_id } = req.body;
         const result = createStudent(matricule, nom, prenom, date_naissance, classe_id, user_id);
         logSuccess(`Étudiant créé : ${nom} ${prenom} (matricule: ${matricule})`);
+
+        creerActivite(`${nom} ${prenom} a été inscrit(e)`, "inscription");
+
         res.status(201).json({ message: "Élève créé avec succès", result });
+
     } catch (error) {
         logWarn(`Échec de création d'un étudiant : ${error.message}`);
         res.status(400).json({message: error.message});
