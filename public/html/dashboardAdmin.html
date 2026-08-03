@@ -7,6 +7,7 @@
     <title>EduSmart — Tableau de bord</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="shortcut icon" href="../images/favicon.svg" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -98,10 +99,10 @@
                 <div class="actions-haut">
                     <div class="profil">
                         <div class="profil-texte">
-                            <span class="profil-nom">Campbell Davis</span>
-                            <span class="profil-role">Administrateur</span>
+                            <span id="spanprofilNom" class="profil-nom"></span>
+                            <span id="spanprofilRole" class="profil-role"></span>
                         </div>
-                        <div class="avatar">CD</div>
+                        <div id="profilAvatar" class="avatar"></div>
                     </div>
                 </div>
             </header>
@@ -123,7 +124,7 @@
                             <div class="icone-stat icone-indigo"><i class="fa-solid fa-users"></i></div>
                             <span class="variation positive"><i class="fa-solid fa-arrow-trend-up"></i> +12%</span>
                         </div>
-                        <span class="stat-chiffre">2 847</span>
+                        <span class="stat-chiffre" id="stat-chiffre-etudiant"></span>
                         <span class="stat-titre">Total des élèves</span>
                         <span class="stat-sous-titre">Inscrits cette année</span>
                     </div>
@@ -133,7 +134,7 @@
                             <div class="icone-stat icone-violet"><i class="fa-solid fa-user-check"></i></div>
                             <span class="variation positive"><i class="fa-solid fa-arrow-trend-up"></i> +4%</span>
                         </div>
-                        <span class="stat-chiffre">189</span>
+                        <span class="stat-chiffre" id="stat-chiffre-prof"></span>
                         <span class="stat-titre">Total des enseignants</span>
                         <span class="stat-sous-titre">Corps enseignant actif</span>
                     </div>
@@ -143,7 +144,7 @@
                             <div class="icone-stat icone-bleu"><i class="fa-solid fa-layer-group"></i></div>
                             <span class="variation positive"><i class="fa-solid fa-arrow-trend-up"></i> +2%</span>
                         </div>
-                        <span class="stat-chiffre">64</span>
+                        <span class="stat-chiffre" id="stat-chiffre-classe"></span>
                         <span class="stat-titre">Classes</span>
                         <span class="stat-sous-titre">Classes actives</span>
                     </div>
@@ -199,77 +200,12 @@
                                     <tr>
                                         <th>Élève</th>
                                         <th>Classe</th>
-                                        <th>Email</th>
+                                        <th>Matricule</th>
                                         <th>Statut</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>
-                                            <div class="eleve-cell">
-                                                <span class="avatar-eleve avatar-indigo">SA</span>
-                                                Sophia Anderson
-                                            </div>
-                                        </td>
-                                        <td>10-A</td>
-                                        <td>sophia.a@email.com</td>
-                                        <td><span class="badge badge-actif">Actif</span></td>
-                                        <td><button class="bouton-action"><i class="fa-solid fa-ellipsis"></i></button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="eleve-cell">
-                                                <span class="avatar-eleve avatar-violet">MJ</span>
-                                                Marcus Johnson
-                                            </div>
-                                        </td>
-                                        <td>11-B</td>
-                                        <td>m.johnson@email.com</td>
-                                        <td><span class="badge badge-actif">Actif</span></td>
-                                        <td><button class="bouton-action"><i class="fa-solid fa-ellipsis"></i></button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="eleve-cell">
-                                                <span class="avatar-eleve avatar-rose">ER</span>
-                                                Emma Rodriguez
-                                            </div>
-                                        </td>
-                                        <td>9-C</td>
-                                        <td>emma.r@email.com</td>
-                                        <td><span class="badge badge-actif">Actif</span></td>
-                                        <td><button class="bouton-action"><i class="fa-solid fa-ellipsis"></i></button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="eleve-cell">
-                                                <span class="avatar-eleve avatar-bleu">JL</span>
-                                                James Liu
-                                            </div>
-                                        </td>
-                                        <td>12-A</td>
-                                        <td>j.liu@email.com</td>
-                                        <td><span class="badge badge-inactif">Inactif</span></td>
-                                        <td><button class="bouton-action"><i class="fa-solid fa-ellipsis"></i></button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="eleve-cell">
-                                                <span class="avatar-eleve avatar-vert">OB</span>
-                                                Olivia Brown
-                                            </div>
-                                        </td>
-                                        <td>10-B</td>
-                                        <td>o.brown@email.com</td>
-                                        <td><span class="badge badge-actif">Actif</span></td>
-                                        <td><button class="bouton-action"><i class="fa-solid fa-ellipsis"></i></button>
-                                        </td>
-                                    </tr>
                                 </tbody>
                             </table>
                         </section>
