@@ -47,6 +47,19 @@ const getAllStudents = () => {
     return db.prepare(`SELECT * FROM students`).all();
 };
 
+
+// Afficher les étudiants récents 
+
+const getStudentsRecents = (limite = 5) => {
+    return db.prepare(`
+        SELECT * FROM students
+        ORDER BY id DESC
+        LIMIT ?
+    `).all(limite);
+};
+
+
+
 // Afficher un étudiant grâce a son id 
 
 const getStudentById = (id) => {
@@ -92,4 +105,4 @@ const deleteStudent = (id) =>{
     return result;
 };
 
-export { createStudent, getAllStudents, getStudentById, getStudentByMatricule, updateStudent, deleteStudent }
+export { createStudent, getAllStudents, getStudentById, getStudentsRecents, getStudentByMatricule, updateStudent, deleteStudent }
