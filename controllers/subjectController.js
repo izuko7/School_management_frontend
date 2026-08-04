@@ -1,4 +1,5 @@
 import { getAllSubject, getSubjectById, createSubject, updateSubject, deleteSubject } from "../services/subjectService.js";
+import { creerActivite } from "../services/activiteService.js";
 import { logSuccess, logWarn, logError } from "../utils/logger.js";
 
 // Contrôlleur matière
@@ -40,6 +41,9 @@ const createSubjectHandler = (req, res) => {
         const { nom, classe_id, teacher_id } = req.body;
         const result = createSubject(nom, classe_id, teacher_id);
         logSuccess(`Matière créée : ${nom}`);
+
+        creerActivite(`${nom} a été créée`, "inscription");
+
         res.status(201).json({ message: `Matière créer avec succès`, result });
     } catch (error) {
         logWarn(`Échec de création d'une matière : ${error.message}`);

@@ -86,13 +86,25 @@ const chargerElevesRecents = async () => {
 chargerElevesRecents();
 
 // fonction activité 
+const iconesParType = {
+    inscription_etudiant: { classe: 'icone-indigo', icone: 'fa-user-graduate' },
+    inscription_professeur: { classe: 'icone-violet', icone: 'fa-chalkboard-user' },
+    matiere: { classe: 'icone-bleu', icone: 'fa-book' },
+    note: { classe: 'icone-jaune', icone: 'fa-file-lines' },
+    absence: { classe: 'icone-rose', icone: 'fa-calendar-check' }
+};
+
+const iconeParDefaut = { classe: 'icone-gris', icone: 'fa-circle-info' };
+
 const chargerActivite = async () => {
     const activites = await fetchAuth('/activites');
 
     const listeHTML = activites.map((activite) => {
+        const infosIcone = iconesParType[activite.type] || iconeParDefaut;
+
         return `
             <li>
-                <span class="icone-activite icone-indigo"><i class="fa-solid fa-bell"></i></span>
+                <span class="icone-activite ${infosIcone.classe}"><i class="fa-solid ${infosIcone.icone}"></i></span>
                 <span class="activite-texte">${activite.message}</span>
                 <span class="activite-temps">${activite.date_creation}</span>
             </li>

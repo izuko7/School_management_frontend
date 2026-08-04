@@ -1,4 +1,5 @@
 import { getAllClasses, getClasseById, createClasse, updateClasse, deleteClasse } from "../services/classeService.js";
+import { creerActivite } from "../services/activiteService.js";
 import { logSuccess, logWarn, logError } from '../utils/logger.js';
 
 
@@ -42,6 +43,10 @@ const createClasseHandler = (req, res) => {
         const { nom, niveau, capacite } = req.body;
         const result = createClasse(nom, niveau, capacite);
         logSuccess(`Classe créée : ${nom} (niveau: ${niveau}, capacité: ${capacite})`);
+
+        creerActivite(`${nom} ${niveau} a été créée`, "inscription");
+
+
         res.status(201).json({ message: `Classe créée avec succès`, result});
     } catch (error) {
         logWarn(`Échec de création d'une classe : ${error.message}`);

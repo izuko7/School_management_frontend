@@ -1,4 +1,5 @@
 import { getAllTeachers, getTeacherById, createTeacher, updateTeacher, deleteTeacher } from "../services/teacherService.js";
+import { creerActivite } from "../services/activiteService.js";
 import { logInfo, logSuccess, logWarn, logError } from "../utils/logger.js";
 
 // Contrôller Student 
@@ -40,6 +41,9 @@ const createTeacherHandler = (req, res)=> {
         const { matricule, nom, prenom, user_id } = req.body;
         const result = createTeacher(matricule, nom, prenom, user_id);
         logSuccess(`Enseignant créé : ${nom}, ${prenom}, ${matricule}`);
+
+        creerActivite(`${nom} ${prenom} a été inscrit(e)`, "inscription");
+
         res.status(201).json({ message: `Enseignant créer avec succès`, result});
     } catch (error) {
         logWarn(`Echec de création d'un enseignant : ${error.message}`);

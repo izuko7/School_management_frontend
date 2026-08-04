@@ -15,7 +15,7 @@ const creerActivite = (message, type) => {
 };
 
 // Afficher les activités récentes 
-const getActivitiesRecentes = (limite = 10) => {
+const getActivitiesRecentes = (limite = 5) => {
     return db.prepare(`
             SELECT * FROM activites
             ORDER BY id DESC
