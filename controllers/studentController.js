@@ -1,4 +1,4 @@
-import { getAllStudents, getStudentById, createStudent, updateStudent, deleteStudent } from "../services/studentService.js";
+import { getAllStudents, getStudentsRecents, getStudentById, createStudent, updateStudent, deleteStudent } from "../services/studentService.js";
 import { creerActivite } from "../services/activiteService.js";
 import { logSuccess, logWarn, logError } from "../utils/logger.js";
 
@@ -72,6 +72,17 @@ const updateStudentHandler =(req, res) => {
     }
 };
 
+// recuperer les étudiants ajoutés recemment 
+const getStudentsRecentHandler = (req,res) => {
+    try {
+        const students = getStudentsRecents();
+        res.json(students);
+    } catch (error) {
+        logError(`Erreur lors de la récupération des étudiants : ${error.message}`);
+        res.status(500).json({ error: "Une erreur est survenue "});
+    }
+}
+
 // supprimer un étudiant 
 const deleteStudentHandler = (req, res) => {
    try {
@@ -85,4 +96,4 @@ const deleteStudentHandler = (req, res) => {
    }
 };
 
-export { getStudents, getStudent, createStudentHandler, updateStudentHandler, deleteStudentHandler };
+export { getStudents, getStudent, getStudentsRecentHandler, createStudentHandler, updateStudentHandler, deleteStudentHandler };

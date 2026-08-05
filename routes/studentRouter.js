@@ -1,5 +1,5 @@
 import express from 'express';
-import { getStudents, getStudent, createStudentHandler, updateStudentHandler, deleteStudentHandler } from '../controllers/studentController.js';
+import { getStudents, getStudent, getStudentsRecentHandler, createStudentHandler, updateStudentHandler, deleteStudentHandler } from '../controllers/studentController.js';
 import { verifyToken } from '../middleware/authVerify.js';
 
 
@@ -8,6 +8,8 @@ const router = express.Router();
 
 // méthode GET 
 router.get('/', verifyToken, getStudents);
+
+router.get('/recents', verifyToken, getStudentsRecentHandler);
 
 // méthode GET avec id
 router.get('/:id', verifyToken, getStudent);

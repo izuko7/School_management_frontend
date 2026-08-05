@@ -61,7 +61,7 @@ chargerUneStat('/classes', 'stat-chiffre-classe');
 
 const chargerElevesRecents = async () => {
     // Super clean !
-    const students = await fetchAuth('/students');
+    const students = await fetchAuth('/students/recents');
     const classes = await fetchAuth('/classes');
 
     const lignesHTML = students.map((student) => {
