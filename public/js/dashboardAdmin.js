@@ -182,3 +182,21 @@ document.getElementById('formulaireAjoutEleve').addEventListener(
         e.preventDefault();
     }
 );
+
+// --------------------------------------- 
+
+
+const chargerClasse = async () => {
+    
+    const classes = await fetchAuth('/classes');
+
+    const optionsHTML = classes.map((classes) => {
+        return `<option value="${classes.id}">${classes.nom}</option>`
+    }).join('');
+    
+    const selectElement = document.getElementById('classe_id');
+    selectElement.innerHTML = optionsHTML;
+
+};
+
+chargerClasse();
