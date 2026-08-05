@@ -153,3 +153,32 @@ const donneUsers = async () => {
 }
 
 donneUsers();
+
+
+// modale ajouter un élève 
+
+const modalEleve = document.getElementById('modaleAjoutEleve');
+
+document.getElementById('boutonOuvrirModaleEleve').addEventListener(
+    'click', ()=> {
+        modalEleve.classList.add('ouverte');
+    }
+);
+
+document.getElementById('fermerModale').addEventListener(
+    'click', ()=> {
+         modalEleve.classList.remove('ouverte')
+    }
+)
+
+document.getElementById('annulerModale').addEventListener(
+    'click', ()=> {
+        modalEleve.classList.remove('ouverte')
+    }
+);
+
+document.getElementById('formulaireAjoutEleve').addEventListener(
+    'submit', (e)=> {
+        e.preventDefault();
+    }
+);
