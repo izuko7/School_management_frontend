@@ -201,7 +201,7 @@
                         <section class="carte-panneau carte-actions-rapides">
                             <h3>Actions rapides</h3>
                             <div class="grille-actions-rapides">
-                                <button class="action-rapide">
+                                <button class="action-rapide" id="boutonOuvrirModaleEleve">
                                     <i class="fa-solid fa-user-plus"></i>
                                     Ajouter un élève
                                 </button>
@@ -231,6 +231,64 @@
                 </section>
 
             </main>
+        </div>
+    </div>
+
+    <!-- ---------- MODALE : AJOUTER UN ÉLÈVE ---------- -->
+    <div id="modaleAjoutEleve" class="modale-overlay">
+        <div class="modale-contenu">
+            <button id="fermerModale" class="bouton-fermer-modale" aria-label="Fermer">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <h2>Ajouter un élève</h2>
+
+            <form id="formulaireAjoutEleve" class="formulaire-modale">
+
+                <div class="ligne-champs">
+                    <div class="champ-formulaire">
+                        <label for="nom">Nom</label>
+                        <input type="text" id="nom" name="nom" placeholder="Kouassi" required>
+                    </div>
+                    <div class="champ-formulaire">
+                        <label for="prenom">Prénom</label>
+                        <input type="text" id="prenom" name="prenom" placeholder="Aya" required>
+                    </div>
+                </div>
+
+                <div class="champ-formulaire">
+                    <label for="pseudoname">Pseudo</label>
+                    <input type="text" id="pseudoname" name="pseudoname" placeholder="aya.kouassi" required>
+                </div>
+
+                <div class="champ-formulaire">
+                    <label for="motdepasse">Mot de passe</label>
+                    <input type="password" id="motdepasse" name="motdepasse" placeholder="••••••••••" required>
+                </div>
+
+                <div class="ligne-champs">
+                    <div class="champ-formulaire">
+                        <label for="matricule">Matricule</label>
+                        <input type="text" id="matricule" name="matricule" placeholder="ED-2026-014" required>
+                    </div>
+                    <div class="champ-formulaire">
+                        <label for="date_naissance">Date de naissance</label>
+                        <input type="date" id="date_naissance" name="date_naissance" required>
+                    </div>
+                </div>
+
+                <div class="champ-formulaire">
+                    <label for="classe_id">Classe</label>
+                    <select id="classe_id" name="classe_id" required>
+                    </select>
+                </div>
+
+                <div class="actions-modale">
+                    <button type="button" id="annulerModale" class="bouton-annuler-modale">Annuler</button>
+                    <button type="submit" class="bouton-valider-modale">Ajouter</button>
+                </div>
+
+            </form>
         </div>
     </div>
 

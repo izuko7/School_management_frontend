@@ -341,7 +341,6 @@ button {
 .icone-bleu   { background: rgba(59, 130, 246, 0.12); color: #3b82f6; }
 .icone-rose   { background: rgba(236, 72, 153, 0.12); color: #ec4899; }
 .icone-jaune  { background: rgba(234, 179, 8, 0.12); color: #eab308; }
-.icone-gris   { background: rgba(107, 114, 128, 0.12); color: #6b7280; }
 
 .variation {
     font-size: 12px;
@@ -412,15 +411,6 @@ button {
     margin-top: 2px;
 }
 
-.selecteur-annee {
-    padding: 8px 14px;
-    border-radius: 999px;
-    border: 1px solid var(--bordure);
-    font-family: inherit;
-    font-size: 13px;
-    background: var(--blanc);
-}
-
 .lien-voir-tout {
     font-size: 13px;
     font-weight: 600;
@@ -432,42 +422,6 @@ button {
 
 .lien-voir-tout:hover {
     text-decoration: underline;
-}
-
-/* ---------- GRAPHIQUES ---------- */
-
-.grille-graphiques {
-    display: grid;
-    grid-template-columns: 3fr 2fr;
-    gap: 24px;
-}
-
-.grille-graphiques-simple {
-    grid-template-columns: 1fr;
-}
-
-.graphique-barres {
-    display: flex;
-    align-items: flex-end;
-    gap: 10px;
-    height: 160px;
-}
-
-.barre {
-    flex: 1;
-    background: linear-gradient(180deg, var(--violet-bouton), rgba(75, 60, 201, 0.35));
-    border-radius: 6px 6px 0 0;
-    position: relative;
-}
-
-.barre span {
-    position: absolute;
-    bottom: -22px;
-    left: 0;
-    right: 0;
-    text-align: center;
-    font-size: 11px;
-    color: var(--gris-clair);
 }
 
 /* ---------- TABLEAU ÉLÈVES ---------- */
@@ -544,37 +498,6 @@ button {
     color: var(--gris-clair);
     font-size: 15px;
 }
-
-/* ---------- ÉVÉNEMENTS ---------- */
-
-.liste-evenements {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-}
-
-.liste-evenements li {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-size: 14px;
-    font-weight: 600;
-}
-
-.date-evenement {
-    padding: 4px 10px;
-    border-radius: 8px;
-    font-size: 11px;
-    font-weight: 700;
-    white-space: nowrap;
-}
-
-.date-rouge    { background: rgba(239, 68, 68, 0.1); color: var(--rouge); }
-.date-bleue    { background: rgba(59, 130, 246, 0.12); color: #3b82f6; }
-.date-verte    { background: rgba(34, 197, 94, 0.12); color: var(--vert-positif); }
-.date-violette { background: rgba(168, 85, 247, 0.12); color: #a855f7; }
-.date-orange   { background: rgba(249, 115, 22, 0.12); color: #f97316; }
 
 /* ---------- ACTIONS RAPIDES ---------- */
 
@@ -655,6 +578,136 @@ button {
     white-space: nowrap;
 }
 
+/* ---------- MODALE : AJOUT ÉLÈVE ---------- */
+
+.modale-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(36, 20, 82, 0.55);
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 500;
+}
+
+.modale-overlay.ouverte {
+    display: flex;
+}
+
+.modale-contenu {
+    position: relative;
+    background: var(--blanc);
+    border-radius: 16px;
+    padding: 32px;
+    width: 100%;
+    max-width: 460px;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modale-contenu h2 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 24px;
+}
+
+.bouton-fermer-modale {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    background: var(--gris-fond);
+    border: none;
+    border-radius: 8px;
+    color: #374151;
+    font-size: 15px;
+}
+
+.bouton-fermer-modale:hover {
+    background: var(--bordure);
+}
+
+.formulaire-modale {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.ligne-champs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.champ-formulaire {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.champ-formulaire label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #374151;
+}
+
+.champ-formulaire input,
+.champ-formulaire select {
+    padding: 11px 14px;
+    background: var(--gris-fond);
+    border: 1px solid transparent;
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 14px;
+    color: #1f2937;
+    outline: none;
+}
+
+.champ-formulaire input:focus,
+.champ-formulaire select:focus {
+    border-color: var(--violet-bouton);
+    background: var(--blanc);
+}
+
+.actions-modale {
+    display: flex;
+    gap: 12px;
+    margin-top: 8px;
+}
+
+.bouton-annuler-modale,
+.bouton-valider-modale {
+    flex: 1;
+    padding: 11px 20px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    border: none;
+}
+
+.bouton-annuler-modale {
+    background: var(--gris-fond);
+    color: #374151;
+}
+
+.bouton-annuler-modale:hover {
+    background: var(--bordure);
+}
+
+.bouton-valider-modale {
+    background: linear-gradient(135deg, var(--violet-bouton), var(--violet-bouton-fonce));
+    color: var(--blanc);
+}
+
+.bouton-valider-modale:hover {
+    opacity: 0.9;
+}
+
 /* ---------- RESPONSIVE ---------- */
 
 @media (max-width: 1200px) {
@@ -663,10 +716,6 @@ button {
     }
 
     .grille-contenu {
-        grid-template-columns: 1fr;
-    }
-
-    .grille-graphiques {
         grid-template-columns: 1fr;
     }
 }
@@ -700,5 +749,9 @@ button {
 
     .recherche {
         display: none;
+    }
+
+    .ligne-champs {
+        grid-template-columns: 1fr;
     }
 }
