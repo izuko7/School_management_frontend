@@ -43,7 +43,7 @@ const createUserHandler = (req, res) => {
         const { name, role, pseudoname, motdepasse } = req.body;
         const result = createUser(name, role, pseudoname, motdepasse);
         logSuccess(`Utilisateur créé : ${pseudoname}`);
-        res.status(201).json({message: `Ùtilisateur créer avec succès`});
+        res.status(201).json({message: `Ùtilisateur créer avec succès`, result});
     } catch (error) {
         logWarn(`Échec de création d'un utilisateur : ${error.message}`);
         res.status(400).json({message: error.message});

@@ -6,13 +6,21 @@ if (!token || role !== 'admin') {
     window.location.href = '/login';
 }
 
-const fetchAuth = async (url) => {
-    const reponse = await fetch(url, {
+const fetchAuth = async (url, method = 'GET', body = null) => {
+    
+    const options = {
+        method: method,
         headers: {
             'Authorization': `Bearer ${token}`
         }
-    });
+    };
 
+    if(body){
+        options.headers['Content-Type'] = 'application/json';
+        options.body = JSON.stringify(body);
+    }
+
+    const reponse = await fetch(url, options);
    
     if (reponse.status === 401) {
         localStorage.removeItem('token');
@@ -177,20 +185,13 @@ document.getElementById('annulerModale').addEventListener(
     }
 );
 
-document.getElementById('formulaireAjoutEleve').addEventListener(
-    'submit', (e)=> {
-        e.preventDefault();
-    }
-);
-
 // --------------------------------------- 
-
 
 const chargerClasse = async () => {
     
-    const classes = await fetchAuth('/classes');
+    const classesDonne = await fetchAuth('/classes');
 
-    const optionsHTML = classes.map((classes) => {
+    const optionsHTML = classesDonne.map((classes) => {
         return `<option value="${classes.id}">${classes.nom}</option>`
     }).join('');
     
@@ -200,3 +201,60 @@ const chargerClasse = async () => {
 };
 
 chargerClasse();
+
+
+
+document.getElementById('formulaireAjoutEleve').addEventListener(
+    'submit', async(e) => {
+
+        e.preventDefault();
+
+        const champNom = document.getElementById('nom').value;
+        const chamPrenom = document.getElementById('prenom').value;
+        const pseudonyme = document.getElementById('pseudoname').value;
+        const motDePasse  = document.getElementById('motdepasse').value;
+        const matricule = document.getElementById('matricule').value;
+        const dateNaissance = document.getElementById('date_naissance').value;
+        const classeId = document.getElementById('classe_id').value;
+
+        const students = await fetchAuth('/students');
+        const matriculeExiste = students.some(s => s.matricule === matricule);
+
+        if(matriculeExiste){
+            alert("Ce matricule est déjà utilisé !");
+            return;
+        }
+
+        const body = {
+            name : `${champNom} ${chamPrenom}`,
+            role : 'etudiant',
+            pseudoname : pseudonyme,
+            motdepasse : motDePasse,
+
+        }
+
+        const nouvelUserEleve = await fetchAuth('/users', 'POST', body)
+
+        console.log(nouvelUserEleve);
+
+        const bodyStudent = {
+            matricule : matricule,
+            nom : champNom,
+            prenom : chamPrenom,
+            date_naissance : dateNaissance,
+            classe_id : classeId,
+            user_id : nouvelUserEleve.result.lastInsertRowid
+        }
+
+        const eleveCree = await fetchAuth('/students', 'POST', bodyStudent);
+
+        e.target.reset();
+
+        modalEleve.classList.remove('ouverte');
+
+        chargerUneStat('/students', 'stat-chiffre-etudiant');
+
+        chargerElevesRecents();
+
+    }
+);
