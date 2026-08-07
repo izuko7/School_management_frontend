@@ -6,6 +6,17 @@ if (!token || role !== 'admin') {
     window.location.href = '/login';
 }
 
+const afficherToast = (message) => {
+    const toast = document.getElementById('toast');
+    toast.textContent = message;
+    toast.classList.add('visible');
+    
+    setTimeout(() => {
+        toast.classList.remove('visible');
+    }, 3000);
+};
+
+
 const fetchAuth = async (url, method = 'GET', body = null) => {
     
     const options = {
@@ -218,10 +229,17 @@ document.getElementById('formulaireAjoutEleve').addEventListener(
         const classeId = document.getElementById('classe_id').value;
 
         const students = await fetchAuth('/students');
+        const pseudo = await fetchAuth('/users');
         const matriculeExiste = students.some(s => s.matricule === matricule);
+        const pseudoExiste = pseudo.some(s => s.pseudoname  === pseudonyme );
 
         if(matriculeExiste){
-            alert("Ce matricule est déjà utilisé !");
+            afficherToast("Ce matricule est déjà utilisé !");
+            return;
+        }
+
+        if(pseudoExiste){
+            afficherToast("Ce pseudonyme est déjà utilisé !");
             return;
         }
 

@@ -684,6 +684,24 @@ button {
     margin-top: 8px;
 }
 
+.toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 14px 20px;
+    background: #ef4444;
+    color: white;
+    border-radius: 10px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    z-index: 1000;
+}
+
+.toast.visible {
+    opacity: 1;
+}
+
 .bouton-annuler-modale,
 .bouton-valider-modale {
     flex: 1;
