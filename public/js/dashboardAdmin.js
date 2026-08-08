@@ -10,7 +10,7 @@ const afficherToast = (message) => {
     const toast = document.getElementById('toast');
     toast.textContent = message;
     toast.classList.add('visible');
-    
+
     setTimeout(() => {
         toast.classList.remove('visible');
     }, 3000);
@@ -18,7 +18,7 @@ const afficherToast = (message) => {
 
 
 const fetchAuth = async (url, method = 'GET', body = null) => {
-    
+
     const options = {
         method: method,
         headers: {
@@ -26,18 +26,18 @@ const fetchAuth = async (url, method = 'GET', body = null) => {
         }
     };
 
-    if(body){
+    if (body) {
         options.headers['Content-Type'] = 'application/json';
         options.body = JSON.stringify(body);
     }
 
     const reponse = await fetch(url, options);
-   
+
     if (reponse.status === 401) {
         localStorage.removeItem('token');
         localStorage.removeItem('role');
         window.location.href = '/login';
-        throw new Error("Token expiré"); 
+        throw new Error("Token expiré");
     }
 
     return reponse.json();
@@ -45,7 +45,7 @@ const fetchAuth = async (url, method = 'GET', body = null) => {
 
 
 const logOut = document.getElementById('boutonDeconnexion');
-logOut.addEventListener('click', (e)=>{
+logOut.addEventListener('click', (e) => {
     e.preventDefault();
     localStorage.removeItem('token');
     localStorage.removeItem('role');
@@ -68,7 +68,7 @@ boutonFermerSidebar.addEventListener('click', function () {
 
 // Plus besoin de réécrire les headers, ni le check 401 !
 const chargerUneStat = async (url, idElement) => {
-    const students = await fetchAuth(url); 
+    const students = await fetchAuth(url);
     const statStudents = document.getElementById(idElement);
     statStudents.textContent = students.length;
 }
@@ -86,7 +86,7 @@ const chargerElevesRecents = async () => {
     const lignesHTML = students.map((student) => {
         const classe = classes.find(c => c.id === student.classe_id);
         const nomClasse = classe ? classe.nom : "Non assignée";
-        
+
         return `
             <tr>
                 <td>${student.nom} ${student.prenom}</td>
@@ -154,9 +154,9 @@ const donneUsers = async () => {
     let initial;
     const mot = users.name.split(' ');
 
-    if(mot.length >= 2){
+    if (mot.length >= 2) {
         initial = `${mot[0][0]}${mot[1][0]}`
-    } else{
+    } else {
         initial = mot[0].substring(0, 2).toUpperCase();
     }
 
@@ -174,38 +174,31 @@ const donneUsers = async () => {
 donneUsers();
 
 
-// modale ajouter un élève 
 
-const modalEleve = document.getElementById('modaleAjoutEleve');
+// modaux 
 
-document.getElementById('boutonOuvrirModaleEleve').addEventListener(
-    'click', ()=> {
-        modalEleve.classList.add('ouverte');
-    }
-);
+const boutonsOuvrir = document.querySelectorAll('[data-modale]');
+boutonsOuvrir.forEach((bouton) => {
+    bouton.addEventListener('click', () => { const modale = document.getElementById(bouton.dataset.modale); modale.classList.add('ouverte'); });
+});
 
-document.getElementById('fermerModale').addEventListener(
-    'click', ()=> {
-         modalEleve.classList.remove('ouverte')
-    }
-)
-
-document.getElementById('annulerModale').addEventListener(
-    'click', ()=> {
-        modalEleve.classList.remove('ouverte')
-    }
-);
+document.querySelectorAll('.bouton-fermer-global').forEach(bouton => {
+    bouton.addEventListener('click', (e) => {
+        const modale = bouton.closest('.modale-overlay');
+        modale.classList.remove('ouverte');
+    });
+});
 
 // --------------------------------------- 
 
 const chargerClasse = async () => {
-    
+
     const classesDonne = await fetchAuth('/classes');
 
     const optionsHTML = classesDonne.map((classes) => {
         return `<option value="${classes.id}">${classes.nom}</option>`
     }).join('');
-    
+
     const selectElement = document.getElementById('classe_id');
     selectElement.innerHTML = optionsHTML;
 
@@ -216,14 +209,14 @@ chargerClasse();
 
 
 document.getElementById('formulaireAjoutEleve').addEventListener(
-    'submit', async(e) => {
+    'submit', async (e) => {
 
         e.preventDefault();
 
         const champNom = document.getElementById('nom').value;
         const chamPrenom = document.getElementById('prenom').value;
         const pseudonyme = document.getElementById('pseudoname').value;
-        const motDePasse  = document.getElementById('motdepasse').value;
+        const motDePasse = document.getElementById('motdepasse').value;
         const matricule = document.getElementById('matricule').value;
         const dateNaissance = document.getElementById('date_naissance').value;
         const classeId = document.getElementById('classe_id').value;
@@ -231,23 +224,23 @@ document.getElementById('formulaireAjoutEleve').addEventListener(
         const students = await fetchAuth('/students');
         const pseudo = await fetchAuth('/users');
         const matriculeExiste = students.some(s => s.matricule === matricule);
-        const pseudoExiste = pseudo.some(s => s.pseudoname  === pseudonyme );
+        const pseudoExiste = pseudo.some(s => s.pseudoname === pseudonyme);
 
-        if(matriculeExiste){
+        if (matriculeExiste) {
             afficherToast("Ce matricule est déjà utilisé !");
             return;
         }
 
-        if(pseudoExiste){
+        if (pseudoExiste) {
             afficherToast("Ce pseudonyme est déjà utilisé !");
             return;
         }
 
         const body = {
-            name : `${champNom} ${chamPrenom}`,
-            role : 'etudiant',
-            pseudoname : pseudonyme,
-            motdepasse : motDePasse,
+            name: `${champNom} ${chamPrenom}`,
+            role: 'etudiant',
+            pseudoname: pseudonyme,
+            motdepasse: motDePasse,
 
         }
 
@@ -256,19 +249,19 @@ document.getElementById('formulaireAjoutEleve').addEventListener(
         console.log(nouvelUserEleve);
 
         const bodyStudent = {
-            matricule : matricule,
-            nom : champNom,
-            prenom : chamPrenom,
-            date_naissance : dateNaissance,
-            classe_id : classeId,
-            user_id : nouvelUserEleve.result.lastInsertRowid
+            matricule: matricule,
+            nom: champNom,
+            prenom: chamPrenom,
+            date_naissance: dateNaissance,
+            classe_id: classeId,
+            user_id: nouvelUserEleve.result.lastInsertRowid
         }
 
         const eleveCree = await fetchAuth('/students', 'POST', bodyStudent);
 
         e.target.reset();
 
-        modalEleve.classList.remove('ouverte');
+        document.getElementById('modaleAjoutEleve').classList.remove('ouverte');
 
         chargerUneStat('/students', 'stat-chiffre-etudiant');
 

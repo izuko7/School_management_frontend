@@ -8,8 +8,7 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="shortcut icon" href="../images/favicon.svg" type="image/x-icon">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <link rel="stylesheet" href="../css/dashboardAdmin.css">
@@ -166,8 +165,6 @@
 
                     <!-- Colonne large -->
                     <div class="colonne-large">
-
-
                         <!-- Élèves récents -->
                         <section class="carte-panneau">
                             <div class="panneau-entete">
@@ -175,8 +172,7 @@
                                     <h3>Élèves récents</h3>
                                     <p>Dernières inscriptions</p>
                                 </div>
-                                <a href="#" class="lien-voir-tout">Voir tout <i
-                                        class="fa-solid fa-chevron-right"></i></a>
+                                <a href="#" class="lien-voir-tout">Voir tout <i class="fa-solid fa-chevron-right"></i></a>
                             </div>
 
                             <table class="tableau-eleves">
@@ -193,25 +189,22 @@
                                 </tbody>
                             </table>
                         </section>
-
                     </div>
 
                     <!-- Colonne latérale -->
                     <div class="colonne-laterale">
-
-
                         <section class="carte-panneau carte-actions-rapides">
                             <h3>Actions rapides</h3>
                             <div class="grille-actions-rapides">
-                                <button class="action-rapide" id="boutonOuvrirModaleEleve">
+                                <button class="action-rapide" id="boutonOuvrirModaleEleve" data-modale="modaleAjoutEleve">
                                     <i class="fa-solid fa-user-plus"></i>
                                     Ajouter un élève
                                 </button>
-                                <button class="action-rapide">
+                                <button class="action-rapide" id="boutonOuvrirModaleEnseignant" data-modale="modaleAjoutEnseignant">
                                     <i class="fa-solid fa-chalkboard-user"></i>
                                     Ajouter un enseignant
                                 </button>
-                                <button class="action-rapide">
+                                <button class="action-rapide" id="boutonOuvrirModalePresences" data-modale="modalePresences">
                                     <i class="fa-solid fa-calendar-check"></i>
                                     Présences
                                 </button>
@@ -221,7 +214,6 @@
                                 </button>
                             </div>
                         </section>
-
                     </div>
                 </div>
 
@@ -239,14 +231,11 @@
     <!-- ---------- MODALE : AJOUTER UN ÉLÈVE ---------- -->
     <div id="modaleAjoutEleve" class="modale-overlay">
         <div class="modale-contenu">
-            <button id="fermerModale" class="bouton-fermer-modale" aria-label="Fermer">
+            <button class="bouton-fermer-modale bouton-fermer-global" aria-label="Fermer">
                 <i class="fa-solid fa-xmark"></i>
             </button>
-
             <h2>Ajouter un élève</h2>
-
             <form id="formulaireAjoutEleve" class="formulaire-modale">
-
                 <div class="ligne-champs">
                     <div class="champ-formulaire">
                         <label for="nom">Nom</label>
@@ -286,11 +275,93 @@
                 </div>
 
                 <div class="actions-modale">
-                    <button type="button" id="annulerModale" class="bouton-annuler-modale">Annuler</button>
+                    <button type="button" class="bouton-annuler-modale bouton-fermer-global">Annuler</button>
                     <button type="submit" class="bouton-valider-modale">Ajouter</button>
                 </div>
-
             </form>
+        </div>
+    </div>
+
+    <!-- ---------- MODALE : AJOUTER UN ENSEIGNANT ---------- -->
+    <div id="modaleAjoutEnseignant" class="modale-overlay">
+        <div class="modale-contenu">
+            <button class="bouton-fermer-modale bouton-fermer-global" aria-label="Fermer">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <h2>Ajouter un enseignant</h2>
+            <form id="formulaireAjoutEnseignant" class="formulaire-modale">
+                
+                <div class="champ-formulaire">
+                    <label for="ens_matricule">Matricule</label>
+                    <input type="text" id="ens_matricule" name="matricule" placeholder="ENS001" required>
+                </div>
+
+                <div class="ligne-champs">
+                    <div class="champ-formulaire">
+                        <label for="ens_nom">Nom</label>
+                        <input type="text" id="ens_nom" name="nom" placeholder="Dupont" required>
+                    </div>
+                    <div class="champ-formulaire">
+                        <label for="ens_prenom">Prénom</label>
+                        <input type="text" id="ens_prenom" name="prenom" placeholder="Jean" required>
+                    </div>
+                </div>
+
+                <div class="actions-modale">
+                    <button type="button" class="bouton-annuler-modale bouton-fermer-global">Annuler</button>
+                    <button type="submit" class="bouton-valider-modale">Ajouter</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ---------- MODALE : CONSULTER LES PRÉSENCES ---------- -->
+    <div id="modalePresences" class="modale-overlay">
+        <div class="modale-contenu" style="max-width: 700px;">
+            <button class="bouton-fermer-modale bouton-fermer-global" aria-label="Fermer">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <h2>Consulter les présences</h2>
+            
+            <form id="formulaireFiltrePresences" class="formulaire-modale">
+                <div class="ligne-champs">
+                    <div class="champ-formulaire">
+                        <label for="filtre_classe">Classe</label>
+                        <select id="filtre_classe" name="classe_id">
+                            <option value="">Toutes les classes</option>
+                        </select>
+                    </div>
+                    <div class="champ-formulaire">
+                        <label for="filtre_date">Date</label>
+                        <input type="date" id="filtre_date" name="date">
+                    </div>
+                </div>
+                <button type="submit" class="bouton-valider-modale" style="align-self: flex-start; padding: 10px 20px;">
+                    <i class="fa-solid fa-filter"></i> Filtrer
+                </button>
+            </form>
+
+            <div style="margin-top: 24px;">
+                <table class="tableau-eleves">
+                    <thead>
+                        <tr>
+                            <th>Élève</th>
+                            <th>Classe</th>
+                            <th>Date</th>
+                            <th>Statut</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody-presences">
+                        <tr>
+                            <td colspan="4" style="text-align: center; color: var(--gris-clair);">Veuillez filtrer pour afficher les données</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="actions-modale">
+                <button type="button" class="bouton-annuler-modale bouton-fermer-global">Fermer</button>
+            </div>
         </div>
     </div>
 

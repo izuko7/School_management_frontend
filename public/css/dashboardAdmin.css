@@ -424,7 +424,7 @@ button {
     text-decoration: underline;
 }
 
-/* ---------- TABLEAU ÉLÈVES ---------- */
+/* ---------- TABLEAUX (ÉLÈVES & PRÉSENCES) ---------- */
 
 .tableau-eleves {
     width: 100%;
@@ -578,7 +578,7 @@ button {
     white-space: nowrap;
 }
 
-/* ---------- MODALE : AJOUT ÉLÈVE ---------- */
+/* ---------- MODALES ---------- */
 
 .modale-overlay {
     display: none;
@@ -605,6 +605,11 @@ button {
     max-height: 90vh;
     overflow-y: auto;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15); 
+}
+
+/* Classe spécifique pour la modale des présences plus large */
+.modale-contenu.modale-large {
+    max-width: 700px;
 }
 
 .modale-contenu h2 {
@@ -676,6 +681,11 @@ button {
 .champ-formulaire select:focus {
     border-color: var(--violet-bouton);
     background: var(--blanc);
+}
+
+.bouton-filtrer {
+    align-self: flex-start;
+    padding: 10px 20px;
 }
 
 .actions-modale {
