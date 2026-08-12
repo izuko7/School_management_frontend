@@ -1,0 +1,72 @@
+// vérification du token de l'élève 
+
+const token = localStorage.getItem('token');
+const role = localStorage.getItem('role');
+
+if (!token || role !== 'etudiant') {
+    window.location.href = '/login';
+}
+
+const fetchAuth = async (url, method = 'GET') => {
+
+    const options = {
+        method: method,
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    };
+
+    const reponse = await fetch(url, options)
+
+    if (reponse.status === 401) {
+        localStorage.removeItem('token');
+        localStorage.removeItem('role');
+        window.location.href = '/login';
+        throw new Error("Token expiré");
+    }
+
+    return reponse.json();
+
+};
+
+const logOut = document.getElementById('boutonDeconnexion');
+logOut.addEventListener('click', (e) => {
+    e.preventDefault();
+    localStorage.removeItem('token');
+    localStorage.removeItem('role');
+    window.location.href = '/accueil'
+})
+
+function decoderToken(token) {
+    const playLoad = token.split('.')[1];
+    const decoded = JSON.parse(atob(playLoad));
+    return decoded;
+}
+
+const utilisateur = decoderToken(token);
+
+const donneUsers = async () => {
+    // Encore plus clean !
+    const users = await fetchAuth(`/users/${utilisateur.id}`);
+
+    let initial;
+    const mot = users.name.split(' ');
+
+    if (mot.length >= 2) {
+        initial = `${mot[0][0]}${mot[1][0]}`
+    } else {
+        initial = mot[0].substring(0, 2).toUpperCase();
+    }
+
+    const profilNom = document.getElementById('profilNom');
+    const profilRole = document.getElementById('profilRole');
+    const profilInitial = document.getElementById('profilAvatar');
+    const messageBienvenue = document.getElementById('bienvenue-name');
+
+    profilNom.textContent = users.name;
+    profilRole.textContent = users.role;
+    profilInitial.textContent = initial;
+    messageBienvenue.textContent = `Bonjour, ${users.name} ! `
+}
+
+donneUsers();
