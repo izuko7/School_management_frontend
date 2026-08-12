@@ -206,7 +206,7 @@ const chargerClasse = async () => {
 
 chargerClasse();
 
-
+// ajouter un eleve 
 
 document.getElementById('formulaireAjoutEleve').addEventListener(
     'submit', async (e) => {
@@ -216,11 +216,10 @@ document.getElementById('formulaireAjoutEleve').addEventListener(
         const champNom = document.getElementById('nom').value;
         const chamPrenom = document.getElementById('prenom').value;
         const pseudonyme = document.getElementById('pseudoname').value;
-        const motDePasse = document.getElementById('motdepasse').value;
         const matricule = document.getElementById('matricule').value;
         const dateNaissance = document.getElementById('date_naissance').value;
         const classeId = document.getElementById('classe_id').value;
-
+        const motDePasse = document.getElementById('motdepasse').value;
         const students = await fetchAuth('/students');
         const pseudo = await fetchAuth('/users');
         const matriculeExiste = students.some(s => s.matricule === matricule);
@@ -266,6 +265,64 @@ document.getElementById('formulaireAjoutEleve').addEventListener(
         chargerUneStat('/students', 'stat-chiffre-etudiant');
 
         chargerElevesRecents();
+
+    }
+);
+
+
+// ajouter un enseignant 
+
+document.getElementById('formulaireAjoutEnseignant').addEventListener(
+    'submit', async(e) => {
+
+        e.preventDefault();
+
+        const champMatricule = document.getElementById('ens_matricule').value;
+        const champNomprof = document.getElementById('ens_nom').value;
+        const champPrenomprof = document.getElementById('ens_prenom').value;
+        const pseudony = document.getElementById('ens_pseudoname').value;
+        const motDePasse = document.getElementById('ens_motdepasse').value;
+
+        const pseudo = await fetchAuth('/users');
+        const enseignant = await fetchAuth('/teachers');
+        const pseudoExiste = pseudo.some(s => s.pseudoname === pseudony);
+        const matriculeProfExiste = enseignant.some(s => s.matricule === champMatricule);
+
+
+        if (pseudoExiste) {
+            afficherToast("Ce pseudonyme est déjà utilisé !");
+            return;
+        }
+
+        if(matriculeProfExiste) {
+            afficherToast('Ce matricule est déjà utilisé !');
+            return;
+        }
+
+
+        const bodyUserProf = {
+            name: `${champNomprof} ${champPrenomprof}`,
+            role: 'prof',
+            pseudoname: pseudony,
+            motdepasse: motDePasse
+        }
+
+        const nouvelUserProf = await fetchAuth('/users', 'POST', bodyUserProf)
+
+        console.log(nouvelUserProf);
+
+        const bodyProf = {
+            matricule: champMatricule,
+            nom: champNomprof,
+            prenom: champPrenomprof,
+            user_id: nouvelUserProf.result.lastInsertRowid
+        }
+
+        const profCree = await fetchAuth('/teachers', 'POST', bodyProf);
+
+        e.target.reset();
+
+        document.getElementById('modaleAjoutEnseignant').classList.remove('ouverte');
 
     }
 );
