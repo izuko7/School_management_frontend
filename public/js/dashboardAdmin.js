@@ -324,5 +324,7 @@ document.getElementById('formulaireAjoutEnseignant').addEventListener(
 
         document.getElementById('modaleAjoutEnseignant').classList.remove('ouverte');
 
+        chargerUneStat('/teachers', 'stat-chiffre-prof');
+
     }
 );
