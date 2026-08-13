@@ -328,3 +328,59 @@ document.getElementById('formulaireAjoutEnseignant').addEventListener(
 
     }
 );
+
+
+const chargerPresence = async() => {
+    const students = await fetchAuth('/students');
+    const classes = await fetchAuth('/classes');
+    const absences = await fetchAuth('/absences');
+
+
+    const classeIdChoisie = parseInt(document.getElementById('filtre_classe').value);
+    const dateChoisie = document.getElementById('filtre_date').value;
+
+
+    const filtreStudent = students.filter((eleve) => eleve.classe_id === classeIdChoisie);
+    const correspondDate = dateChoisie === '' || absences.date === dateChoisie;
+
+    const filtreAbsences = absences.filter((absence) => {
+
+        filtreStudent.some((eleve) => eleve.id === absence.student_id);
+
+        return filtreAbsences && correspondDate;
+
+    });
+
+
+};
+
+chargerPresence();
+
+
+
+
+// const chargerPresence = async () => {
+//     // Super clean !
+//     const students = await fetchAuth('/students/recents');
+//     const classes = await fetchAuth('/classes');
+
+//     const lignesHTML = students.map((student) => {
+//         const classe = classes.find(c => c.id === student.classe_id);
+//         const nomClasse = classe ? classe.nom : "Non assignée";
+
+//         return `
+//             <tr>
+//                 <td>${student.nom} ${student.prenom}</td>
+//                 <td>${nomClasse}</td>
+//                 <td>${student.matricule}</td>
+//                 <td><span class="badge badge-actif">Actif</span></td>
+//                 <td><button class="bouton-action"><i class="fa-solid fa-ellipsis"></i></button></td>
+//             </tr>
+//         `;
+//     }).join('');
+
+//     const tbody = document.querySelector('.tableau-eleves tbody');
+//     tbody.innerHTML = lignesHTML;
+// };
+
+// chargerElevesRecents();
