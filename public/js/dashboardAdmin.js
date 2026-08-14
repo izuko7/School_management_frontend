@@ -330,57 +330,72 @@ document.getElementById('formulaireAjoutEnseignant').addEventListener(
 );
 
 
-const chargerPresence = async() => {
-    const students = await fetchAuth('/students');
-    const classes = await fetchAuth('/classes');
-    const absences = await fetchAuth('/absences');
-
+const chargerPresence = async () => {
 
     const classeIdChoisie = parseInt(document.getElementById('filtre_classe').value);
     const dateChoisie = document.getElementById('filtre_date').value;
 
+    const dateConvertie = dateChoisie ? dayjs(dateChoisie).format('DD/MM/YYYY') : null;
+
+    const selectElement = document.getElementById('tbody-presences');
+
+    if (isNaN(classeIdChoisie)) {
+        selectElement.innerHTML = `
+            <tr>
+                <td colspan="4" style="text-align: center; color: var(--gris-clair);">Veuillez filtrer pour afficher les données</td>
+            </tr>
+        `;
+        return;
+    }
+
+    const students = await fetchAuth('/students');
+    const classes = await fetchAuth('/classes');
+    const absences = await fetchAuth('/absences');
 
     const filtreStudent = students.filter((eleve) => eleve.classe_id === classeIdChoisie);
-    const correspondDate = dateChoisie === '' || absences.date === dateChoisie;
 
     const filtreAbsences = absences.filter((absence) => {
-
-        filtreStudent.some((eleve) => eleve.id === absence.student_id);
-
-        return filtreAbsences && correspondDate;
-
+        const appartientClasse = filtreStudent.some((eleve) => eleve.id === absence.student_id);
+        const dateCorrespond = dateConvertie ? absence.date === dateConvertie : true;
+        return appartientClasse && dateCorrespond
+        
     });
 
+    const lignesHTML = filtreAbsences.map((absence) => {
+        const eleve = students.find(s => s.id === absence.student_id);
+        const classe = classes.find(c => c.id === classeIdChoisie);
 
+        const statutClasse = absence.status === 'present' ? 'badge-actif' : 'badge-inactif';
+
+        return `
+            <tr>
+                <td>${eleve.nom} ${eleve.prenom}</td>
+                <td>${classe.nom}</td>
+                <td>${absence.date}</td>
+                <td><span class="badge ${statutClasse}">${absence.status}</span></td>
+            </tr>
+        `;
+    }).join('');
+
+    selectElement.innerHTML = lignesHTML;
+
+}
+
+
+const remplirFiltreClasse = async () => {
+    const classeDonne = await fetchAuth('/classes');
+    const optionsHTML = classeDonne.map((classe) => {
+        return `<option value="${classe.id}">${classe.nom}</option>`
+    }).join('');
+
+    document.getElementById('filtre_classe').innerHTML = `<option value="">Toutes les classes</option>` + optionsHTML;
 };
 
-chargerPresence();
+remplirFiltreClasse();
 
+document.getElementById('formulaireFiltrePresences').addEventListener('submit', (e) => {
 
+    e.preventDefault();
+    chargerPresence();
 
-
-// const chargerPresence = async () => {
-//     // Super clean !
-//     const students = await fetchAuth('/students/recents');
-//     const classes = await fetchAuth('/classes');
-
-//     const lignesHTML = students.map((student) => {
-//         const classe = classes.find(c => c.id === student.classe_id);
-//         const nomClasse = classe ? classe.nom : "Non assignée";
-
-//         return `
-//             <tr>
-//                 <td>${student.nom} ${student.prenom}</td>
-//                 <td>${nomClasse}</td>
-//                 <td>${student.matricule}</td>
-//                 <td><span class="badge badge-actif">Actif</span></td>
-//                 <td><button class="bouton-action"><i class="fa-solid fa-ellipsis"></i></button></td>
-//             </tr>
-//         `;
-//     }).join('');
-
-//     const tbody = document.querySelector('.tableau-eleves tbody');
-//     tbody.innerHTML = lignesHTML;
-// };
-
-// chargerElevesRecents();
+});
