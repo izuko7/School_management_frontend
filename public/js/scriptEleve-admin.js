@@ -92,3 +92,69 @@ document.querySelectorAll('.bouton-fermer-global').forEach(bouton => {
         modale.classList.remove('ouverte');
     });
 });
+
+
+// fonction afficher les classes et formulaire de création d'élève
+
+const chargerClasse = async () => {
+    const classeDonne = await fetchAuth('/classes');
+    const optionsHTML = classeDonne.map((classe) => {
+        return `<option value="${classe.id}">${classe.nom}</option>`
+    }).join('');
+
+    const selectElement = document.getElementById('classe_id');
+    selectElement.innerHTML = optionsHTML;
+};
+
+chargerClasse();
+
+
+document.getElementById('formulaireAjoutEleve').addEventListener(
+    'submit', async (e) => {
+        e.preventDefault();
+
+        const champNom = document.getElementById('nom').value;
+        const chamPrenom = document.getElementById('prenom').value;
+        const pseudoname = document.getElementById('pseudoname').value;
+        const motdepasse = document.getElementById('motdepasse').value;
+        const matricule = document.getElementById('matricule').value;
+        const dateNaissance = document.getElementById('date_naissance').value;
+        const classeId = document.getElementById('classe_id').value;
+
+        const students = await fetchAuth('/students');
+        const pseudo = await fetchAuth('/users');
+        const matriculeExiste = students.some(s => s.matricule === matricule);
+        const pseudoExiste = pseudo.some(s => s.pseudoname === pseudoname);
+
+        if(matriculeExiste) {
+            afficherToast("Ce matricule est déjà utilisé !");
+            return;
+        }
+
+        if(matriculeExiste) {
+            afficherToast("ce pseudo est déjà utilisé !");
+            return;
+        }
+
+        const body = {
+            name: `${champNom} ${chamPrenom}`,
+            role: 'etudiant',
+            pseudoname: pseudoname,
+            motdepasse: motdepasse,
+        }
+
+        const nouvelUserEleve = await fetchAuth('/users', 'POST', body)
+
+        const bodyStudent = {
+            matricule: matricule,
+            nom: champNom,
+            prenom: chamPrenom,
+            date_naissance: dateNaissance,
+            classe_id: classeId,
+            user_id: nouvelUserEleve.result.lastInsertRowid
+        }
+
+        e.target.reset();
+        document.getElementById('modaleAjoutEleve').classList.remove('ouverte');
+    }
+)
