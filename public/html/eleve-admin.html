@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduSmart — Élèves</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="shortcut icon" href="../images/favicon.svg" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="/css/style-eleves-admin.css">
+</head>
+
+<body>
+
+    <div id="toast" class="toast"></div>
+
+    <div class="mise-en-page">
+
+        <!-- ---------- SIDEBAR ---------- -->
+        <aside class="sidebar" id="sidebar">
+            <!-- Bouton de fermeture pour mobile -->
+            <button class="bouton-fermer-sidebar" id="boutonFermerSidebar" aria-label="Fermer le menu">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div class="logo">
+                <span class="logo-icone"><i class="fa-solid fa-graduation-cap"></i></span>
+                <div class="logo-texte">
+                    <span class="logo-nom">EduSmart</span>
+                    <span class="logo-slogan">Gestion scolaire</span>
+                </div>
+            </div>
+
+            <nav class="nav-sidebar">
+                <a href="/dashboard/admin" class="nav-item">
+                    <i class="fa-solid fa-table-cells"></i>
+                    <span>Tableau de bord</span>
+                </a>
+                <a href="" class="nav-item actif">
+                    <i class="fa-solid fa-user-graduate"></i>
+                    <span>Élèves</span>
+                    <span class="point-actif"></span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fa-solid fa-chalkboard-user"></i>
+                    <span>Enseignants</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fa-solid fa-layer-group"></i>
+                    <span>Classes</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fa-solid fa-book"></i>
+                    <span>Matières</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fa-solid fa-calendar-check"></i>
+                    <span>Présences</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fa-solid fa-chart-simple"></i>
+                    <span>Notes</span>
+                </a>
+            </nav>
+
+            <div class="nav-sidebar nav-sidebar-bas">
+                <a href="#" class="nav-item">
+                    <i class="fa-solid fa-gear"></i>
+                    <span>Paramètres</span>
+                </a>
+                <a href="/accueil" class="nav-item">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <span>Déconnexion</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- ---------- CONTENU PRINCIPAL ---------- -->
+        <div class="contenu-principal">
+
+            <!-- Barre du haut -->
+            <header class="barre-haut">
+                <button class="bouton-burger" id="boutonBurger">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+
+                <div>
+                    <h1>Élèves</h1>
+                    <p class="date-jour" id="dateJour"></p>
+                </div>
+
+                <div class="recherche">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" placeholder="Rechercher un élève...">
+                </div>
+
+                <div class="actions-haut">
+                    <div class="profil">
+                        <div class="profil-texte">
+                            <span class="profil-nom">Admin</span>
+                            <span class="profil-role">Directeur</span>
+                        </div>
+                        <div class="avatar">AD</div>
+                    </div>
+                </div>
+            </header>
+
+            <main class="zone-scroll">
+
+                <!-- En-tête de la page avec bouton Ajouter -->
+                <section class="entete-page">
+                    <div>
+                        <h2>Liste des élèves</h2>
+                        <p>Gérez les inscriptions et les informations des élèves</p>
+                    </div>
+                    <button class="bouton-principal" id="boutonOuvrirModaleEleve">
+                        <i class="fa-solid fa-plus"></i> Ajouter un élève
+                    </button>
+                </section>
+
+                <!-- Tableau des élèves -->
+                <section class="carte-panneau">
+                    <div class="panneau-entete">
+                        <div>
+                            <h3>Tous les élèves</h3>
+                            <p>Total : <span id="nombreEleves">0</span> inscrits</p>
+                        </div>
+                    </div>
+
+                    <table class="tableau-eleves">
+                        <thead>
+                            <tr>
+                                <th>Nom complet</th>
+                                <th>Matricule</th>
+                                <th>Classe</th>
+                                <th>Date de naissance</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="corpsTableauEleves">
+                            <!-- Les données seront injectées par JavaScript -->
+                        </tbody>
+                    </table>
+                </section>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- ---------- MODALE : AJOUTER UN ÉLÈVE ---------- -->
+    <div id="modaleAjoutEleve" class="modale-overlay">
+        <div class="modale-contenu">
+            <button class="bouton-fermer-modale bouton-fermer-global" aria-label="Fermer">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <h2>Ajouter un élève</h2>
+            <form id="formulaireAjoutEleve" class="formulaire-modale">
+                <div class="ligne-champs">
+                    <div class="champ-formulaire">
+                        <label for="nom">Nom</label>
+                        <input type="text" id="nom" name="nom" placeholder="Kouassi" required>
+                    </div>
+                    <div class="champ-formulaire">
+                        <label for="prenom">Prénom</label>
+                        <input type="text" id="prenom" name="prenom" placeholder="Aya" required>
+                    </div>
+                </div>
+
+                <div class="ligne-champs">
+                    <div class="champ-formulaire">
+                        <label for="matricule">Matricule</label>
+                        <input type="text" id="matricule" name="matricule" placeholder="14033212R" required>
+                    </div>
+                    <div class="champ-formulaire">
+                        <label for="date_naissance">Date de naissance</label>
+                        <input type="date" id="date_naissance" name="date_naissance" required>
+                    </div>
+                </div>
+
+                <div class="champ-formulaire">
+                    <label for="classe_id">Classe</label>
+                    <select id="classe_id" name="classe_id" required>
+                        <option value="">Sélectionner une classe</option>
+                        <option value="1">Terminale S</option>
+                        <option value="2">Première D</option>
+                        <option value="3">Seconde A</option>
+                    </select>
+                </div>
+
+                <div class="actions-modale">
+                    <button type="button" class="bouton-annuler-modale bouton-fermer-global">Annuler</button>
+                    <button type="submit" class="bouton-valider-modale">Enregistrer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Lien vers le fichier JavaScript externe -->
+    <script src="/js/scriptEleve-admin.js"></script>
+</body>
+
+</html>
