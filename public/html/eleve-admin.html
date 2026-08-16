@@ -7,7 +7,7 @@
     <title>EduSmart — Élèves</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="shortcut icon" href="../images/favicon.svg" type="image/x-icon">
+    <link rel="shortcut icon" href="/images/favicon.svg" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="/css/style-eleves-admin.css">
@@ -71,7 +71,7 @@
                     <i class="fa-solid fa-gear"></i>
                     <span>Paramètres</span>
                 </a>
-                <a href="/accueil" class="nav-item">
+                <a href="/accueil" id="boutonDeconnexion" class="nav-item">
                     <i class="fa-solid fa-right-from-bracket"></i>
                     <span>Déconnexion</span>
                 </a>
@@ -116,7 +116,7 @@
                         <h2>Liste des élèves</h2>
                         <p>Gérez les inscriptions et les informations des élèves</p>
                     </div>
-                    <button class="bouton-principal" id="boutonOuvrirModaleEleve">
+                    <button class="bouton-principal" id="boutonOuvrirModaleEleve" data-modale="modaleAjoutEleve">
                         <i class="fa-solid fa-plus"></i> Ajouter un élève
                     </button>
                 </section>
@@ -180,13 +180,21 @@
                     </div>
                 </div>
 
+                <div class="ligne-champs">
+                    <div class="champ-formulaire">
+                        <label for="pseudoname">Pseudonyme</label>
+                        <input type="text" id="pseudoname" name="pseudoname" placeholder="ayakouassi" required>
+                    </div>
+                    <div class="champ-formulaire">
+                        <label for="motdepasse">Mot de passe</label>
+                        <input type="password" id="motdepasse" name="motdepasse" placeholder="••••••••" required>
+                    </div>
+                </div>
+
                 <div class="champ-formulaire">
                     <label for="classe_id">Classe</label>
                     <select id="classe_id" name="classe_id" required>
                         <option value="">Sélectionner une classe</option>
-                        <option value="1">Terminale S</option>
-                        <option value="2">Première D</option>
-                        <option value="3">Seconde A</option>
                     </select>
                 </div>
 

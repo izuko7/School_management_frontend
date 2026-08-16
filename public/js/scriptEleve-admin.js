@@ -7,6 +7,17 @@ if (!token || role !== 'admin') {
 }
 
 
+// toast 
+const afficherToast = (message) => {
+    const toast = document.getElementById('toast');
+    toast.textContent = message;
+    toast.classList.add('visible');
+
+    setTimeout(() => {
+        toast.classList.remove('visible');
+    }, 3000);
+};
+
 const fetchAuth = async (url, method = 'GET', body = null) => {
 
     const options = {
@@ -33,10 +44,14 @@ const fetchAuth = async (url, method = 'GET', body = null) => {
     return reponse.json();
 };
 
-
-
-
-
+// boutton de déconnexion 
+const logOut = document.getElementById('boutonDeconnexion');
+logOut.addEventListener('click', (e) => {
+    e.preventDefault();
+    localStorage.removeItem('token');
+    localStorage.removeItem('role');
+    window.location.href = '/accueil'
+})
 
 
 // Menu burgur 
@@ -59,5 +74,21 @@ boutonFermerSidebar.addEventListener('click', () => {
 document.querySelectorAll('.sidebar .nav-item').forEach(link => {
     link.addEventListener('click', () => {
         sidebar.classList.remove('ouvert');
+    });
+});
+
+
+
+// modaux 
+
+const boutonsOuvrir = document.querySelectorAll('[data-modale]');
+boutonsOuvrir.forEach((bouton) => {
+    bouton.addEventListener('click', () => { const modale = document.getElementById(bouton.dataset.modale); modale.classList.add('ouverte'); });
+});
+
+document.querySelectorAll('.bouton-fermer-global').forEach(bouton => {
+    bouton.addEventListener('click', (e) => {
+        const modale = bouton.closest('.modale-overlay');
+        modale.classList.remove('ouverte');
     });
 });
