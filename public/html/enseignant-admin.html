@@ -4,13 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EduSmart — Élèves</title>
+    <title>EduSmart — Enseignants</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="shortcut icon" href="/images/favicon.svg" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="/css/style-eleves-admin.css">
+    <link rel="stylesheet" href="/css/style-enseignants-admin.css">
 </head>
 
 <body>
@@ -38,14 +38,15 @@
                     <i class="fa-solid fa-table-cells"></i>
                     <span>Tableau de bord</span>
                 </a>
-                <a href="/dashboard/admin/eleve" class="nav-item actif">
+                <a href="/dashboard/admin/eleve" class="nav-item">
                     <i class="fa-solid fa-user-graduate"></i>
                     <span>Élèves</span>
-                    <span class="point-actif"></span>
                 </a>
-                <a href="/dashboard/admin/enseignant" class="nav-item">
+                <!-- Onglet Enseignants rendu actif -->
+                <a href="/dashboard/admin/enseignant" class="nav-item actif">
                     <i class="fa-solid fa-chalkboard-user"></i>
                     <span>Enseignants</span>
+                    <span class="point-actif"></span>
                 </a>
                 <a href="/dashboard/admin/classe" class="nav-item">
                     <i class="fa-solid fa-layer-group"></i>
@@ -86,20 +87,20 @@
                 </button>
 
                 <div>
-                    <h1>Élèves</h1>
+                    <h1>Enseignants</h1>
                     <p class="date-jour" id="dateJour"></p>
                 </div>
 
                 <div class="recherche">
                     <i class="fa-solid fa-magnifying-glass"></i>
-                    <input type="text" placeholder="Rechercher un élève...">
+                    <input type="text" placeholder="Rechercher un enseignant...">
                 </div>
 
                 <div class="actions-haut">
                     <div class="profil">
                         <div class="profil-texte">
-                            <span id="profilNom" class="profil-nom"></span>
-                            <span id="profilRole" class="profil-role"></span>
+                            <span id="profilNom" class="profil-nom">Admin</span>
+                            <span id="profilRole" class="profil-role">Directeur</span>
                         </div>
                         <div id="profilAvatar" class="avatar">AD</div>
                     </div>
@@ -110,33 +111,32 @@
 
                 <section class="entete-page">
                     <div>
-                        <h2>Liste des élèves</h2>
-                        <p>Gérez les inscriptions et les informations des élèves</p>
+                        <h2>Liste des enseignants</h2>
+                        <p>Gérez le corps professoral et les accès au système</p>
                     </div>
-                    <button class="bouton-principal" id="boutonOuvrirModaleEleve" data-modale="modaleAjoutEleve">
-                        <i class="fa-solid fa-plus"></i> Ajouter un élève
+                    <button class="bouton-principal" id="boutonOuvrirModaleEnseignant" data-modale="modaleAjoutEnseignant">
+                        <i class="fa-solid fa-plus"></i> Ajouter un enseignant
                     </button>
                 </section>
 
                 <section class="carte-panneau">
                     <div class="panneau-entete">
                         <div>
-                            <h3>Tous les élèves</h3>
-                            <p>Total : <span id="nombreEleves">0</span> inscrits</p>
+                            <h3>Tous les enseignants</h3>
+                            <p>Total : <span id="nombreEnseignants">0</span> enseignants enregistrés</p>
                         </div>
                     </div>
 
-                    <table class="tableau-eleves">
+                    <table class="tableau-liste">
                         <thead>
                             <tr>
                                 <th>Nom complet</th>
                                 <th>Matricule</th>
-                                <th>Classe</th>
-                                <th>Date de naissance</th>
+                                <th>Pseudonyme</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
-                        <tbody id="corpsTableauEleves">
+                        <tbody id="corpsTableauEnseignants">
                             <!-- Injecté par JavaScript -->
                         </tbody>
                     </table>
@@ -146,56 +146,42 @@
         </div>
     </div>
 
-    <!-- ---------- MODALE : AJOUTER / MODIFIER UN ÉLÈVE ---------- -->
-    <div id="modaleAjoutEleve" class="modale-overlay">
+    <!-- ---------- MODALE : AJOUTER / MODIFIER UN ENSEIGNANT ---------- -->
+    <div id="modaleAjoutEnseignant" class="modale-overlay">
         <div class="modale-contenu">
             <button class="bouton-fermer-modale bouton-fermer-global" aria-label="Fermer">
                 <i class="fa-solid fa-xmark"></i>
             </button>
-            <h2>Ajouter un élève</h2>
-            <form id="formulaireAjoutEleve" class="formulaire-modale">
+            <h2 id="titreModaleEnseignant">Ajouter un enseignant</h2>
+            <form id="formulaireAjoutEnseignant" class="formulaire-modale">
 
-                <!-- Champ caché : stocke l'id de l'élève en cours de modification -->
-                <input type="hidden" id="eleveEnEdition">
+                <!-- Champ caché : stocke l'id de l'enseignant en cours de modification -->
+                <input type="hidden" id="enseignantEnEdition">
+
+                <div class="champ-formulaire">
+                    <label for="matricule">Matricule</label>
+                    <input type="text" id="matricule" name="matricule" placeholder="ENS001" required>
+                </div>
 
                 <div class="ligne-champs">
                     <div class="champ-formulaire">
                         <label for="nom">Nom</label>
-                        <input type="text" id="nom" name="nom" placeholder="Kouassi" required>
+                        <input type="text" id="nom" name="nom" placeholder="Dupont" required>
                     </div>
                     <div class="champ-formulaire">
                         <label for="prenom">Prénom</label>
-                        <input type="text" id="prenom" name="prenom" placeholder="Aya" required>
-                    </div>
-                </div>
-
-                <div class="ligne-champs">
-                    <div class="champ-formulaire">
-                        <label for="matricule">Matricule</label>
-                        <input type="text" id="matricule" name="matricule" placeholder="14033212R" required>
-                    </div>
-                    <div class="champ-formulaire">
-                        <label for="date_naissance">Date de naissance</label>
-                        <input type="date" id="date_naissance" name="date_naissance" required>
-                    </div>
-                </div>
-
-                <div class="ligne-champs">
-                    <div class="champ-formulaire">
-                        <label for="pseudoname">Pseudonyme</label>
-                        <input type="text" id="pseudoname" name="pseudoname" placeholder="ayakouassi" required>
-                    </div>
-                    <div class="champ-formulaire">
-                        <label for="motdepasse">Mot de passe</label>
-                        <input type="password" id="motdepasse" name="motdepasse" placeholder="••••••••" required>
+                        <input type="text" id="prenom" name="prenom" placeholder="Jean" required>
                     </div>
                 </div>
 
                 <div class="champ-formulaire">
-                    <label for="classe_id">Classe</label>
-                    <select id="classe_id" name="classe_id" required>
-                        <option value="">Sélectionner une classe</option>
-                    </select>
+                    <label for="pseudoname">Pseudonyme</label>
+                    <input type="text" id="pseudoname" name="pseudoname" placeholder="j.dupont" required>
+                </div>
+
+                <div class="champ-formulaire">
+                    <label for="motdepasse">Mot de passe</label>
+                    <input type="password" id="motdepasse" name="motdepasse" placeholder="••••••••" required>
                 </div>
 
                 <div class="actions-modale">
@@ -213,7 +199,7 @@
                 <i class="fa-solid fa-xmark"></i>
             </button>
             <h2>Confirmer la suppression</h2>
-            <p>Es-tu sûr de vouloir supprimer cet élève ? Cette action est irréversible.</p>
+            <p>Êtes-vous sûr de vouloir supprimer cet enseignant ? Cette action est irréversible.</p>
             <div class="actions-modale">
                 <button type="button" class="bouton-annuler-modale bouton-fermer-global">Annuler</button>
                 <button type="button" id="confirmerSuppression" class="bouton-valider-modale danger">Supprimer</button>
@@ -221,7 +207,7 @@
         </div>
     </div>
 
-    <script src="/js/scriptEleve-admin.js"></script>
+    <script src="/js/scriptEnseignant-admin.js"></script>
 </body>
 
 </html>
