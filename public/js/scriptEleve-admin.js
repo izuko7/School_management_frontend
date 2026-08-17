@@ -131,7 +131,7 @@ document.getElementById('formulaireAjoutEleve').addEventListener(
             return;
         }
 
-        if(matriculeExiste) {
+        if(pseudoExiste) {
             afficherToast("ce pseudo est déjà utilisé !");
             return;
         }
@@ -154,7 +154,69 @@ document.getElementById('formulaireAjoutEleve').addEventListener(
             user_id: nouvelUserEleve.result.lastInsertRowid
         }
 
+        const eleveCree = await fetchAuth('/students', 'POST', bodyStudent);
+
         e.target.reset();
         document.getElementById('modaleAjoutEleve').classList.remove('ouverte');
+        chargerTousLesEleves();
     }
 )
+
+const chargerTousLesEleves = async () => {
+    const students = await fetchAuth('/students');
+    const classes = await fetchAuth('/classes');
+
+    document.getElementById('nombreEleves').textContent = students.length;
+
+    const lignesHTML = students.map((student) => {
+        const classe = classes.find(c => c.id === student.classe_id);
+        const nomClasse = classe ? classe.nom : "Non assignée";
+
+        return `
+            <tr>
+                <td>${student.nom} ${student.prenom}</td>
+                <td>${student.matricule}</td>
+                <td>${nomClasse}</td>
+                <td>${student.date_naissance}</td>
+                <td>
+                    <button class="bouton-action bouton-modifier" data-id="${student.id}">
+                        <i class="fa-solid fa-pen"></i>
+                    </button>
+                    <button class="bouton-action bouton-supprimer" data-id="${student.id}">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </td>
+            </tr>
+        `;
+    }).join('');
+
+    const tbody = document.getElementById('corpsTableauEleves');
+    tbody.innerHTML = lignesHTML;
+}
+
+chargerTousLesEleves();
+
+let idEleveASupprimer = null;
+
+document.getElementById('corpsTableauEleves').addEventListener(
+    'click', (e) => {
+        const bouton = e.target.closest('.bouton-supprimer');
+        if(!bouton) return;
+
+        idEleveASupprimer = bouton.dataset.id;
+        document.getElementById('modaleConfirmationSuppression').classList.add('ouverte');
+
+    }
+);
+
+document.getElementById('confirmerSuppression').addEventListener('click', async () => {
+    try {
+        await fetchAuth(`/students/${idEleveASupprimer}`, 'DELETE');
+
+        document.getElementById('modaleConfirmationSuppression').classList.remove('ouverte');
+        afficherToast("Elève supprimé avec succès");
+        chargerTousLesEleves();
+    } catch (error) {
+        afficherToast(`Erreur lors de la suppression de l'elève`);
+    }
+});

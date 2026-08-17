@@ -21,7 +21,6 @@
 
         <!-- ---------- SIDEBAR ---------- -->
         <aside class="sidebar" id="sidebar">
-            <!-- Bouton de fermeture pour mobile -->
             <button class="bouton-fermer-sidebar" id="boutonFermerSidebar" aria-label="Fermer le menu">
                 <i class="fa-solid fa-xmark"></i>
             </button>
@@ -81,7 +80,6 @@
         <!-- ---------- CONTENU PRINCIPAL ---------- -->
         <div class="contenu-principal">
 
-            <!-- Barre du haut -->
             <header class="barre-haut">
                 <button class="bouton-burger" id="boutonBurger">
                     <i class="fa-solid fa-bars"></i>
@@ -110,7 +108,6 @@
 
             <main class="zone-scroll">
 
-                <!-- En-tête de la page avec bouton Ajouter -->
                 <section class="entete-page">
                     <div>
                         <h2>Liste des élèves</h2>
@@ -121,7 +118,6 @@
                     </button>
                 </section>
 
-                <!-- Tableau des élèves -->
                 <section class="carte-panneau">
                     <div class="panneau-entete">
                         <div>
@@ -141,7 +137,7 @@
                             </tr>
                         </thead>
                         <tbody id="corpsTableauEleves">
-                            <!-- Les données seront injectées par JavaScript -->
+                            <!-- Injecté par JavaScript -->
                         </tbody>
                     </table>
                 </section>
@@ -150,7 +146,7 @@
         </div>
     </div>
 
-    <!-- ---------- MODALE : AJOUTER UN ÉLÈVE ---------- -->
+    <!-- ---------- MODALE : AJOUTER / MODIFIER UN ÉLÈVE ---------- -->
     <div id="modaleAjoutEleve" class="modale-overlay">
         <div class="modale-contenu">
             <button class="bouton-fermer-modale bouton-fermer-global" aria-label="Fermer">
@@ -158,6 +154,10 @@
             </button>
             <h2>Ajouter un élève</h2>
             <form id="formulaireAjoutEleve" class="formulaire-modale">
+
+                <!-- Champ caché : stocke l'id de l'élève en cours de modification -->
+                <input type="hidden" id="eleveEnEdition">
+
                 <div class="ligne-champs">
                     <div class="champ-formulaire">
                         <label for="nom">Nom</label>
@@ -206,7 +206,21 @@
         </div>
     </div>
 
-    <!-- Lien vers le fichier JavaScript externe -->
+    <!-- ---------- MODALE : CONFIRMER LA SUPPRESSION ---------- -->
+    <div id="modaleConfirmationSuppression" class="modale-overlay">
+        <div class="modale-contenu">
+            <button class="bouton-fermer-modale bouton-fermer-global" aria-label="Fermer">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <h2>Confirmer la suppression</h2>
+            <p>Es-tu sûr de vouloir supprimer cet élève ? Cette action est irréversible.</p>
+            <div class="actions-modale">
+                <button type="button" class="bouton-annuler-modale bouton-fermer-global">Annuler</button>
+                <button type="button" id="confirmerSuppression" class="bouton-valider-modale danger">Supprimer</button>
+            </div>
+        </div>
+    </div>
+
     <script src="/js/scriptEleve-admin.js"></script>
 </body>
 
