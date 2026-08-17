@@ -53,6 +53,39 @@ logOut.addEventListener('click', (e) => {
     window.location.href = '/accueil'
 })
 
+// donnée utilisateur 
+function decoderToken(token) {
+    const playLoad = token.split('.')[1];
+    const decoded = JSON.parse(atob(playLoad));
+    return decoded;
+}
+
+const utilisateur = decoderToken(token);
+
+const donneUsers = async () => {
+    // Encore plus clean !
+    const users = await fetchAuth(`/users/${utilisateur.id}`);
+
+    let initial;
+    const mot = users.name.split(' ');
+
+    if (mot.length >= 2) {
+        initial = `${mot[0][0]}${mot[1][0]}`
+    } else {
+        initial = mot[0].substring(0, 2).toUpperCase();
+    }
+
+    const profilNom = document.getElementById('profilNom');
+    const profilRole = document.getElementById('profilRole');
+    const profilInitial = document.getElementById('profilAvatar');
+
+    profilNom.textContent = users.name;
+    profilRole.textContent = users.role;
+    profilInitial.textContent = initial;
+}
+
+donneUsers();
+
 
 // Menu burgur 
 // Gestion du menu Burger (Sidebar mobile)
