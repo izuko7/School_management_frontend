@@ -102,6 +102,8 @@ const deleteStudent = (id) =>{
         throw new Error(`Etudiant avec l'id ${id} introuvable`);
     }
     const result = db.prepare(`DELETE FROM students WHERE id = ?`).run(id);
+    const deleteUserStudent = db.prepare(`DELETE FROM users WHERE id = ?`).run(current.user_id);
+    
     return result;
 };
 

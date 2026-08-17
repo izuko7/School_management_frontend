@@ -65,6 +65,10 @@ app.get('/dashboard/admin/eleve', (req, res) => {
     res.sendFile(path.join(import.meta.dirname, 'public/html/eleve-admin.html'));
 })
 
+app.get('/dashboard/admin/classe', (req, res) => {
+    res.sendFile(path.join(import.meta.dirname, 'public/html/classe-admin.html'));
+})
+
 
 // Route api 
 app.use('/students', studentRouter);
