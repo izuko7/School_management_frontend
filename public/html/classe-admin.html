@@ -99,10 +99,10 @@
                 <div class="actions-haut">
                     <div class="profil">
                         <div class="profil-texte">
-                            <span id="profilNom" class="profil-nom">Admin</span>
-                            <span id="profilRole" class="profil-role">Directeur</span>
+                            <span id="profilNom" class="profil-nom"></span>
+                            <span id="profilRole" class="profil-role"></span>
                         </div>
-                        <div id="profilAvatar" class="avatar">AD</div>
+                        <div id="profilAvatar" class="avatar"></div>
                     </div>
                 </div>
             </header>
@@ -123,7 +123,7 @@
                     <div class="panneau-entete">
                         <div>
                             <h3>Toutes les classes</h3>
-                            <p>Total : <span id="nombreClasses">0</span> classes enregistrées</p>
+                            <p>Total : <span id="nombreClasses"></span> classes enregistrées</p>
                         </div>
                     </div>
 
@@ -133,7 +133,6 @@
                                 <th>Nom de la classe</th>
                                 <th>Niveau</th>
                                 <th>Capacité</th>
-                                <th>Effectif actuel</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -166,26 +165,13 @@
                     </div>
                     <div class="champ-formulaire">
                         <label for="niveau">Niveau</label>
-                        <select id="niveau" name="niveau" required>
-                            <option value="">Sélectionner un niveau</option>
-                            <option value="Maternelle">Maternelle</option>
-                            <option value="Primaire">Primaire</option>
-                            <option value="Collège">Collège</option>
-                            <option value="Lycée">Lycée</option>
-                            <option value="Université">Université</option>
-                        </select>
+                        <input type="text" id="niveau" name="niveau" placeholder="cycle" required>
                     </div>
                 </div>
 
-                <div class="ligne-champs">
-                    <div class="champ-formulaire">
-                        <label for="capacite">Capacité maximale</label>
-                        <input type="number" id="capacite" name="capacite" placeholder="30" min="1" required>
-                    </div>
-                    <div class="champ-formulaire">
-                        <label for="effectif">Effectif actuel</label>
-                        <input type="number" id="effectif" name="effectif" placeholder="0" min="0" required>
-                    </div>
+                <div class="champ-formulaire">
+                    <label for="capacite">Capacité maximale</label>
+                    <input type="number" id="capacite" name="capacite" placeholder="30" min="1" required>
                 </div>
 
                 <div class="actions-modale">
