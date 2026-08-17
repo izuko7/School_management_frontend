@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduSmart — Espace Professeur</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <link rel="stylesheet" href="../css/dashboardProfesseur.css">
+</head>
+
+<body>
+
+    <div class="mise-en-page">
+
+        <!-- ---------- SIDEBAR ---------- -->
+        <aside class="sidebar" id="sidebar">
+            <button class="bouton-fermer-sidebar" id="boutonFermerSidebar" aria-label="Fermer le menu">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div class="logo">
+                <span class="logo-icone"><i class="fa-solid fa-graduation-cap"></i></span>
+                <div class="logo-texte">
+                    <span class="logo-nom">EduSmart</span>
+                    <span class="logo-slogan">Espace professeur</span>
+                </div>
+            </div>
+
+            <nav class="nav-sidebar">
+                <button class="nav-item actif" id="nav-eleves" onclick="afficherSection('eleves')">
+                    <i class="fa-solid fa-users"></i>
+                    <span>Élèves</span>
+                </button>
+                <button class="nav-item" id="nav-notes" onclick="afficherSection('notes')">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                    <span>Notes</span>
+                </button>
+                <button class="nav-item" id="nav-presences" onclick="afficherSection('presences')">
+                    <i class="fa-solid fa-clipboard-check"></i>
+                    <span>Présences</span>
+                </button>
+                <button class="nav-item" id="nav-emploi" onclick="afficherSection('emploi')">
+                    <i class="fa-solid fa-calendar-days"></i>
+                    <span>Emploi du temps</span>
+                </button>
+            </nav>
+
+            <div class="nav-sidebar nav-sidebar-bas">
+                <a href="#" class="nav-item">
+                    <i class="fa-solid fa-gear"></i>
+                    <span>Paramètres</span>
+                </a>
+                <a href="/accueil" id="boutonDeconnexion" class="nav-item">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <span>Déconnexion</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- ---------- CONTENU PRINCIPAL ---------- -->
+        <div class="contenu-principal">
+
+            <!-- Barre du haut -->
+            <header class="barre-haut">
+                <button class="bouton-burger" id="boutonBurger" aria-label="Ouvrir le menu">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+
+                <div>
+                    <h1 id="titrePage">Mes élèves</h1>
+                    <p class="date-jour" id="dateJour"></p>
+                </div>
+
+                <div class="actions-haut">
+                    <div class="profil">
+                        <div class="profil-texte">
+                            <span class="profil-nom" id="profilNom">M. Dupont</span>
+                            <span class="profil-role" id="profilRole">Professeur</span>
+                        </div>
+                        <div class="avatar" id="profilAvatar">MD</div>
+                    </div>
+                </div>
+            </header>
+
+            <main class="zone-scroll">
+
+                <!-- ============ SECTION ÉLÈVES ============ -->
+                <section id="section-eleves">
+                    <div class="bienvenue">
+                        <div>
+                            <h2>Bonjour, M. Dupont</h2>
+                            <p>Voici un aperçu de vos classes</p>
+                        </div>
+                    </div>
+
+                    <div class="grille-stats-dash">
+                        <div class="carte-stat-dash">
+                            <div class="stat-entete">
+                                <div class="icone-stat icone-indigo"><i class="fa-solid fa-users"></i></div>
+                            </div>
+                            <span class="stat-chiffre">142</span>
+                            <span class="stat-titre">Élèves</span>
+                            <span class="stat-sous-titre">Au total</span>
+                        </div>
+
+                        <div class="carte-stat-dash">
+                            <div class="stat-entete">
+                                <div class="icone-stat icone-violet"><i class="fa-solid fa-chalkboard"></i></div>
+                            </div>
+                            <span class="stat-chiffre">4</span>
+                            <span class="stat-titre">Classes</span>
+                            <span class="stat-sous-titre">Cette année</span>
+                        </div>
+
+                        <div class="carte-stat-dash">
+                            <div class="stat-entete">
+                                <div class="icone-stat icone-bleu"><i class="fa-solid fa-star"></i></div>
+                                <span class="variation positive"><i class="fa-solid fa-arrow-trend-up"></i> +0.4</span>
+                            </div>
+                            <span class="stat-chiffre">13.8/20</span>
+                            <span class="stat-titre">Moyenne Globale</span>
+                            <span class="stat-sous-titre">Toutes classes confondues</span>
+                        </div>
+
+                        <div class="carte-stat-dash">
+                            <div class="stat-entete">
+                                <div class="icone-stat icone-rose"><i class="fa-solid fa-user-minus"></i></div>
+                            </div>
+                            <span class="stat-chiffre">3</span>
+                            <span class="stat-titre">Absences</span>
+                            <span class="stat-sous-titre">Aujourd'hui</span>
+                        </div>
+                    </div>
+
+                    <section class="carte-panneau">
+                        <div class="panneau-entete">
+                            <div>
+                                <h3>Liste des élèves</h3>
+                                <p>Classe de Terminale S</p>
+                            </div>
+                            <select class="selecteur-annee">
+                                <option>Terminale S</option>
+                                <option>Première ES</option>
+                                <option>Seconde A</option>
+                            </select>
+                        </div>
+
+                        <table class="tableau-eleves">
+                            <thead>
+                                <tr>
+                                    <th>Élève</th>
+                                    <th>Moyenne</th>
+                                    <th>Absences</th>
+                                    <th>Dernière note</th>
+                                    <th>Statut</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="eleve-cell"><span class="avatar-eleve avatar-indigo">A</span>Alice Martin</div>
+                                    </td>
+                                    <td class="note-cellule">16/20</td>
+                                    <td>0</td>
+                                    <td>15/20</td>
+                                    <td><span class="badge badge-actif">Excellent</span></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="eleve-cell"><span class="avatar-eleve avatar-violet">L</span>Léo Bernard</div>
+                                    </td>
+                                    <td class="note-cellule">14/20</td>
+                                    <td>2</td>
+                                    <td>13/20</td>
+                                    <td><span class="badge badge-actif">Bien</span></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="eleve-cell"><span class="avatar-eleve avatar-rose">J</span>Jules Petit</div>
+                                    </td>
+                                    <td class="note-cellule">11/20</td>
+                                    <td>1</td>
+                                    <td>9/20</td>
+                                    <td><span class="badge badge-inactif">Passable</span></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="eleve-cell"><span class="avatar-eleve avatar-bleu">C</span>Chloé Moreau</div>
+                                    </td>
+                                    <td class="note-cellule">17/20</td>
+                                    <td>0</td>
+                                    <td>18/20</td>
+                                    <td><span class="badge badge-actif">Excellent</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                </section>
+
+                <!-- ============ SECTION NOTES ============ -->
+                <section id="section-notes" class="hidden">
+                    <div class="bienvenue">
+                        <div>
+                            <h2>Saisie des notes</h2>
+                            <p>Dernières évaluations enregistrées</p>
+                        </div>
+                    </div>
+
+                    <section class="carte-panneau">
+                        <div class="panneau-entete">
+                            <div>
+                                <h3>Évaluations récentes</h3>
+                                <p>Mathématiques - Terminale S</p>
+                            </div>
+                            <button class="selecteur-annee" style="border:none; background:var(--violet-bouton); color:white; cursor:pointer;">
+                                <i class="fa-solid fa-plus"></i> Ajouter une note
+                            </button>
+                        </div>
+
+                        <table class="tableau-eleves">
+                            <thead>
+                                <tr>
+                                    <th>Élève</th>
+                                    <th>Évaluation</th>
+                                    <th>Note</th>
+                                    <th>Coefficient</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="eleve-cell"><span class="avatar-eleve avatar-indigo">A</span>Alice Martin</div>
+                                    </td>
+                                    <td>Contrôle Continu</td>
+                                    <td class="note-cellule">15/20</td>
+                                    <td>2</td>
+                                    <td>12 nov. 2025</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="eleve-cell"><span class="avatar-eleve avatar-violet">L</span>Léo Bernard</div>
+                                    </td>
+                                    <td>Contrôle Continu</td>
+                                    <td class="note-cellule">13/20</td>
+                                    <td>2</td>
+                                    <td>12 nov. 2025</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="eleve-cell"><span class="avatar-eleve avatar-bleu">C</span>Chloé Moreau</div>
+                                    </td>
+                                    <td>Contrôle Continu</td>
+                                    <td class="note-cellule">18/20</td>
+                                    <td>2</td>
+                                    <td>12 nov. 2025</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                </section>
+
+                <!-- ============ SECTION PRÉSENCES ============ -->
+                <section id="section-presences" class="hidden">
+                    <div class="bienvenue">
+                        <div>
+                            <h2>Appel du jour</h2>
+                            <p>Faites l'appel de vos classes</p>
+                        </div>
+                    </div>
+
+                    <section class="carte-panneau">
+                        <div class="panneau-entete">
+                            <div>
+                                <h3>Faire l'appel</h3>
+                                <p>Classe de Terminale S - 14h00 à 15h00</p>
+                            </div>
+                            <select class="selecteur-annee">
+                                <option>Terminale S</option>
+                                <option>Première ES</option>
+                            </select>
+                        </div>
+
+                        <table class="tableau-eleves">
+                            <thead>
+                                <tr>
+                                    <th>Élève</th>
+                                    <th>Statut</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="eleve-cell"><span class="avatar-eleve avatar-indigo">A</span>Alice Martin</div>
+                                    </td>
+                                    <td><span class="badge badge-actif">Présent</span></td>
+                                    <td><button class="bouton-action bouton-rouge"><i class="fa-solid fa-xmark"></i></button></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="eleve-cell"><span class="avatar-eleve avatar-violet">L</span>Léo Bernard</div>
+                                    </td>
+                                    <td><span class="badge badge-inactif">Absent</span></td>
+                                    <td><button class="bouton-action bouton-vert"><i class="fa-solid fa-check"></i></button></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="eleve-cell"><span class="avatar-eleve avatar-bleu">C</span>Chloé Moreau</div>
+                                    </td>
+                                    <td><span class="badge badge-actif">Présent</span></td>
+                                    <td><button class="bouton-action bouton-rouge"><i class="fa-solid fa-xmark"></i></button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                </section>
+
+                <!-- ============ SECTION EMPLOI DU TEMPS ============ -->
+                <section id="section-emploi" class="hidden">
+                    <div class="bienvenue">
+                        <div>
+                            <h2>Emploi du temps</h2>
+                            <p>Votre planning de la semaine</p>
+                        </div>
+                    </div>
+
+                    <section class="carte-panneau placeholder-a-venir">
+                        <div class="placeholder-icone"><i class="fa-solid fa-calendar-days"></i></div>
+                        <h3>Bientôt disponible</h3>
+                        <p>L'emploi du temps sera consultable ici prochainement.</p>
+                    </section>
+                </section>
+
+            </main>
+        </div>
+    </div>
+
+    <script src="../js/dashboardProf.js"></script>
+</body>
+
+</html>
