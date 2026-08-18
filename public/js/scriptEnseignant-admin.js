@@ -109,3 +109,90 @@ document.querySelectorAll('.sidebar .nav-item').forEach(link => {
         sidebar.classList.remove('ouvert');
     });
 });
+
+
+
+// modaux 
+
+const boutonsOuvrir = document.querySelectorAll('[data-modale]');
+boutonsOuvrir.forEach((bouton) => {
+    bouton.addEventListener('click', () => { const modale = document.getElementById(bouton.dataset.modale); modale.classList.add('ouverte'); });
+});
+
+document.querySelectorAll('.bouton-fermer-global').forEach(bouton => {
+    bouton.addEventListener('click', (e) => {
+        const modale = bouton.closest('.modale-overlay');
+        modale.classList.remove('ouverte');
+    });
+});
+
+
+// création de l'enseignant 
+
+
+
+
+
+
+// afficher tout les enseignants
+const chargerToutLesEnseignants = async () => {
+    const enseignants = await fetchAuth('/teachers');
+
+    document.getElementById('nombreEnseignants').textContent = enseignants.length;
+
+    const ligneHTML = enseignants.map((prof) => {
+        return `
+            <tr>
+                <td>${prof.nom} ${prof.prenom}</td>
+                <td>${prof.matricule}</td>
+                <td>
+                    <button class="bouton-action bouton-modifier" data-id="${prof.id}">
+                        <i class="fa-solid fa-pen"></i>
+                    </button>
+                    <button class="bouton-action bouton-supprimer" data-id="${prof.id}">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </td>
+            </tr>
+        `;
+    }).join('');
+
+    const tbody = document.getElementById('corpsTableauEnseignants');
+    tbody.innerHTML = lignesHTML;
+}
+
+chargerToutLesEnseignants();
+
+// const chargerTousLesEleves = async () => {
+//     const students = await fetchAuth('/students');
+//     const classes = await fetchAuth('/classes');
+
+//     document.getElementById('nombreEleves').textContent = students.length;
+
+//     const lignesHTML = students.map((student) => {
+//         const classe = classes.find(c => c.id === student.classe_id);
+//         const nomClasse = classe ? classe.nom : "Non assignée";
+
+//         return `
+//             <tr>
+//                 <td>${student.nom} ${student.prenom}</td>
+//                 <td>${student.matricule}</td>
+//                 <td>${nomClasse}</td>
+//                 <td>${student.date_naissance}</td>
+//                 <td>
+//                     <button class="bouton-action bouton-modifier" data-id="${student.id}">
+//                         <i class="fa-solid fa-pen"></i>
+//                     </button>
+//                     <button class="bouton-action bouton-supprimer" data-id="${student.id}">
+//                         <i class="fa-solid fa-trash"></i>
+//                     </button>
+//                 </td>
+//             </tr>
+//         `;
+//     }).join('');
+
+//     const tbody = document.getElementById('corpsTableauEleves');
+//     tbody.innerHTML = lignesHTML;
+// }
+
+// chargerTousLesEleves();
