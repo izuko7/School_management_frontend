@@ -253,3 +253,114 @@ document.getElementById('confirmerSuppression').addEventListener('click', async 
         afficherToast(`Erreur lors de la suppression de l'elève`);
     }
 });
+
+// clic bouton modifier 
+
+let idEnModif = null;
+let userEnEdiditon = null;
+
+document.getElementById('corpsTableauEleves').addEventListener('click', async (e) =>{
+
+    const boutonModifer = e.target.closest('.bouton-modifier');
+    if(!boutonModifer) return;
+
+    const id = boutonModifer.dataset.id;
+
+    const student = await fetchAuth(`/students/${id}`);
+    const user = await fetchAuth(`/users/${student.user_id}`);
+
+    // On mémorise les Id
+    idEnModif = student.id;
+    userEnEdiditon = student.user_id;
+
+    // preremplir la modale 
+    document.getElementById('nom').value = student.nom;
+    document.getElementById('prenom').value = student.prenom;
+    document.getElementById('matricule').value = student.matricule;
+    document.getElementById('pseudoname').value = user.pseudoname;
+    document.getElementById('classe_id').value = student.classe_id;
+
+    const dateFormatee = dayjs(student.date_naissance, 'DD/MM/YYYY').format('YYYY-MM-DD');
+    document.getElementById('date_naissance').value = dateFormatee;
+    document.getElementById('modaleAjoutEleve').classList.add('ouverte');
+
+});
+
+
+document.getElementById('formulaireAjoutEleve').addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const idEnEdition = idEnModif;
+
+    const champNom = document.getElementById('nom').value;
+    const chamPrenom = document.getElementById('prenom').value;
+    const pseudoname = document.getElementById('pseudoname').value;
+    const motdepasse = document.getElementById('motdepasse').value;
+    const matricule = document.getElementById('matricule').value;
+    const dateNaissance = document.getElementById('date_naissance').value;
+    const classeId = document.getElementById('classe_id').value;
+
+    if (idEnEdition) {
+        const bodyStudent = {
+            matricule: matricule,
+            nom: champNom,
+            prenom: chamPrenom,
+            date_naissance: dateNaissance,
+        };
+
+        await fetchAuth(`/students/${idEnEdition}`, 'PUT', bodyStudent);
+
+        const bodyUser = {
+            pseudoname: pseudoname
+        };
+
+        if(motdepasse){
+            bodyUser.motdepasse = motdepasse;
+        }
+
+        await fetchAuth(`/users/${userEnEdiditon}`, 'PUT', bodyUser);
+
+        afficherToast('Élève modifié avec succès');
+    } else {
+        const students = await fetchAuth('/students');
+        const pseudo = await fetchAuth('/users');
+        const matriculeExiste = students.some(s => s.matricule === matricule);
+        const pseudoExiste = pseudo.some(s => s.pseudoname === pseudoname);
+
+        if (matriculeExiste) {
+            afficherToast("Ce matricule est déjà utilisé !");
+            return;
+        }
+        if (pseudoExiste) {
+            afficherToast("Ce pseudo est déjà utilisé !");
+            return;
+        }
+
+        const body = {
+            name: `${champNom} ${chamPrenom}`,
+            role: 'etudiant',
+            pseudoname: pseudoname,
+            motdepasse: motdepasse,
+        };
+
+        const nouvelUserEleve = await fetchAuth('/users', 'POST', body);
+
+        const bodyStudent = {
+            matricule: matricule,
+            nom: champNom,
+            prenom: chamPrenom,
+            date_naissance: dateNaissance,
+            classe_id: classeId,
+            user_id: nouvelUserEleve.result.lastInsertRowid
+        };
+
+        await fetchAuth('/students', 'POST', bodyStudent);
+        afficherToast("Élève créé avec succès");
+    }
+
+    e.target.reset();
+    idEnModif = null;
+    userEnEdiditon = null;
+    document.getElementById('modaleAjoutEleve').classList.remove('ouverte');
+    chargerTousLesEleves();
+}); 
