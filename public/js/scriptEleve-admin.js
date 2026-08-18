@@ -254,6 +254,10 @@ document.getElementById('confirmerSuppression').addEventListener('click', async 
     }
 });
 
+
+// CODE PAS ENCORE PROPRE 
+
+
 // clic bouton modifier 
 
 let idEnModif = null;
@@ -290,7 +294,7 @@ document.getElementById('corpsTableauEleves').addEventListener('click', async (e
 document.getElementById('formulaireAjoutEleve').addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    const idEnEdition = idEnModif;
+    const idEnEdition = idEnModif; 
 
     const champNom = document.getElementById('nom').value;
     const chamPrenom = document.getElementById('prenom').value;
