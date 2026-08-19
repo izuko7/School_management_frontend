@@ -128,10 +128,108 @@ document.querySelectorAll('.bouton-fermer-global').forEach(bouton => {
 
 
 // création de l'enseignant 
+document.getElementById('formulaireAjoutEnseignant').addEventListener(
+    'submit', async (e) => {
+        e.preventDefault();
 
+        const champNom = document.getElementById('nom').value;
+        const chamPrenom = document.getElementById('prenom').value;
+        const pseudoname = document.getElementById('pseudoname').value;
+        const matricule = document.getElementById('matricule').value;
+        const motdepasse = document.getElementById('motdepasse').value;
 
+        const teachers = await fetchAuth('/teachers');
+        const pseudo = await fetchAuth('/users');
+        const matriculeExiste = teachers.some(s => s.matricule === matricule);
+        const pseudoExiste = pseudo.some(s => s.pseudoname === pseudoname);
 
+        if(matriculeExiste){
+            afficherToast("Ce matricule est déjà utilisé !");
+            return;
+        }
 
+        if(pseudoExiste){
+            afficherToast("Ce matricule est déjà utilisé !");
+            return;
+        }
+
+        const body = {
+            name: `${champNom} ${chamPrenom}`,
+            role: 'prof',
+            pseudoname: pseudoname,
+            motdepasse: motdepasse,
+        }
+
+        const nouvelUserTeacher = await fetchAuth('/users', 'POST', body);
+
+        const bodyTeacher = {
+            matricule: matricule,
+            nom: champNom,
+            prenom: chamPrenom,
+            user_id: nouvelUserTeacher.result.lastInsertRowid
+        }
+
+        const teacherCreer = await fetchAuth('/teachers', 'POST', bodyTeacher);
+
+        e.target.reset();
+        document.getElementById('modaleAjoutEnseignant').classList.remove('ouverte');
+        chargerToutLesEnseignants();
+
+    }
+)
+
+// ocument.getElementById('formulaireAjoutEleve').addEventListener(
+//     'submit', async (e) => {
+//         e.preventDefault();
+
+//         const champNom = document.getElementById('nom').value;
+//         const chamPrenom = document.getElementById('prenom').value;
+//         const pseudoname = document.getElementById('pseudoname').value;
+//         const motdepasse = document.getElementById('motdepasse').value;
+//         const matricule = document.getElementById('matricule').value;
+//         const dateNaissance = document.getElementById('date_naissance').value;
+//         const classeId = document.getElementById('classe_id').value;
+
+//         const students = await fetchAuth('/students');
+//         const pseudo = await fetchAuth('/users');
+//         const matriculeExiste = students.some(s => s.matricule === matricule);
+//         const pseudoExiste = pseudo.some(s => s.pseudoname === pseudoname);
+
+//         if(matriculeExiste) {
+//             afficherToast("Ce matricule est déjà utilisé !");
+//             return;
+//         }
+
+//         if(pseudoExiste) {
+//             afficherToast("ce pseudo est déjà utilisé !");
+//             return;
+//         }
+
+//         const body = {
+//             name: `${champNom} ${chamPrenom}`,
+//             role: 'etudiant',
+//             pseudoname: pseudoname,
+//             motdepasse: motdepasse,
+//         }
+
+//         const nouvelUserEleve = await fetchAuth('/users', 'POST', body)
+
+//         const bodyStudent = {
+//             matricule: matricule,
+//             nom: champNom,
+//             prenom: chamPrenom,
+//             date_naissance: dateNaissance,
+//             classe_id: classeId,
+//             user_id: nouvelUserEleve.result.lastInsertRowid
+//         }
+
+//         const eleveCree = await fetchAuth('/students', 'POST', bodyStudent);
+
+//         e.target.reset();
+//         document.getElementById('modaleAjoutEleve').classList.remove('ouverte');
+//         chargerTousLesEleves();
+//     }
+// )
 
 
 // afficher tout les enseignants
