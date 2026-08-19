@@ -1,3 +1,5 @@
+import Student from "../../models/studentModel";
+
 // Vérification d'accès admin (de base)
 const token = localStorage.getItem('token');
 const role = localStorage.getItem('role');
@@ -234,4 +236,38 @@ document.getElementById('confirmerSuppression').addEventListener('click', async 
     } catch (error) {
         afficherToast(`Erreur lors de la suppression de l'elève`);
     }
+});
+
+// bouton de modification enseignant 
+document.getElementById('boutonOuvrirModaleEnseignant').addEventListener(
+    'click', ()=> {
+        document.getElementById('pseudoname').required = true;
+        document.getElementById('motdepasse').required = true;
+    }
+)
+
+let idAModifier = null;
+let userEnEditon = null;
+
+document.getElementById('corpsTableauEnseignants').addEventListener('click', async (e) => {
+    const boutonModifer = e.target.closest('.bouton-modifier');
+    if(!boutonModifer) return;
+
+    const id = boutonModifer.dataset.id;
+
+    const teacher = await fetchAuth(`/teachers/${id}`);
+    const user = await fetchAuth(`/users/${teacher.user_id}`);
+
+    idAModifier = teacher.id;
+    userEnEditon = teacher.user_id;
+
+    document.getElementById('nom').value = teacher.nom;
+    document.getElementById('prenom').value = teacher.prenom;
+    document.getElementById('pseudoname').value = user.pseudoname;
+    document.getElementById('matricule').value = teacher.matricule;
+    document.getElementById('pseudoname').required = false;
+    document.getElementById('motdepasse').required = false;
+
+    document.getElementById('modaleAjoutEnseignant').classList.add('ouverte');
+
 });
