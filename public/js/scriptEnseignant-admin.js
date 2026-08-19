@@ -140,18 +140,18 @@ const chargerToutLesEnseignants = async () => {
 
     document.getElementById('nombreEnseignants').textContent = enseignants.length;
 
-    const ligneHTML = enseignants.map((prof) => {
+    const lignesHTML = enseignants.map((enseignant) => {
         return `
             <tr>
-                <td>${prof.nom} ${prof.prenom}</td>
-                <td>${prof.matricule}</td>
+                <td>${enseignant.matricule}</td>
+                <td>${enseignant.nom} ${enseignant.prenom}</td>
                 <td>
-                    <button class="bouton-action bouton-modifier" data-id="${prof.id}">
-                        <i class="fa-solid fa-pen"></i>
+                    <button class="bouton-action bouton-modifier" data-id="${enseignant.id}">
+                    <i class="fa-solid fa-pen"></i>
                     </button>
-                    <button class="bouton-action bouton-supprimer" data-id="${prof.id}">
-                        <i class="fa-solid fa-trash"></i>
-                    </button>
+                    <button class="bouton-action bouton-supprimer" data-id="${enseignant.id}">
+                        <i class="fa-solid fa-trash"></i>                     
+                    </button>               
                 </td>
             </tr>
         `;
@@ -159,40 +159,7 @@ const chargerToutLesEnseignants = async () => {
 
     const tbody = document.getElementById('corpsTableauEnseignants');
     tbody.innerHTML = lignesHTML;
+    
 }
 
 chargerToutLesEnseignants();
-
-// const chargerTousLesEleves = async () => {
-//     const students = await fetchAuth('/students');
-//     const classes = await fetchAuth('/classes');
-
-//     document.getElementById('nombreEleves').textContent = students.length;
-
-//     const lignesHTML = students.map((student) => {
-//         const classe = classes.find(c => c.id === student.classe_id);
-//         const nomClasse = classe ? classe.nom : "Non assignée";
-
-//         return `
-//             <tr>
-//                 <td>${student.nom} ${student.prenom}</td>
-//                 <td>${student.matricule}</td>
-//                 <td>${nomClasse}</td>
-//                 <td>${student.date_naissance}</td>
-//                 <td>
-//                     <button class="bouton-action bouton-modifier" data-id="${student.id}">
-//                         <i class="fa-solid fa-pen"></i>
-//                     </button>
-//                     <button class="bouton-action bouton-supprimer" data-id="${student.id}">
-//                         <i class="fa-solid fa-trash"></i>
-//                     </button>
-//                 </td>
-//             </tr>
-//         `;
-//     }).join('');
-
-//     const tbody = document.getElementById('corpsTableauEleves');
-//     tbody.innerHTML = lignesHTML;
-// }
-
-// chargerTousLesEleves();
