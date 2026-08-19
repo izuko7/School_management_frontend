@@ -255,13 +255,18 @@ document.getElementById('confirmerSuppression').addEventListener('click', async 
 });
 
 
-// CODE PAS ENCORE PROPRE 
 
+document.getElementById('boutonOuvrirModaleEleve').addEventListener(
+    'click', ()=> {
+        document.getElementById('pseudoname').required = true;
+        document.getElementById('motdepasse').required = true;
+    }
+)
 
 // clic bouton modifier 
 
 let idEnModif = null;
-let userEnEdiditon = null;
+let userEnEditon = null;
 
 document.getElementById('corpsTableauEleves').addEventListener('click', async (e) =>{
 
@@ -275,7 +280,7 @@ document.getElementById('corpsTableauEleves').addEventListener('click', async (e
 
     // On mémorise les Id
     idEnModif = student.id;
-    userEnEdiditon = student.user_id;
+    userEnEditon = student.user_id;
 
     // preremplir la modale 
     document.getElementById('nom').value = student.nom;
@@ -287,6 +292,9 @@ document.getElementById('corpsTableauEleves').addEventListener('click', async (e
     const dateFormatee = dayjs(student.date_naissance, 'DD/MM/YYYY').format('YYYY-MM-DD');
     document.getElementById('date_naissance').value = dateFormatee;
     document.getElementById('modaleAjoutEleve').classList.add('ouverte');
+
+    document.getElementById('pseudoname').required = false;
+    document.getElementById('motdepasse').required = false;
 
 });
 
@@ -322,7 +330,7 @@ document.getElementById('formulaireAjoutEleve').addEventListener('submit', async
             bodyUser.motdepasse = motdepasse;
         }
 
-        await fetchAuth(`/users/${userEnEdiditon}`, 'PUT', bodyUser);
+        await fetchAuth(`/users/${userEnEditon}`, 'PUT', bodyUser);
 
         afficherToast('Élève modifié avec succès');
     } else {
@@ -364,7 +372,7 @@ document.getElementById('formulaireAjoutEleve').addEventListener('submit', async
 
     e.target.reset();
     idEnModif = null;
-    userEnEdiditon = null;
+    userEnEditon = null;
     document.getElementById('modaleAjoutEleve').classList.remove('ouverte');
     chargerTousLesEleves();
 }); 
