@@ -149,7 +149,7 @@ document.getElementById('formulaireAjoutEnseignant').addEventListener(
         }
 
         if(pseudoExiste){
-            afficherToast("Ce matricule est déjà utilisé !");
+            afficherToast("Ce pseudo est déjà utilisé !");
             return;
         }
 
@@ -177,59 +177,6 @@ document.getElementById('formulaireAjoutEnseignant').addEventListener(
 
     }
 )
-
-// ocument.getElementById('formulaireAjoutEleve').addEventListener(
-//     'submit', async (e) => {
-//         e.preventDefault();
-
-//         const champNom = document.getElementById('nom').value;
-//         const chamPrenom = document.getElementById('prenom').value;
-//         const pseudoname = document.getElementById('pseudoname').value;
-//         const motdepasse = document.getElementById('motdepasse').value;
-//         const matricule = document.getElementById('matricule').value;
-//         const dateNaissance = document.getElementById('date_naissance').value;
-//         const classeId = document.getElementById('classe_id').value;
-
-//         const students = await fetchAuth('/students');
-//         const pseudo = await fetchAuth('/users');
-//         const matriculeExiste = students.some(s => s.matricule === matricule);
-//         const pseudoExiste = pseudo.some(s => s.pseudoname === pseudoname);
-
-//         if(matriculeExiste) {
-//             afficherToast("Ce matricule est déjà utilisé !");
-//             return;
-//         }
-
-//         if(pseudoExiste) {
-//             afficherToast("ce pseudo est déjà utilisé !");
-//             return;
-//         }
-
-//         const body = {
-//             name: `${champNom} ${chamPrenom}`,
-//             role: 'etudiant',
-//             pseudoname: pseudoname,
-//             motdepasse: motdepasse,
-//         }
-
-//         const nouvelUserEleve = await fetchAuth('/users', 'POST', body)
-
-//         const bodyStudent = {
-//             matricule: matricule,
-//             nom: champNom,
-//             prenom: chamPrenom,
-//             date_naissance: dateNaissance,
-//             classe_id: classeId,
-//             user_id: nouvelUserEleve.result.lastInsertRowid
-//         }
-
-//         const eleveCree = await fetchAuth('/students', 'POST', bodyStudent);
-
-//         e.target.reset();
-//         document.getElementById('modaleAjoutEleve').classList.remove('ouverte');
-//         chargerTousLesEleves();
-//     }
-// )
 
 
 // afficher tout les enseignants
@@ -261,3 +208,30 @@ const chargerToutLesEnseignants = async () => {
 }
 
 chargerToutLesEnseignants();
+
+
+// bouton supprimer 
+let idEnseignantASupprimer = null;
+
+document.getElementById('corpsTableauEnseignants').addEventListener(
+    'click', (e) => {
+        const bouton = e.target.closest('.bouton-supprimer');
+        if(!bouton) return;
+
+        idEnseignantASupprimer = bouton.dataset.id;
+        document.getElementById('modaleConfirmationSuppression').classList.add('ouverte');
+
+    }
+);
+
+document.getElementById('confirmerSuppression').addEventListener('click', async () => {
+    try {
+        await fetchAuth(`/teachers/${idEnseignantASupprimer}`, 'DELETE');
+
+        document.getElementById('modaleConfirmationSuppression').classList.remove('ouverte');
+        afficherToast("Enseignant supprimé avec succès");
+        chargerToutLesEnseignants();
+    } catch (error) {
+        afficherToast(`Erreur lors de la suppression de l'elève`);
+    }
+});

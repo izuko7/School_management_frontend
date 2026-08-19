@@ -79,6 +79,8 @@ const deleteTeacher = (id)=> {
         throw new Error(`Enseignant avec l'id ${id} introuvable`);
     }
     const result = db.prepare(`DELETE FROM teachers WHERE id = ?`).run(id);
+    const deleteUserTeacher = db.prepare(`DELETE FROM users WHERE id = ?`).run(current.user_id);
+    
     return result;
 };
 
