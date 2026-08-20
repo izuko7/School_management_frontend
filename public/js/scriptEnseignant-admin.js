@@ -202,6 +202,8 @@ document.getElementById('corpsTableauEnseignants').addEventListener('click', asy
     const teacher = await fetchAuth(`/teachers/${id}`);
     const user = await fetchAuth(`/users/${teacher.user_id}`);
 
+    // conserve les ids 
+
     idAModifier = teacher.id;
     userEnEditon = teacher.user_id;
 
