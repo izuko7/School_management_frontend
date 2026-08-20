@@ -178,7 +178,7 @@ document.getElementById('confirmerSuppression').addEventListener('click', async 
 });
 
 
-// ouverture modale "Ajouter" -> champs requis
+// ouverture modale "Ajouter" champs requis
 
 document.getElementById('boutonOuvrirModaleEnseignant').addEventListener(
     'click', ()=> {
@@ -188,7 +188,7 @@ document.getElementById('boutonOuvrirModaleEnseignant').addEventListener(
 )
 
 
-// clic bouton modifier -> pré-remplissage
+// clic bouton modifier pré-remplissage
 
 let idAModifier = null;
 let userEnEditon = null;

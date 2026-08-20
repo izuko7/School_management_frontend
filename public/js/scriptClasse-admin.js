@@ -125,44 +125,8 @@ document.querySelectorAll('.bouton-fermer-global').forEach(bouton => {
     bouton.addEventListener('click', (e) => {
         const modale = bouton.closest('.modale-overlay');
         modale.classList.remove('ouverte');
-        // Réinitialiser le formulaire si on ferme la modale d'ajout/édition
-        if (modale.id === 'modaleAjoutClasse') {
-            resetFormClasse();
-        }
     });
 });
-
-
-// ajouter une classe 
-document.getElementById('formulaireAjoutClasse').addEventListener(
-    'submit', async (e) => {
-        e.preventDefault();
-
-        const champNomClasse = document.getElementById('nom_classe').value;
-        const champNiveau = document.getElementById('niveau').value;
-        const champCapacite = document.getElementById('capacite').value;
-
-        const classes = await fetchAuth('/classes');
-        const classeExiste = classes.some(c => c.nom === champNomClasse);
-
-        if(classeExiste){
-            afficherToast('Cette classe existe déjà !');
-            return;
-        }
-
-        const bodyClasse = {
-            nom: `${champNomClasse}`,
-            niveau: `${champNiveau}`,
-            capacite: `${champCapacite}`
-        }
-
-        const nouvelleClasse = await fetchAuth('/classes', 'POST', bodyClasse);
-        
-        e.target.reset();
-        document.getElementById('modaleAjoutClasse').classList.remove('ouverte');
-        chargerTouteLesClasses();
-    }
-)
 
 
 // fonction charger classes 
@@ -196,3 +160,91 @@ const chargerTouteLesClasses = async () => {
 
 chargerTouteLesClasses();
 
+// boutton supprimer 
+let idClasseASupprimer = null;
+
+document.getElementById('corpsTableauClasses').addEventListener(
+    'click', (e)=> {
+        const bouton = e.target.closest('.bouton-supprimer');
+        if(!bouton) return;
+
+        idClasseASupprimer = bouton.dataset.id;
+        document.getElementById('modaleConfirmationSuppression').classList.add('ouverte');
+    }
+);
+
+document.getElementById('confirmerSuppression').addEventListener('click', async () => {
+    try {
+        await fetchAuth(`/classes/${idClasseASupprimer}`, 'DELETE');
+
+        document.getElementById('modaleConfirmationSuppression').classList.remove('ouverte');
+        afficherToast('Classe supprimé avec succès');
+        chargerTouteLesClasses();
+    } catch (error) {
+        afficherToast('Erreur lores de la suppression de la classes');
+    }
+});
+
+// clic boutton modifier pré-remplissage 
+let idAEditer = null;
+
+document.getElementById('corpsTableauClasses').addEventListener('click', async (e) => {
+    const boutonModifer = e.target.closest('.bouton-modifier');
+    if(!boutonModifer) return;
+
+    const id = boutonModifer.dataset.id;
+
+    const classes = await fetchAuth(`/classes/${id}`);
+
+    idAEditer = classes.id;
+
+    document.getElementById('nom_classe').value = classes.nom;
+    document.getElementById('niveau').value = classes.niveau;
+    document.getElementById('capacite').value = classes.capacite;
+    document.getElementById('modaleAjoutClasse').classList.add('ouverte');
+});
+
+// soumission du formulaire (création OU modification)
+
+document.getElementById('formulaireAjoutClasse').addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const idEnEdition = idAEditer;
+
+    const champNomClasse = document.getElementById('nom_classe').value;
+    const champNiveau = document.getElementById('niveau').value;
+    const champCapacite = document.getElementById('capacite').value;
+
+    if (idEnEdition) {
+        const bodyClasse = {
+            nom: champNomClasse,
+            niveau: champNiveau,
+            capacite: champCapacite,
+        };
+
+        await fetchAuth(`/classes/${idEnEdition}`, 'PUT', bodyClasse);
+        afficherToast('Classe modifiée avec succès');
+    } else {
+        const classes = await fetchAuth('/classes');
+        const nomClasseExiste = classes.some(s => s.nom === champNomClasse);
+
+        if (nomClasseExiste) {
+            afficherToast('Cette classe existe déjà !');
+            return;
+        }
+
+        const bodyClasse = {
+            nom: champNomClasse,
+            niveau: champNiveau,
+            capacite: champCapacite,
+        };
+
+        await fetchAuth('/classes', 'POST', bodyClasse);
+        afficherToast('Classe créée avec succès');
+    }
+
+    e.target.reset();
+    idAEditer = null;
+    document.getElementById('modaleAjoutClasse').classList.remove('ouverte');
+    chargerTouteLesClasses();
+});
