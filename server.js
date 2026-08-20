@@ -73,6 +73,11 @@ app.get('/dashboard/admin/enseignant', (req, res) => {
     res.sendFile(path.join(import.meta.dirname, 'public/html/enseignant-admin.html'));
 })
 
+app.get('/dashboard/admin/matiere', (req, res) => {
+    res.sendFile(path.join(import.meta.dirname, 'public/html/matiere-admin.html'));
+})
+
+
 
 // Route api 
 app.use('/students', studentRouter);

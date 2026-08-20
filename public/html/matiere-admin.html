@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduSmart — Matières</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="shortcut icon" href="/images/favicon.svg" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="/css/style-matieres-admin.css">
+</head>
+
+<body>
+
+    <div id="toast" class="toast"></div>
+
+    <div class="mise-en-page">
+
+        <!-- ---------- SIDEBAR ---------- -->
+        <aside class="sidebar" id="sidebar">
+            <button class="bouton-fermer-sidebar" id="boutonFermerSidebar" aria-label="Fermer le menu">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div class="logo">
+                <span class="logo-icone"><i class="fa-solid fa-graduation-cap"></i></span>
+                <div class="logo-texte">
+                    <span class="logo-nom">EduSmart</span>
+                    <span class="logo-slogan">Gestion scolaire</span>
+                </div>
+            </div>
+
+            <nav class="nav-sidebar">
+                <a href="/dashboard/admin" class="nav-item">
+                    <i class="fa-solid fa-table-cells"></i>
+                    <span>Tableau de bord</span>
+                </a>
+                <a href="/dashboard/admin/eleve" class="nav-item">
+                    <i class="fa-solid fa-user-graduate"></i>
+                    <span>Élèves</span>
+                </a>
+                <a href="/dashboard/admin/enseignant" class="nav-item">
+                    <i class="fa-solid fa-chalkboard-user"></i>
+                    <span>Enseignants</span>
+                </a>
+                <a href="/dashboard/admin/classe" class="nav-item">
+                    <i class="fa-solid fa-layer-group"></i>
+                    <span>Classes</span>
+                </a>
+                <!-- Onglet Matières rendu actif -->
+                <a href="/dashboard/admin/matiere" class="nav-item actif">
+                    <i class="fa-solid fa-book"></i>
+                    <span>Matières</span>
+                    <span class="point-actif"></span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fa-solid fa-calendar-check"></i>
+                    <span>Présences</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fa-solid fa-chart-simple"></i>
+                    <span>Notes</span>
+                </a>
+            </nav>
+
+            <div class="nav-sidebar nav-sidebar-bas">
+                <a href="#" class="nav-item">
+                    <i class="fa-solid fa-gear"></i>
+                    <span>Paramètres</span>
+                </a>
+                <a href="/accueil" id="boutonDeconnexion" class="nav-item">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <span>Déconnexion</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- ---------- CONTENU PRINCIPAL ---------- -->
+        <div class="contenu-principal">
+
+            <header class="barre-haut">
+                <button class="bouton-burger" id="boutonBurger">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+
+                <div>
+                    <h1>Matières</h1>
+                    <p class="date-jour" id="dateJour"></p>
+                </div>
+
+                <div class="recherche">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" placeholder="Rechercher une matière...">
+                </div>
+
+                <div class="actions-haut">
+                    <div class="profil">
+                        <div class="profil-texte">
+                            <span id="profilNom" class="profil-nom"></span>
+                            <span id="profilRole" class="profil-role"></span>
+                        </div>
+                        <div id="profilAvatar" class="avatar"></div>
+                    </div>
+                </div>
+            </header>
+
+            <main class="zone-scroll">
+
+                <section class="entete-page">
+                    <div>
+                        <h2>Liste des matières</h2>
+                        <p>Gérez les matières enseignées et leurs coefficients</p>
+                    </div>
+                    <button class="bouton-principal" id="boutonOuvrirModaleMatiere" data-modale="modaleAjoutMatiere">
+                        <i class="fa-solid fa-plus"></i> Ajouter une matière
+                    </button>
+                </section>
+
+                <section class="carte-panneau">
+                    <div class="panneau-entete">
+                        <div>
+                            <h3>Toutes les matières</h3>
+                            <p>Total : <span id="nombreMatieres"></span> matières enregistrées</p>
+                        </div>
+                    </div>
+
+                    <table class="tableau-liste">
+                        <thead>
+                            <tr>
+                                <th>Nom de la matière</th>
+                                <th>Code</th>
+                                <th>Coefficient</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="corpsTableauMatieres">
+                            <!-- Injecté par JavaScript -->
+                        </tbody>
+                    </table>
+                </section>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- ---------- MODALE : AJOUTER / MODIFIER UNE MATIÈRE ---------- -->
+    <div id="modaleAjoutMatiere" class="modale-overlay">
+        <div class="modale-contenu">
+            <button class="bouton-fermer-modale bouton-fermer-global" aria-label="Fermer">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <h2 id="titreModaleMatiere">Ajouter une matière</h2>
+            <form id="formulaireAjoutMatiere" class="formulaire-modale">
+
+                <!-- Champ caché : stocke l'id de la matière en cours de modification -->
+                <input type="hidden" id="matiereEnEdition">
+
+                <div class="ligne-champs">
+                    <div class="champ-formulaire">
+                        <label for="nom_matiere">Nom de la matière</label>
+                        <input type="text" id="nom_matiere" name="nom_matiere" placeholder="Mathématiques" required>
+                    </div>
+                    <div class="champ-formulaire">
+                        <label for="code_matiere">Code</label>
+                        <input type="text" id="code_matiere" name="code_matiere" placeholder="MATH" required>
+                    </div>
+                </div>
+
+                <div class="champ-formulaire">
+                    <label for="coefficient">Coefficient</label>
+                    <input type="number" id="coefficient" name="coefficient" placeholder="4" min="1" required>
+                </div>
+
+                <div class="actions-modale">
+                    <button type="button" class="bouton-annuler-modale bouton-fermer-global">Annuler</button>
+                    <button type="submit" class="bouton-valider-modale">Enregistrer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ---------- MODALE : CONFIRMER LA SUPPRESSION ---------- -->
+    <div id="modaleConfirmationSuppression" class="modale-overlay">
+        <div class="modale-contenu">
+            <button class="bouton-fermer-modale bouton-fermer-global" aria-label="Fermer">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <h2>Confirmer la suppression</h2>
+            <p>Êtes-vous sûr de vouloir supprimer cette matière ? Cette action est irréversible.</p>
+            <div class="actions-modale">
+                <button type="button" class="bouton-annuler-modale bouton-fermer-global">Annuler</button>
+                <button type="button" id="confirmerSuppression" class="bouton-valider-modale danger">Supprimer</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/scriptMatiere-admin.js"></script>
+</body>
+
+</html>
