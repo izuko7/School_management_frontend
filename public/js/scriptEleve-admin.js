@@ -44,7 +44,7 @@ const fetchAuth = async (url, method = 'GET', body = null) => {
     return reponse.json();
 };
 
-// boutton de déconnexion 
+// bouton de déconnexion 
 const logOut = document.getElementById('boutonDeconnexion');
 logOut.addEventListener('click', (e) => {
     e.preventDefault();
@@ -63,7 +63,6 @@ function decoderToken(token) {
 const utilisateur = decoderToken(token);
 
 const donneUsers = async () => {
-    // Encore plus clean !
     const users = await fetchAuth(`/users/${utilisateur.id}`);
 
     let initial;
@@ -87,29 +86,24 @@ const donneUsers = async () => {
 donneUsers();
 
 
-// Menu burgur 
-// Gestion du menu Burger (Sidebar mobile)
+// Menu burger 
 const boutonBurger = document.getElementById('boutonBurger');
 const boutonFermerSidebar = document.getElementById('boutonFermerSidebar');
 const sidebar = document.getElementById('sidebar');
 
-// Ouvrir avec le burger
 boutonBurger.addEventListener('click', () => {
     sidebar.classList.add('ouvert');
 });
 
-// Fermer avec la croix
 boutonFermerSidebar.addEventListener('click', () => {
     sidebar.classList.remove('ouvert');
 });
 
-// Fermer le menu si on clique sur un lien à l'intérieur
 document.querySelectorAll('.sidebar .nav-item').forEach(link => {
     link.addEventListener('click', () => {
         sidebar.classList.remove('ouvert');
     });
 });
-
 
 
 // modaux 
@@ -127,7 +121,7 @@ document.querySelectorAll('.bouton-fermer-global').forEach(bouton => {
 });
 
 
-// fonction afficher les classes et formulaire de création d'élève
+// charger les classes dans le select
 
 const chargerClasse = async () => {
     const classeDonne = await fetchAuth('/classes');
@@ -142,58 +136,7 @@ const chargerClasse = async () => {
 chargerClasse();
 
 
-document.getElementById('formulaireAjoutEleve').addEventListener(
-    'submit', async (e) => {
-        e.preventDefault();
-
-        const champNom = document.getElementById('nom').value;
-        const chamPrenom = document.getElementById('prenom').value;
-        const pseudoname = document.getElementById('pseudoname').value;
-        const motdepasse = document.getElementById('motdepasse').value;
-        const matricule = document.getElementById('matricule').value;
-        const dateNaissance = document.getElementById('date_naissance').value;
-        const classeId = document.getElementById('classe_id').value;
-
-        const students = await fetchAuth('/students');
-        const pseudo = await fetchAuth('/users');
-        const matriculeExiste = students.some(s => s.matricule === matricule);
-        const pseudoExiste = pseudo.some(s => s.pseudoname === pseudoname);
-
-        if(matriculeExiste) {
-            afficherToast("Ce matricule est déjà utilisé !");
-            return;
-        }
-
-        if(pseudoExiste) {
-            afficherToast("ce pseudo est déjà utilisé !");
-            return;
-        }
-
-        const body = {
-            name: `${champNom} ${chamPrenom}`,
-            role: 'etudiant',
-            pseudoname: pseudoname,
-            motdepasse: motdepasse,
-        }
-
-        const nouvelUserEleve = await fetchAuth('/users', 'POST', body)
-
-        const bodyStudent = {
-            matricule: matricule,
-            nom: champNom,
-            prenom: chamPrenom,
-            date_naissance: dateNaissance,
-            classe_id: classeId,
-            user_id: nouvelUserEleve.result.lastInsertRowid
-        }
-
-        const eleveCree = await fetchAuth('/students', 'POST', bodyStudent);
-
-        e.target.reset();
-        document.getElementById('modaleAjoutEleve').classList.remove('ouverte');
-        chargerTousLesEleves();
-    }
-)
+// afficher tous les élèves
 
 const chargerTousLesEleves = async () => {
     const students = await fetchAuth('/students');
@@ -229,16 +172,18 @@ const chargerTousLesEleves = async () => {
 
 chargerTousLesEleves();
 
+
+// suppression
+
 let idEleveASupprimer = null;
 
 document.getElementById('corpsTableauEleves').addEventListener(
     'click', (e) => {
         const bouton = e.target.closest('.bouton-supprimer');
-        if(!bouton) return;
+        if (!bouton) return;
 
         idEleveASupprimer = bouton.dataset.id;
         document.getElementById('modaleConfirmationSuppression').classList.add('ouverte');
-
     }
 );
 
@@ -255,34 +200,34 @@ document.getElementById('confirmerSuppression').addEventListener('click', async 
 });
 
 
+// ouverture modale "Ajouter" -> champs requis
 
 document.getElementById('boutonOuvrirModaleEleve').addEventListener(
-    'click', ()=> {
+    'click', () => {
         document.getElementById('pseudoname').required = true;
         document.getElementById('motdepasse').required = true;
     }
 )
 
-// clic bouton modifier 
+
+// clic bouton modifier -> pré-remplissage
 
 let idEnModif = null;
 let userEnEditon = null;
 
-document.getElementById('corpsTableauEleves').addEventListener('click', async (e) =>{
+document.getElementById('corpsTableauEleves').addEventListener('click', async (e) => {
 
     const boutonModifer = e.target.closest('.bouton-modifier');
-    if(!boutonModifer) return;
+    if (!boutonModifer) return;
 
     const id = boutonModifer.dataset.id;
 
     const student = await fetchAuth(`/students/${id}`);
     const user = await fetchAuth(`/users/${student.user_id}`);
 
-    // On mémorise les Id
     idEnModif = student.id;
     userEnEditon = student.user_id;
 
-    // preremplir la modale 
     document.getElementById('nom').value = student.nom;
     document.getElementById('prenom').value = student.prenom;
     document.getElementById('matricule').value = student.matricule;
@@ -291,18 +236,20 @@ document.getElementById('corpsTableauEleves').addEventListener('click', async (e
 
     const dateFormatee = dayjs(student.date_naissance, 'DD/MM/YYYY').format('YYYY-MM-DD');
     document.getElementById('date_naissance').value = dateFormatee;
-    document.getElementById('modaleAjoutEleve').classList.add('ouverte');
 
     document.getElementById('pseudoname').required = false;
     document.getElementById('motdepasse').required = false;
 
+    document.getElementById('modaleAjoutEleve').classList.add('ouverte');
 });
 
+
+// soumission du formulaire (création OU modification)
 
 document.getElementById('formulaireAjoutEleve').addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    const idEnEdition = idEnModif; 
+    const idEnEdition = idEnModif;
 
     const champNom = document.getElementById('nom').value;
     const chamPrenom = document.getElementById('prenom').value;
@@ -326,7 +273,7 @@ document.getElementById('formulaireAjoutEleve').addEventListener('submit', async
             pseudoname: pseudoname
         };
 
-        if(motdepasse){
+        if (motdepasse) {
             bodyUser.motdepasse = motdepasse;
         }
 
@@ -375,4 +322,4 @@ document.getElementById('formulaireAjoutEleve').addEventListener('submit', async
     userEnEditon = null;
     document.getElementById('modaleAjoutEleve').classList.remove('ouverte');
     chargerTousLesEleves();
-}); 
+});

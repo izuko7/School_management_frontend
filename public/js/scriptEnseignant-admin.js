@@ -1,5 +1,3 @@
-import Student from "../../models/studentModel";
-
 // Vérification d'accès admin (de base)
 const token = localStorage.getItem('token');
 const role = localStorage.getItem('role');
@@ -65,7 +63,6 @@ function decoderToken(token) {
 const utilisateur = decoderToken(token);
 
 const donneUsers = async () => {
-    // Encore plus clean !
     const users = await fetchAuth(`/users/${utilisateur.id}`);
 
     let initial;
@@ -89,29 +86,24 @@ const donneUsers = async () => {
 donneUsers();
 
 
-// Menu burgur 
-// Gestion du menu Burger (Sidebar mobile)
+// Menu burger 
 const boutonBurger = document.getElementById('boutonBurger');
 const boutonFermerSidebar = document.getElementById('boutonFermerSidebar');
 const sidebar = document.getElementById('sidebar');
 
-// Ouvrir avec le burger
 boutonBurger.addEventListener('click', () => {
     sidebar.classList.add('ouvert');
 });
 
-// Fermer avec la croix
 boutonFermerSidebar.addEventListener('click', () => {
     sidebar.classList.remove('ouvert');
 });
 
-// Fermer le menu si on clique sur un lien à l'intérieur
 document.querySelectorAll('.sidebar .nav-item').forEach(link => {
     link.addEventListener('click', () => {
         sidebar.classList.remove('ouvert');
     });
 });
-
 
 
 // modaux 
@@ -129,59 +121,8 @@ document.querySelectorAll('.bouton-fermer-global').forEach(bouton => {
 });
 
 
-// création de l'enseignant 
-document.getElementById('formulaireAjoutEnseignant').addEventListener(
-    'submit', async (e) => {
-        e.preventDefault();
+// afficher tous les enseignants
 
-        const champNom = document.getElementById('nom').value;
-        const chamPrenom = document.getElementById('prenom').value;
-        const pseudoname = document.getElementById('pseudoname').value;
-        const matricule = document.getElementById('matricule').value;
-        const motdepasse = document.getElementById('motdepasse').value;
-
-        const teachers = await fetchAuth('/teachers');
-        const pseudo = await fetchAuth('/users');
-        const matriculeExiste = teachers.some(s => s.matricule === matricule);
-        const pseudoExiste = pseudo.some(s => s.pseudoname === pseudoname);
-
-        if(matriculeExiste){
-            afficherToast("Ce matricule est déjà utilisé !");
-            return;
-        }
-
-        if(pseudoExiste){
-            afficherToast("Ce pseudo est déjà utilisé !");
-            return;
-        }
-
-        const body = {
-            name: `${champNom} ${chamPrenom}`,
-            role: 'prof',
-            pseudoname: pseudoname,
-            motdepasse: motdepasse,
-        }
-
-        const nouvelUserTeacher = await fetchAuth('/users', 'POST', body);
-
-        const bodyTeacher = {
-            matricule: matricule,
-            nom: champNom,
-            prenom: chamPrenom,
-            user_id: nouvelUserTeacher.result.lastInsertRowid
-        }
-
-        const teacherCreer = await fetchAuth('/teachers', 'POST', bodyTeacher);
-
-        e.target.reset();
-        document.getElementById('modaleAjoutEnseignant').classList.remove('ouverte');
-        chargerToutLesEnseignants();
-
-    }
-)
-
-
-// afficher tout les enseignants
 const chargerToutLesEnseignants = async () => {
     const enseignants = await fetchAuth('/teachers');
 
@@ -206,7 +147,6 @@ const chargerToutLesEnseignants = async () => {
 
     const tbody = document.getElementById('corpsTableauEnseignants');
     tbody.innerHTML = lignesHTML;
-    
 }
 
 chargerToutLesEnseignants();
@@ -222,7 +162,6 @@ document.getElementById('corpsTableauEnseignants').addEventListener(
 
         idEnseignantASupprimer = bouton.dataset.id;
         document.getElementById('modaleConfirmationSuppression').classList.add('ouverte');
-
     }
 );
 
@@ -234,17 +173,22 @@ document.getElementById('confirmerSuppression').addEventListener('click', async 
         afficherToast("Enseignant supprimé avec succès");
         chargerToutLesEnseignants();
     } catch (error) {
-        afficherToast(`Erreur lors de la suppression de l'elève`);
+        afficherToast(`Erreur lors de la suppression de l'enseignant`);
     }
 });
 
-// bouton de modification enseignant 
+
+// ouverture modale "Ajouter" -> champs requis
+
 document.getElementById('boutonOuvrirModaleEnseignant').addEventListener(
     'click', ()=> {
         document.getElementById('pseudoname').required = true;
         document.getElementById('motdepasse').required = true;
     }
 )
+
+
+// clic bouton modifier -> pré-remplissage
 
 let idAModifier = null;
 let userEnEditon = null;
@@ -265,9 +209,86 @@ document.getElementById('corpsTableauEnseignants').addEventListener('click', asy
     document.getElementById('prenom').value = teacher.prenom;
     document.getElementById('pseudoname').value = user.pseudoname;
     document.getElementById('matricule').value = teacher.matricule;
-    document.getElementById('pseudoname').required = false;
-    document.getElementById('motdepasse').required = false;
-
     document.getElementById('modaleAjoutEnseignant').classList.add('ouverte');
 
+    document.getElementById('pseudoname').required = false;
+    document.getElementById('motdepasse').required = false;
+});
+
+
+// soumission du formulaire (création OU modification)
+
+document.getElementById('formulaireAjoutEnseignant').addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const idEnEdition = idAModifier;
+
+    const champNom = document.getElementById('nom').value;
+    const chamPrenom = document.getElementById('prenom').value;
+    const pseudoname = document.getElementById('pseudoname').value;
+    const motdepasse = document.getElementById('motdepasse').value;
+    const matricule = document.getElementById('matricule').value;
+
+    if(idEnEdition) {
+        const bodyTeacher = {
+            matricule: matricule,
+            nom: champNom,
+            prenom: chamPrenom,
+        };
+
+        await fetchAuth(`/teachers/${idAModifier}`, 'PUT', bodyTeacher);
+
+        const bodyUser = {
+            pseudoname: pseudoname
+        };
+
+        if(motdepasse){
+            bodyUser.motdepasse = motdepasse;
+        }
+
+        await fetchAuth(`/users/${userEnEditon}`, 'PUT', bodyUser);
+
+        afficherToast('Enseignant modifié avec succès')
+
+    } else {
+        const teacher = await fetchAuth('/teachers');
+        const pseudo = await fetchAuth('/users');
+        const matriculeExiste = teacher.some(s => s.matricule === matricule);
+        const pseudoExiste = pseudo.some(s => s.pseudoname === pseudoname);
+
+        if(matriculeExiste){
+            afficherToast('Ce matricule est déjà utilisé');
+            return;
+        }
+
+        if(pseudoExiste){
+            afficherToast('Ce pseudonyme est déjà utilisé');
+            return;
+        }
+
+        const body = {
+            name: `${champNom} ${chamPrenom}`,
+            role: 'prof',
+            pseudoname: pseudoname,
+            motdepasse: motdepasse,
+        }
+
+        const nouvelUserTeacher = await fetchAuth('/users', 'POST', body);
+
+        const bodyTeacher = {
+            matricule: matricule,
+            nom: champNom,
+            prenom: chamPrenom,
+            user_id: nouvelUserTeacher.result.lastInsertRowid
+        }
+
+        await fetchAuth('/teachers', 'POST', bodyTeacher);
+        afficherToast('Enseignant créé avec succès');
+    }
+
+    e.target.reset();
+    idAModifier = null;
+    userEnEditon = null;
+    document.getElementById('modaleAjoutEnseignant').classList.remove('ouverte');
+    chargerToutLesEnseignants();
 });
