@@ -131,8 +131,8 @@
                         <thead>
                             <tr>
                                 <th>Nom de la matière</th>
-                                <th>Code</th>
-                                <th>Coefficient</th>
+                                <th>Classe</th>
+                                <th>Enseignants</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -163,15 +163,23 @@
                         <label for="nom_matiere">Nom de la matière</label>
                         <input type="text" id="nom_matiere" name="nom_matiere" placeholder="Mathématiques" required>
                     </div>
+                    <!-- Select pour la classe (classe_id) -->
                     <div class="champ-formulaire">
-                        <label for="code_matiere">Code</label>
-                        <input type="text" id="code_matiere" name="code_matiere" placeholder="MATH" required>
+                        <label for="classe_id">Classe</label>
+                        <select id="classe_id" name="classe_id" required>
+                            <option value="" disabled selected>Sélectionner une classe</option>
+                            <!-- Options injectées par JavaScript -->
+                        </select>
                     </div>
                 </div>
 
+                <!-- Select pour l'enseignant (teacher_id) -->
                 <div class="champ-formulaire">
-                    <label for="coefficient">Coefficient</label>
-                    <input type="number" id="coefficient" name="coefficient" placeholder="4" min="1" required>
+                    <label for="teacher_id">Enseignant</label>
+                    <select id="teacher_id" name="teacher_id" required>
+                        <option value="" disabled selected>Sélectionner un enseignant</option>
+                        <!-- Options injectées par JavaScript -->
+                    </select>
                 </div>
 
                 <div class="actions-modale">
