@@ -77,6 +77,10 @@ app.get('/dashboard/admin/matiere', (req, res) => {
     res.sendFile(path.join(import.meta.dirname, 'public/html/matiere-admin.html'));
 })
 
+app.get('/dashboard/admin/presence', (req, res) => {
+    res.sendFile(path.join(import.meta.dirname, 'public/html/presence-admin.html'))
+})
+
 
 
 // Route api 
