@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduSmart — Notes</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="shortcut icon" href="/images/favicon.svg" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="/css/style-notes.css">
+</head>
+
+<body>
+
+    <div class="mise-en-page">
+
+        <!-- ---------- SIDEBAR ---------- -->
+        <aside class="sidebar" id="sidebar">
+            <button class="bouton-fermer-sidebar" id="boutonFermerSidebar" aria-label="Fermer le menu">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div class="logo">
+                <span class="logo-icone"><i class="fa-solid fa-graduation-cap"></i></span>
+                <div class="logo-texte">
+                    <span class="logo-nom">EduSmart</span>
+                    <span class="logo-slogan">Gestion scolaire</span>
+                </div>
+            </div>
+
+            <nav class="nav-sidebar">
+                <a href="/dashboard/admin" class="nav-item">
+                    <i class="fa-solid fa-table-cells"></i>
+                    <span>Tableau de bord</span>
+                </a>
+                <a href="/dashboard/admin/eleve" class="nav-item">
+                    <i class="fa-solid fa-user-graduate"></i>
+                    <span>Élèves</span>
+                </a>
+                <a href="/dashboard/admin/enseignant" class="nav-item">
+                    <i class="fa-solid fa-chalkboard-user"></i>
+                    <span>Enseignants</span>
+                </a>
+                <a href="/dashboard/admin/classe" class="nav-item">
+                    <i class="fa-solid fa-layer-group"></i>
+                    <span>Classes</span>
+                </a>
+                <a href="/dashboard/admin/matiere" class="nav-item">
+                    <i class="fa-solid fa-book"></i>
+                    <span>Matières</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fa-solid fa-calendar-check"></i>
+                    <span>Présences</span>
+                </a>
+                <!-- Onglet Notes rendu actif -->
+                <a href="#" class="nav-item actif">
+                    <i class="fa-solid fa-chart-simple"></i>
+                    <span>Notes</span>
+                    <span class="point-actif"></span>
+                </a>
+            </nav>
+
+            <div class="nav-sidebar nav-sidebar-bas">
+                <a href="#" class="nav-item">
+                    <i class="fa-solid fa-gear"></i>
+                    <span>Paramètres</span>
+                </a>
+                <a href="/accueil" id="boutonDeconnexion" class="nav-item">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <span>Déconnexion</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- ---------- CONTENU PRINCIPAL ---------- -->
+        <div class="contenu-principal">
+
+            <header class="barre-haut">
+                <button class="bouton-burger" id="boutonBurger">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+
+                <div>
+                    <h1>Notes</h1>
+                    <p class="date-jour" id="dateJour"></p>
+                </div>
+
+                <div class="recherche">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" placeholder="Rechercher un élève...">
+                </div>
+
+                <div class="actions-haut">
+                    <div class="profil">
+                        <div class="profil-texte">
+                            <span class="profil-nom">Sophie Martin</span>
+                            <span class="profil-role">Administration</span>
+                        </div>
+                        <div class="avatar">SM</div>
+                    </div>
+                </div>
+            </header>
+
+            <main class="zone-scroll">
+
+                <section class="entete-page">
+                    <div>
+                        <h2>Consultation des notes</h2>
+                        <p>Visualisez les évaluations des élèves par classe et par matière</p>
+                    </div>
+                </section>
+
+                <section class="carte-panneau">
+                    <div class="panneau-entete">
+                        <div>
+                            <h3>Relevé de notes</h3>
+                            <p>Total : <span id="nombreNotes"></span> enregistrements</p>
+                        </div>
+                    </div>
+
+                    <table class="tableau-liste">
+                        <thead>
+                            <tr>
+                                <th>Nom de l'élève</th>
+                                <th>Matière</th>
+                                <th>Note</th>
+                                <th>Date</th>
+                                <th>Type</th>
+                            </tr>
+                        </thead>
+                        <tbody id="corpsTableauNotes">
+                            <!-- Les données seront injectées ici par JavaScript -->
+                        </tbody>
+                    </table>
+                </section>
+
+            </main>
+        </div>
+    </div>
+
+    
+    <script src="/js/scriptNotes-admin.js"></script>
+</body>
+
+</html>
