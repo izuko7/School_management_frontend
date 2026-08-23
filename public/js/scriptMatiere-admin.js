@@ -123,25 +123,34 @@ document.querySelectorAll('.bouton-fermer-global').forEach(bouton => {
 // afficher toute les matières 
 const chargerTouteLesMatières = async () => {
     const subjects = await fetchAuth('/subjects');
+    const classes = await fetchAuth('/classes');
+    const teachers = await fetchAuth('/teachers');
 
     document.getElementById('nombreMatieres').textContent = subjects.length;
 
-    const ligneHTML = subjects.map((matieres) => {
+    const ligneHTML = subjects.map((matiere) => {
+        const classe = classes.find(c => c.id === matiere.classe_id);
+        const teacher = teachers.find(c => c.id === matiere.teacher_id);
+
+        const nomClasse = classe ? classe.nom : 'Inconnue';
+        const nomEnseignant = teacher ? `${teacher.nom} ${teacher.prenom}` : 'Inconnu';
+
          return `
             <tr>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td>${matiere.nom}</td>
+                <td>${nomClasse}</td>
+                <td>${nomEnseignant}</td>
                 <td>
-                    <button class="bouton-action bouton-modifier" data-id="">
+                    <button class="bouton-action bouton-modifier" data-id="${matiere.id}">
                     <i class="fa-solid fa-pen"></i>
                     </button>
-                    <button class="bouton-action bouton-supprimer" data-id="">
+                    <button class="bouton-action bouton-supprimer" data-id="${matiere.id}">
                         <i class="fa-solid fa-trash"></i>                     
                     </button>               
                 </td>
             </tr>
         `;
+
     }).join('');
 
     const tbody = document.getElementById('corpsTableauMatieres');
@@ -149,3 +158,119 @@ const chargerTouteLesMatières = async () => {
 }
 
 chargerTouteLesMatières();
+
+const peuplerSelectClasses = async() => {
+    const classes = await fetchAuth('/classes');
+    const select = document.getElementById('classe_id');
+
+    select.innerHTML = classes.map((classe) => {
+        return `<option value="${classe.id}">${classe.nom}</option>`
+    }).join('');
+}
+
+peuplerSelectClasses();
+
+const peuplerSelectEnseignants = async () => {
+    const teachers = await fetchAuth('/teachers');
+    const select = document.getElementById('teacher_id');
+
+    select.innerHTML = teachers.map((teacher) => {
+        return `<option value="${teacher.id}">${teacher.nom} ${teacher.prenom}</option>`
+    }).join('');
+}
+
+peuplerSelectEnseignants();
+
+// supprimer les matières 
+
+let idMatiereASupprimer = null;
+
+document.getElementById('corpsTableauMatieres').addEventListener('click', (e) =>{
+    const bouton = e.target.closest('.bouton-supprimer');
+    if(!bouton) return;
+
+    idMatiereASupprimer = bouton.dataset.id;
+    document.getElementById('modaleConfirmationSuppression').classList.add('ouverte');
+});
+
+document.getElementById('confirmerSuppression').addEventListener('click', async () => {
+    if(!idMatiereASupprimer) return;
+
+    try {
+        await fetchAuth(`/subjects/${idMatiereASupprimer}`, 'DELETE');
+
+        document.getElementById('modaleConfirmationSuppression').classList.remove('ouverte');
+        afficherToast('Matière supprimée avec succès');
+        idMatiereASupprimer = null;
+        chargerTouteLesMatières();
+    } catch (error) {
+        afficherToast('Erreur lors de la suppression de la matière');
+    }
+});
+
+// clic bouton modifier pré-remplissage
+let idAEditer = null;
+
+// clic bouton "Ajouter une matière" (nouvelle matière, pas modification)
+document.getElementById('boutonOuvrirModaleMatiere').addEventListener('click', () => {
+    idAEditer = null;
+    document.getElementById('formulaireAjoutMatiere').reset();
+});
+
+document.getElementById('corpsTableauMatieres').addEventListener('click', async (e) => {
+    const boutonModifier = e.target.closest('.bouton-modifier');
+    if (!boutonModifier) return;
+
+    const id = boutonModifier.dataset.id;
+    const matiere = await fetchAuth(`/subjects/${id}`);
+
+    idAEditer = matiere.id;
+
+    document.getElementById('nom_matiere').value = matiere.nom;
+    document.getElementById('classe_id').value = matiere.classe_id;
+    document.getElementById('teacher_id').value = matiere.teacher_id;
+    document.getElementById('modaleAjoutMatiere').classList.add('ouverte');
+});
+
+// soumission du formulaire (création OU modification)
+
+document.getElementById('formulaireAjoutMatiere').addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const idEnEdition = idAEditer;
+
+    const champNom = document.getElementById('nom_matiere').value;
+    const champClasseId = Number(document.getElementById('classe_id').value);
+    const champTeacherId = Number(document.getElementById('teacher_id').value);
+
+    const bodyMatiere = {
+        nom: champNom,
+        classe_id: champClasseId,
+        teacher_id: champTeacherId,
+    };
+
+    if (idEnEdition) {
+        await fetchAuth(`/subjects/${idEnEdition}`, 'PUT', bodyMatiere);
+        afficherToast('Matière modifiée avec succès');
+    } else {
+        const subjects = await fetchAuth('/subjects');
+
+        const matiereExiste = subjects.some(s => {
+            return s.nom.trim().toLowerCase() === champNom.trim().toLowerCase()
+                && s.classe_id === champClasseId;
+        });
+
+        if (matiereExiste) {
+            afficherToast('Cette matière existe déjà dans cette classe !');
+            return;
+        }
+
+        await fetchAuth('/subjects', 'POST', bodyMatiere);
+        afficherToast('Matière créée avec succès');
+    }
+
+    e.target.reset();
+    idAEditer = null;
+    document.getElementById('modaleAjoutMatiere').classList.remove('ouverte');
+    chargerTouteLesMatières();
+});
