@@ -10,7 +10,7 @@
     <link rel="shortcut icon" href="/images/favicon.svg" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <!-- Lien vers le fichier CSS (vous pouvez le renommer style-presences-admin.css si vous faites un fichier dédié) -->
+    <!-- Lien vers le fichier CSS -->
     <link rel="stylesheet" href="/css/style-presence-admin.css"> 
 </head>
 
@@ -110,14 +110,35 @@
 
             <main class="zone-scroll">
 
+                <!-- Titre de la section -->
                 <section class="entete-page">
                     <div>
-                        <h2>Suivi des présences</h2>
-                        <p>Consultez l'historique des absences et retards</p>
+                        <h2>Liste des présences</h2>
+                        <p>Consultez et filtrez l'historique des absences et retards</p>
                     </div>
-                    <!-- Le bouton d'ajout a été retiré ici -->
                 </section>
 
+                <!-- Formulaire de filtre -->
+                <section class="carte-panneau">
+                    <form id="formulaireFiltrePresences" class="formulaire-modale">
+                        <div class="ligne-champs">
+                            <div class="champ-formulaire">
+                                <label for="filtre_classe">Classe</label>
+                                <select id="filtre_classe" name="classe_id">
+                                    <option value="">Sélectionner une classe</option>
+                                    <!-- Options injectées par JS -->
+                                </select>
+                            </div>
+                            <div class="champ-formulaire">
+                                <label for="filtre_date">Date</label>
+                                <input type="date" id="filtre_date" name="date">
+                            </div>
+                        </div>
+                        <button type="submit" class="bouton-valider-modale">Filtrer</button>
+                    </form>
+                </section>
+
+                <!-- Tableau des présences -->
                 <section class="carte-panneau">
                     <div class="panneau-entete">
                         <div>
@@ -130,9 +151,9 @@
                         <thead>
                             <tr>
                                 <th>Élève</th>
-                                <th>Classe</th>
                                 <th>Date</th>
                                 <th>Statut</th>
+                                <th>Justification</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -143,6 +164,40 @@
                 </section>
 
             </main>
+        </div>
+    </div>
+
+    <!-- ---------- MODALE : JUSTIFIER UNE ABSENCE ---------- -->
+    <div id="modaleJustificationAbsence" class="modale-overlay">
+        <div class="modale-contenu">
+            <button class="bouton-fermer-modale bouton-fermer-global" aria-label="Fermer">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <h2>Justifier une absence</h2>
+            <form id="formulaireJustificationAbsence" class="formulaire-modale">
+
+                <!-- Champ caché : stocke l'id de l'absence en cours de modification -->
+                <input type="hidden" id="absenceEnEdition">
+
+                <!-- Case à cocher pour justifier -->
+                <div class="champ-formulaire">
+                    <label for="est_justifiee">
+                        <input type="checkbox" id="est_justifiee" name="est_justifiee" style="width: auto; margin-right: 8px; vertical-align: middle;">
+                        Absence justifiée
+                    </label>
+                </div>
+
+                <!-- Champ texte pour le motif -->
+                <div class="champ-formulaire">
+                    <label for="motif_absence">Motif</label>
+                    <input type="text" id="motif_absence" name="motif" placeholder="Ex : Certificat médical, retard transport...">
+                </div>
+
+                <div class="actions-modale">
+                    <button type="button" class="bouton-annuler-modale bouton-fermer-global">Annuler</button>
+                    <button type="submit" class="bouton-valider-modale">Enregistrer</button>
+                </div>
+            </form>
         </div>
     </div>
 

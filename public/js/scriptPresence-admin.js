@@ -121,4 +121,3 @@ document.querySelectorAll('.bouton-fermer-global').forEach(bouton => {
     });
 });
 
-afficherTouteLesAbsences
