@@ -121,3 +121,82 @@ document.querySelectorAll('.bouton-fermer-global').forEach(bouton => {
     });
 });
 
+// 
+
+const chargerPresence = async () => {
+
+    const classeIdChoisie = parseInt(document.getElementById('filtre_classe').value);
+    const datechoisie = document.getElementById('filtre_date').value;
+
+    const dateConvertie = datechoisie ? dayjs(datechoisie).format('DD/MM/YYYY') : null;
+
+    const selectElement = document.getElementById('corpsTableauPresences');
+
+    if(isNaN(classeIdChoisie)) {
+        selectElement.innerHTML = `
+            <tr>
+                <td colspan="5" style="text-align: center; color: var(--gris-clair);">Veuillez sélectionner une classe</td>
+            </tr>
+        `;
+        return;
+    }
+
+    const students = await fetchAuth('/students');
+    const absences = await fetchAuth('/absences');
+    const classes = await fetchAuth('/classes');
+
+    const filtreStudent =  students.filter((eleve) => eleve.classe_id === classeIdChoisie);
+
+    const filtreAbsences = absences.filter((absence) => {
+        const appartientClasse = filtreStudent.some((eleve) => eleve.id === absence.student_id);
+        const dateCorrespond = dateConvertie ? absence.date === dateConvertie : true;
+        return appartientClasse && dateCorrespond
+        
+    });
+
+    const lignesHTML = filtreAbsences.map((absence) => {
+        const eleve = students.find(s => s.id === absence.student_id);
+
+        const statutClasse = absence.status === 'present' ? 'badge-actif' : 'badge-inactif';
+
+        const TexteDeJustification = absence.justifie
+            ? `Justifiée${absence.motif ? ' — ' + absence.motif : ''}`
+            : 'Non justifié';
+
+        return `
+            <tr>
+                <td>${eleve.nom} ${eleve.prenom}</td>
+                <td>${absence.date}</td>
+                <td><span class="badge ${statutClasse}">${absence.status}</span></td>
+                <td>${TexteDeJustification}</td>
+                <td>
+                    <button class="bouton-action bouton-justifier" data-id="${absence.id}">
+                        <i class="fa-solid fa-pen"></i>
+                    </button>
+                </td>
+            </tr>
+        `;
+    }).join('');
+
+    selectElement.innerHTML = lignesHTML;
+}
+
+chargerPresence();
+
+
+const chargerClasseFiltre = async () => {
+    const classes = await fetchAuth('/classes');
+    const optionsHTML = classes.map((classe) => {
+        return `<option value="${classe.id}">${classe.nom}</option>`
+    }).join('');
+
+    document.getElementById('filtre_classe').innerHTML = `<option value="">Sélectionner une classe</option>` + optionsHTML;
+};
+
+chargerClasseFiltre();
+
+
+document.getElementById('formulaireFiltrePresences').addEventListener('submit', (e) => {
+    e.preventDefault();
+    chargerPresence();
+});
