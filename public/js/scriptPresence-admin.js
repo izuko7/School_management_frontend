@@ -200,3 +200,25 @@ document.getElementById('formulaireFiltrePresences').addEventListener('submit', 
     e.preventDefault();
     chargerPresence();
 });
+
+
+document.getElementById('corpsTableauPresences').addEventListener('click', async (e) => {
+    const boutonJustifier = e.target.closest('.bouton-justifier');
+    if (!boutonJustifier) return;
+
+    const id = boutonJustifier.dataset.id;
+
+    // Récupérer les infos de cette absence précise
+    const absences = await fetchAuth('/absences');
+    const absence = absences.find(a => a.id === parseInt(id));
+
+    // Pré-remplir la modale
+    document.getElementById('est_justifiee').checked = absence.justifie === 1;
+    document.getElementById('motif_absence').value = absence.motif || '';
+
+    // Mémoriser l'id en cours d'édition
+    idAbsenceEnEdition = id;
+
+    // Ouvrir la modale
+    document.getElementById('modaleJustificationAbsence').classList.add('ouverte');
+});
