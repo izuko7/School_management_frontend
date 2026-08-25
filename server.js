@@ -85,6 +85,10 @@ app.get('/dashboard/admin/note', (req, res) => {
     res.sendFile(path.join(import.meta.dirname, 'public/html/note-admin.html'))
 })
 
+app.get('/dashboard/admin/parametre', (req, res) =>{
+    res.sendFile(path.join(import.meta.dirname, 'public/html/parametre-admin.html'))
+})
+
 
 
 // Route api 

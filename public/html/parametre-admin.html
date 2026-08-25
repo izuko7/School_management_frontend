@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduSmart — Paramètres</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="shortcut icon" href="/images/favicon.svg" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Lien vers votre fichier CSS -->
+    <link rel="stylesheet" href="/css/style-parametres-admin.css">
+</head>
+
+<body>
+
+    <div id="toast" class="toast"></div>
+
+    <div class="mise-en-page">
+
+        <!-- ---------- SIDEBAR ---------- -->
+        <aside class="sidebar">
+            <div class="logo">
+                <span class="logo-icone"><i class="fa-solid fa-graduation-cap"></i></span>
+                <div class="logo-texte">
+                    <span class="logo-nom">EduSmart</span>
+                </div>
+            </div>
+            <nav class="nav-sidebar">
+                <a href="#" class="nav-item"><i class="fa-solid fa-table-cells"></i><span>Tableau de bord</span></a>
+                <a href="#" class="nav-item"><i class="fa-solid fa-user-graduate"></i><span>Élèves</span></a>
+                <a href="#" class="nav-item"><i class="fa-solid fa-chalkboard-user"></i><span>Enseignants</span></a>
+                <a href="#" class="nav-item"><i class="fa-solid fa-layer-group"></i><span>Classes</span></a>
+                <a href="#" class="nav-item"><i class="fa-solid fa-book"></i><span>Matières</span></a>
+                <a href="#" class="nav-item"><i class="fa-solid fa-calendar-check"></i><span>Présences</span></a>
+                <a href="#" class="nav-item"><i class="fa-solid fa-chart-simple"></i><span>Notes</span></a>
+            </nav>
+            <div class="nav-sidebar nav-sidebar-bas">
+                <a href="#" class="nav-item actif"><i class="fa-solid fa-gear"></i><span>Paramètres</span></a>
+                <a href="/accueil" class="nav-item"><i class="fa-solid fa-right-from-bracket"></i><span>Déconnexion</span></a>
+            </div>
+        </aside>
+
+        <!-- ---------- CONTENU PRINCIPAL ---------- -->
+        <div class="contenu-principal">
+
+            <header class="barre-haut">
+                <div>
+                    <h1>Paramètres</h1>
+                    <p class="date-jour">Gérez vos préférences et informations</p>
+                </div>
+            </header>
+
+            <main class="zone-scroll">
+
+                <section class="entete-page">
+                    <div>
+                        <h2>Configuration du compte</h2>
+                        <p>Modifiez vos informations personnelles et les paramètres de l'application.</p>
+                    </div>
+                </section>
+
+                <!-- Carte 1 : Profil -->
+                <section class="carte-panneau">
+                    <div class="panneau-entete">
+                        <h3>Informations du profil</h3>
+                        <p>Mettez à jour vos données personnelles</p>
+                    </div>
+                    <form id="formProfil" class="formulaire-modale">
+                        <div class="ligne-champs">
+                            <div class="champ-formulaire">
+                                <label for="nom">Nom complet</label>
+                                <input type="text" id="nom" name="nom" value="Sophie Martin" required>
+                            </div>
+                            <div class="champ-formulaire">
+                                <label for="email">Adresse e-mail</label>
+                                <input type="email" id="email" name="email" value="sophie.martin@edusmart.com" required>
+                            </div>
+                        </div>
+                        <div class="actions-modale">
+                            <button type="submit" class="bouton-valider-modale">Enregistrer</button>
+                        </div>
+                    </form>
+                </section>
+
+                <!-- Carte 2 : Établissement -->
+                <section class="carte-panneau">
+                    <div class="panneau-entete">
+                        <h3>Paramètres de l'établissement</h3>
+                        <p>Configurez les informations globales de l'école</p>
+                    </div>
+                    <form id="formEtab" class="formulaire-modale">
+                        <div class="ligne-champs">
+                            <div class="champ-formulaire">
+                                <label for="nom_ecole">Nom de l'établissement</label>
+                                <input type="text" id="nom_ecole" name="nom_ecole" value="Lycée EduSmart" required>
+                            </div>
+                            <div class="champ-formulaire">
+                                <label for="annee_scolaire">Année scolaire active</label>
+                                <select id="annee_scolaire" name="annee_scolaire">
+                                    <option>2023-2024</option>
+                                    <option selected>2024-2025</option>
+                                    <option>2025-2026</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="actions-modale">
+                            <button type="submit" class="bouton-valider-modale">Mettre à jour</button>
+                        </div>
+                    </form>
+                </section>
+
+                <!-- Carte 3 : Notifications -->
+                <section class="carte-panneau">
+                    <div class="panneau-entete">
+                        <h3>Préférences & Notifications</h3>
+                        <p>Choisissez comment vous souhaitez être alerté</p>
+                    </div>
+                    
+                    <div class="ligne-parametre">
+                        <div class="info-parametre">
+                            <h4>Alertes d'absences</h4>
+                            <p>Recevoir un e-mail lorsqu'un élève est absent sans justification.</p>
+                        </div>
+                        <label class="interrupteur">
+                            <input type="checkbox" class="toggle-param" checked>
+                            <span class="glissiere"></span>
+                        </label>
+                    </div>
+
+                    <div class="ligne-parametre">
+                        <div class="info-parametre">
+                            <h4>Nouvelles inscriptions</h4>
+                            <p>Être notifié lors de l'ajout d'un nouvel élève ou enseignant.</p>
+                        </div>
+                        <label class="interrupteur">
+                            <input type="checkbox" class="toggle-param">
+                            <span class="glissiere"></span>
+                        </label>
+                    </div>
+
+                    <div class="ligne-parametre">
+                        <div class="info-parametre">
+                            <h4>Rapport hebdomadaire</h4>
+                            <p>Recevoir un résumé des présences et notes chaque dimanche.</p>
+                        </div>
+                        <label class="interrupteur">
+                            <input type="checkbox" class="toggle-param" checked>
+                            <span class="glissiere"></span>
+                        </label>
+                    </div>
+                </section>
+
+                <!-- Carte 4 : Sécurité -->
+                <section class="carte-panneau">
+                    <div class="panneau-entete">
+                        <h3>Sécurité</h3>
+                        <p>Modifiez votre mot de passe</p>
+                    </div>
+                    <form id="formMdp" class="formulaire-modale">
+                        <div class="champ-formulaire">
+                            <label for="old_mdp">Mot de passe actuel</label>
+                            <input type="password" id="old_mdp" name="old_mdp" required>
+                        </div>
+                        <div class="ligne-champs">
+                            <div class="champ-formulaire">
+                                <label for="new_mdp">Nouveau mot de passe</label>
+                                <input type="password" id="new_mdp" name="new_mdp" required>
+                            </div>
+                            <div class="champ-formulaire">
+                                <label for="confirm_mdp">Confirmer le mot de passe</label>
+                                <input type="password" id="confirm_mdp" name="confirm_mdp" required>
+                            </div>
+                        </div>
+                        <div class="actions-modale">
+                            <button type="submit" class="bouton-valider-modale">Changer le mot de passe</button>
+                        </div>
+                    </form>
+                </section>
+
+                <!-- Carte 5 : Zone de danger -->
+                <section class="carte-panneau zone-danger">
+                    <div class="panneau-entete">
+                        <h3>Zone de danger</h3>
+                        <p>Actions irréversibles concernant votre compte.</p>
+                    </div>
+                    <div class="actions-modale" style="justify-content: flex-start;">
+                        <button id="btnDeconnecter" class="bouton-danger">Se déconnecter de tous les appareils</button>
+                    </div>
+                </section>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- Lien vers votre fichier JS -->
+    <script src="/js/script-parametres-admin.js"></script>
+</body>
+
+</html>
