@@ -201,6 +201,7 @@ document.getElementById('formulaireFiltrePresences').addEventListener('submit', 
     chargerPresence();
 });
 
+let idAbsenceEnEdition = null;
 
 document.getElementById('corpsTableauPresences').addEventListener('click', async (e) => {
     const boutonJustifier = e.target.closest('.bouton-justifier');
@@ -221,4 +222,24 @@ document.getElementById('corpsTableauPresences').addEventListener('click', async
 
     // Ouvrir la modale
     document.getElementById('modaleJustificationAbsence').classList.add('ouverte');
+});
+
+document.getElementById('formulaireJustificationAbsence').addEventListener('submit', async (e) =>{
+    e.preventDefault();
+
+    const estJustifiee = document.getElementById('est_justifiee').checked;
+    const motif = document.getElementById('motif_absence').value;
+
+    const bodyAbsence = {
+        justifie: estJustifiee ? 1 : 0,
+        motif: motif
+    };
+
+    await fetchAuth(`/absences/${idAbsenceEnEdition}`, 'PUT', bodyAbsence);
+
+    afficherToast('Absence mise à jour avec succès');
+
+    e.target.reset();
+    document.getElementById('modaleJustificationAbsence').classList.remove('ouverte');
+    chargerPresence();
 });
