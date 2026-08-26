@@ -10,10 +10,14 @@
     <link rel="shortcut icon" href="/images/favicon.svg" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="/css/style-notes.css">
+    <!-- Lien vers le fichier CSS -->
+    <link rel="stylesheet" href="/css/style-notes.css"> 
 </head>
 
 <body>
+
+    <!-- Ajout du toast pour la cohérence avec les autres pages -->
+    <div id="toast" class="toast"></div>
 
     <div class="mise-en-page">
 
@@ -97,16 +101,18 @@
                 <div class="actions-haut">
                     <div class="profil">
                         <div class="profil-texte">
-                            <span class="profil-nom">Sophie Martin</span>
-                            <span class="profil-role">Administration</span>
+                            <!-- Remplacement des valeurs en dur par les IDs pour le JS -->
+                            <span id="profilNom" class="profil-nom"></span>
+                            <span id="profilRole" class="profil-role"></span>
                         </div>
-                        <div class="avatar">SM</div>
+                        <div id="profilAvatar" class="avatar"></div>
                     </div>
                 </div>
             </header>
 
             <main class="zone-scroll">
 
+                <!-- Titre de la section -->
                 <section class="entete-page">
                     <div>
                         <h2>Consultation des notes</h2>
@@ -114,6 +120,30 @@
                     </div>
                 </section>
 
+                <!-- Formulaire de filtre (ajouté pour correspondre à la logique de Présences) -->
+                <section class="carte-panneau">
+                    <form id="formulaireFiltreNotes" class="formulaire-modale">
+                        <div class="ligne-champs">
+                            <div class="champ-formulaire">
+                                <label for="filtre_classe">Classe</label>
+                                <select id="filtre_classe" name="classe_id">
+                                    <option value="">Sélectionner une classe</option>
+                                    <!-- Options injectées par JS -->
+                                </select>
+                            </div>
+                            <div class="champ-formulaire">
+                                <label for="filtre_matiere">Matière</label>
+                                <select id="filtre_matiere" name="matiere_id">
+                                    <option value="">Sélectionner une matière</option>
+                                    <!-- Options injectées par JS -->
+                                </select>
+                            </div>
+                        </div>
+                        <button type="submit" class="bouton-valider-modale">Filtrer</button>
+                    </form>
+                </section>
+
+                <!-- Tableau des notes -->
                 <section class="carte-panneau">
                     <div class="panneau-entete">
                         <div>
@@ -142,7 +172,8 @@
         </div>
     </div>
 
-    
+    <!-- Ajout du script dayjs pour la gestion des dates -->
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
     <script src="/js/scriptNotes-admin.js"></script>
 </body>
 

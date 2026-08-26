@@ -321,6 +321,90 @@ button {
   border-bottom: none;
 }
 
+/* ---------- FORMULAIRES & FILTRES ---------- */
+.formulaire-modale {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.ligne-champs {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.champ-formulaire {
+  flex: 1;
+  min-width: 200px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.champ-formulaire label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--gris-texte);
+}
+.champ-formulaire input,
+.champ-formulaire select {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid var(--bordure);
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 14px;
+  background: var(--blanc);
+  color: #1f2937;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+.champ-formulaire input:focus,
+.champ-formulaire select:focus {
+  border-color: var(--violet-bouton);
+}
+
+.bouton-valider-modale {
+  align-self: flex-start;
+  background: var(--violet-bouton);
+  color: var(--blanc);
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  transition: background 0.2s ease;
+}
+.bouton-valider-modale:hover {
+  background: var(--violet-bouton-fonce);
+}
+
+/* ---------- TOAST (Notifications) ---------- */
+.toast {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  background: #333;
+  color: var(--blanc);
+  padding: 14px 24px;
+  border-radius: 8px;
+  z-index: 1000;
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  pointer-events: none;
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+.toast.afficher {
+  opacity: 1;
+  transform: translateY(0);
+}
+.toast.succes {
+  background: var(--vert-positif);
+}
+.toast.erreur {
+  background: var(--rouge);
+}
+
 /* ---------- RESPONSIVE ---------- */
 @media (max-width: 992px) {
   .sidebar {
@@ -377,5 +461,9 @@ button {
     flex-direction: column;
     align-items: flex-start;
     gap: 12px;
+  }
+  
+  .ligne-champs {
+    flex-direction: column;
   }
 }
