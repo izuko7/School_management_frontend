@@ -81,3 +81,39 @@ const donneUsers = async () => {
 }
 
 donneUsers();
+
+// -------------------------------------------- //
+
+// recuperer l'identifiant de l'enseignant 
+const getTeacherId = async () => {
+    const teachers = await fetchAuth('/teachers');
+    const teacherConnected = teachers.find(teacher => teacher.user_id === utilisateur.id);
+    return teacherConnected.id;
+}
+
+// recuperation des matières de l'enseignant 
+const chargerMatieresProf = async () => {
+    const teacherId = await getTeacherId();
+    const subjects = await fetchAuth('/subjects');
+
+    const filtreMatiere = subjects.filter((matiere) => matiere.teacher_id === teacherId);
+    return filtreMatiere;
+}
+
+// extraire les classes de l'enseignant 
+const AvoirTouteLesClassesProf = async () => {
+    const mesMatieres = await chargerMatieresProf();
+    const classeId = mesMatieres.map((matiere) => matiere.classe_id);
+    const classeIdUniques = [... new Set(classeId)];
+    return classeIdUniques;
+}
+
+// remplir le selecteur dans le HMTL 
+const remplirSelecteurClasse = async () => {
+    const classeIdUniques = await AvoirTouteLesClassesProf();
+    const classes = await fetchAuth('/classes');
+
+    const mesClasses = classes.filter((classe) => classeIdUniques.includes(classe.id));
+
+    const selecteur = document.getElementById('selecteur-classe')
+}
