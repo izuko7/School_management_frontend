@@ -4,9 +4,9 @@ import { logSuccess, logWarn, logError } from "../utils/logger.js";
 // Contrôlleur utilisateur 
 
 // avoir tout les utilisateurs 
-const getUsers = (req, res) =>{
+const getUsers = async (req, res) =>{
     try {
-        const users = (getAllUsers());
+        const users = await (getAllUsers());
         const usersSansMotDePasse = users.map(({motdepasse, ...rest}) => (rest));
         res.json(usersSansMotDePasse);
     } catch (error) {
@@ -17,10 +17,10 @@ const getUsers = (req, res) =>{
 
 
 // avoir un utilisateur grâce à son id 
-const getUser = (req, res) => {
+const getUser = async (req, res) => {
     try {
         const id = req.params.id;
-        const user = getUserById(id);
+        const user = await getUserById(id);
 
         if(!user){
             logWarn(`Utilisateur introuvable`);
@@ -38,10 +38,10 @@ const getUser = (req, res) => {
 
 
 // créer un utilisateur 
-const createUserHandler = (req, res) => {
+const createUserHandler = async (req, res) => {
     try {
         const { name, role, pseudoname, motdepasse } = req.body;
-        const result = createUser(name, role, pseudoname, motdepasse);
+        const result = await createUser(name, role, pseudoname, motdepasse);
         logSuccess(`Utilisateur créé : ${pseudoname}`);
         res.status(201).json({message: `Ùtilisateur créer avec succès`, result});
     } catch (error) {
@@ -52,11 +52,11 @@ const createUserHandler = (req, res) => {
 
 
 // modifier un utilisateur 
-const updateUserHandler = (req, res) => {
+const updateUserHandler = async (req, res) => {
     try {
         const id = req.params.id;
         const data = req.body;
-        const result = updateUser(id, data);
+        const result = await updateUser(id, data);
         logSuccess(`Utilisateur modifié`);
         res.json({message: `Utilisateur modifié avec succès`, result});
     } catch (error) {
@@ -67,10 +67,10 @@ const updateUserHandler = (req, res) => {
 
 
 // supprimer un utilisateur 
-const deleteUserHandler = (req, res) => {
+const deleteUserHandler = async (req, res) => {
     try {
         const id = req.params.id;
-        const result = deleteUser(id);
+        const result = await deleteUser(id);
         logSuccess(`Utilisateur supprimé`);
         res.json({message: `Utilisateur supprimé avec succès`, result});
     } catch (error) {

@@ -3,10 +3,10 @@ import { getUserByPseudo } from '../services/userService.js';
 import { logAuth, logWarn, logError } from '../utils/logger.js';
 
 
-const login = (req,res) => {
+const login = async (req,res) => {
     try {
         const { pseudoname, motdepasse } = req.body;
-        const user = getUserByPseudo(pseudoname);
+        const user = await getUserByPseudo(pseudoname);
 
         if(!user){
             logWarn(`Tentative de connexion échouée : Identifiant invalide`);
