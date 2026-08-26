@@ -1,5 +1,4 @@
-// vérification du token de l'élève 
-
+// vérification du token de l'enseignant 
 const token = localStorage.getItem('token');
 const role = localStorage.getItem('role');
 
@@ -36,6 +35,18 @@ logOut.addEventListener('click', (e) => {
     localStorage.removeItem('role');
     window.location.href = '/accueil'
 })
+
+const boutonBurger = document.getElementById('boutonBurger');
+const boutonFermerSidebar = document.getElementById('boutonFermerSidebar');
+const sidebar = document.querySelector('.sidebar');
+
+boutonBurger.addEventListener('click', function () {
+    sidebar.classList.add('ouvert');
+});
+
+boutonFermerSidebar.addEventListener('click', function () {
+    sidebar.classList.remove('ouvert');
+});
 
 function decoderToken(token) {
     const playLoad = token.split('.')[1];
