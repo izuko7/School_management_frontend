@@ -108,12 +108,140 @@ const AvoirTouteLesClassesProf = async () => {
     return classeIdUniques;
 }
 
+// Charger toutes les statistiques 
+const afficherStatClasse = async () => {
+    const classeIdUniques = await AvoirTouteLesClassesProf();
+    const statClasse = document.getElementById('stat-chiffre-classes');
+    statClasse.textContent = classeIdUniques.length;
+}
+
+afficherStatClasse();
+
+const afficherStatEleve = async () => {
+    const classeIdUniques = await AvoirTouteLesClassesProf();
+    const students = await fetchAuth('/students');
+    const mesEleves = students.filter((student) => classeIdUniques.includes(student.classe_id));
+    const nbreElves = document.getElementById('stat-chiffre-eleves');
+    nbreElves.textContent = mesEleves.length;
+}
+
+afficherStatEleve();
+
+const afficherStatMoyenne = async () => {
+    const mesMatieres = await chargerMatieresProf();
+    const subjectId = mesMatieres.map((matiere) => matiere.id);
+
+    const grades = await fetchAuth('/grades');
+    const mesNotes =  grades.filter((note) => subjectId.includes(note.subject_id));
+    const somme = mesNotes.reduce((total, note) => total + note.note, 0);
+    const moyenne = somme/mesNotes.length;
+
+    const statMoyenne = document.getElementById('stat-chiffre-moyenne');
+    statMoyenne.textContent = `${moyenne.toFixed(1)}/20`;
+}
+
+afficherStatMoyenne();
+
 // remplir le selecteur dans le HMTL 
 const remplirSelecteurClasse = async () => {
     const classeIdUniques = await AvoirTouteLesClassesProf();
     const classes = await fetchAuth('/classes');
 
     const mesClasses = classes.filter((classe) => classeIdUniques.includes(classe.id));
+    const selecteur = document.getElementById('selecteur-classe');
 
-    const selecteur = document.getElementById('selecteur-classe')
+    mesClasses.forEach((classe) => {
+        const option = document.createElement('option');
+        option.value = classe.id;
+        option.textContent = classe.nom;
+        selecteur.appendChild(option);
+    })
 }
+
+remplirSelecteurClasse();
+
+const selecteur = document.getElementById('selecteur-classe');
+selecteur.addEventListener('change', ()=> {
+    const classeSelectionne = parseInt(selecteur.value);
+});
+
+const getElevesDeClasse = async (classeId) => {
+    const students = await fetchAuth('/students');
+    const filtreStudent = students.filter((eleve) => eleve.classe_id === classeId);
+    return filtreStudent;
+}
+
+const getNombreAbsences = async (studentId) => {
+    const absences = await fetchAuth('/absences');
+    const filtreAbsences = absences.filter((absence) => absence.student_id === studentId);
+    const longueurFiltre = filtreAbsences.length;
+    return longueurFiltre;
+}
+
+const avoirMoyenneEleve = async (studentId) => {
+    const grades = await fetchAuth('/grades');
+    const mesNotes = grades.filter((note) => note.student_id === studentId);
+
+    if(mesNotes.length === 0){
+        return 0;
+    }
+
+    const somme = mesNotes.reduce((total, note) => total + note.note, 0);
+    const moyenne = somme/mesNotes.length;
+    return moyenne;
+}
+const getDerniereNote = async (studentId) => {
+    const grades = await fetchAuth('/grades');
+    const mesNotes = grades.filter((note) => note.student_id === studentId);
+    
+    if (mesNotes.length === 0) {
+        return null;
+    }
+
+    // le tri modifie mesNotes sur place, ne renvoie rien lui-même
+    mesNotes.sort((a, b) => dayjs(b.date, "DD/MM/YY").valueOf() - dayjs(a.date, "DD/MM/YY").valueOf());
+
+    // APRÈS le tri, on renvoie le premier élément (le plus récent)
+    return mesNotes[0];
+
+}
+
+const afficherTableauEleves = async (classeId) => {
+    const mesEleves = await getElevesDeClasse(classeId);
+
+    const lignesData = await Promise.all(
+        mesEleves.map(async (eleve) => {
+            const [moyenne, absences, derniereNote] = await Promise.all([
+                avoirMoyenneEleve(eleve.id),
+                getNombreAbsences(eleve.id),
+                getDerniereNote(eleve.id)
+            ]);
+            return { eleve, moyenne, absences, derniereNote };
+        })
+    );
+
+    const tableauHTML = lignesData.map((ligne) => {
+        const statut = ligne.moyenne >= 14 ? 'Excellent' : ligne.moyenne >= 10 ? 'Bien' : 'En difficulté';
+        const noteAffichee = ligne.derniereNote ? ligne.derniereNote.note : '—';
+
+        return `
+            <tr>
+                <td>${ligne.eleve.nom}</td>
+                <td>${ligne.moyenne.toFixed(1)}/20</td>
+                <td>${ligne.absences}</td>
+                <td>${noteAffichee}</td>
+                <td>${statut}</td>
+            </tr>
+        `;
+    }).join('');
+
+    const tbody = document.getElementById('tbody-eleves');
+    tbody.innerHTML = tableauHTML;
+}
+
+selecteur.addEventListener('change', () => {
+    const classeSelectionne = parseInt(selecteur.value);
+    afficherTableauEleves(classeSelectionne);
+});
+
+afficherTableauEleves();

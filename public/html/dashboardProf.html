@@ -111,7 +111,7 @@
                         <div class="stat-entete">
                             <div class="icone-stat icone-indigo"><i class="fa-solid fa-users"></i></div>
                         </div>
-                        <span class="stat-chiffre" id="stat-chiffre-eleves">0</span>
+                        <span class="stat-chiffre" id="stat-chiffre-eleves"></span>
                         <span class="stat-titre">Élèves</span>
                         <span class="stat-sous-titre">Au total</span>
                     </div>
@@ -120,7 +120,7 @@
                         <div class="stat-entete">
                             <div class="icone-stat icone-violet"><i class="fa-solid fa-chalkboard"></i></div>
                         </div>
-                        <span class="stat-chiffre" id="stat-chiffre-classes">0</span>
+                        <span class="stat-chiffre" id="stat-chiffre-classes"></span>
                         <span class="stat-titre">Classes</span>
                         <span class="stat-sous-titre">Cette année</span>
                     </div>
@@ -130,7 +130,7 @@
                             <div class="icone-stat icone-bleu"><i class="fa-solid fa-star"></i></div>
                             <span class="variation positive"><i class="fa-solid fa-arrow-trend-up"></i> +0.4</span>
                         </div>
-                        <span class="stat-chiffre" id="stat-chiffre-moyenne">0/20</span>
+                        <span class="stat-chiffre" id="stat-chiffre-moyenne"></span>
                         <span class="stat-titre">Moyenne Globale</span>
                         <span class="stat-sous-titre">Toutes classes confondues</span>
                     </div>
@@ -172,6 +172,11 @@
     <!-- Script Day.js -->
     <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
     <script src="../js/dashboardProf.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1/plugin/customParseFormat.js"></script>
+    <script>
+    dayjs.extend(dayjs_plugin_customParseFormat);
+    </script>
 </body>
 
 </html>
