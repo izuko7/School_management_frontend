@@ -133,6 +133,11 @@ const afficherStatMoyenne = async () => {
 
     const grades = await fetchAuth('/grades');
     const mesNotes =  grades.filter((note) => subjectId.includes(note.subject_id));
+
+    if(mesNotes.length === 0){
+        return null
+    }
+
     const somme = mesNotes.reduce((total, note) => total + note.note, 0);
     const moyenne = somme/mesNotes.length;
 
@@ -199,7 +204,7 @@ const getDerniereNote = async (studentId) => {
     }
 
     // le tri modifie mesNotes sur place, ne renvoie rien lui-même
-    mesNotes.sort((a, b) => dayjs(b.date, "DD/MM/YY").valueOf() - dayjs(a.date, "DD/MM/YY").valueOf());
+    mesNotes.sort((a, b) => dayjs(b.date, "DD/MM/YYYY").valueOf() - dayjs(a.date, "DD/MM/YYYY").valueOf());
 
     // APRÈS le tri, on renvoie le premier élément (le plus récent)
     return mesNotes[0];
