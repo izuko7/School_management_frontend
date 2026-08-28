@@ -39,23 +39,23 @@
                     <span>Élèves</span>
                 </a>
                 <!-- Onglet Notes rendu actif -->
-                <a href="/dashboard/admin/note" class="nav-item actif">
+                <a href="/dashboard/prof/note" class="nav-item actif">
                     <i class="fa-solid fa-chart-simple"></i>
                     <span>Notes</span>
                     <span class="point-actif"></span>
                 </a>
-                <a href="#" class="nav-item">
+                <a href="/dashboard/prof/presence" class="nav-item">
                     <i class="fa-solid fa-calendar-check"></i>
                     <span>Présences</span>
                 </a>
-                <a href="#" class="nav-item">
-                    <i class="fa-solid fa-calendar-check"></i>
+                <a href="/dashboard/prof/emploi-du-temps" class="nav-item">
+                    <i class="fa-solid fa-calendar-days"></i>
                     <span>Emploi du temps</span>
                 </a>
             </nav>
 
             <div class="nav-sidebar nav-sidebar-bas">
-                <a href="#" class="nav-item">
+                <a href="/dashboard/prof/parametre" class="nav-item">
                     <i class="fa-solid fa-gear"></i>
                     <span>Paramètres</span>
                 </a>
@@ -87,10 +87,10 @@
                 <div class="actions-haut">
                     <div class="profil">
                         <div class="profil-texte">
-                            <span id="profilNom" class="profil-nom">Sophie Martin</span>
-                            <span id="profilRole" class="profil-role">Administration</span>
+                            <span id="profilNom" class="profil-nom"></span>
+                            <span id="profilRole" class="profil-role"></span>
                         </div>
-                        <div id="profilAvatar" class="avatar">SM</div>
+                        <div id="profilAvatar" class="avatar"></div>
                     </div>
                 </div>
             </header>
@@ -119,16 +119,14 @@
                                 <label for="contexte_classe">Classe</label>
                                 <select id="contexte_classe" name="classe_id" required>
                                     <option value="">Sélectionner une classe</option>
-                                    <option value="1">6ème A</option>
-                                    <option value="2">4ème B</option>
+                                    <!-- Options injectées par JS -->
                                 </select>
                             </div>
                             <div class="champ-formulaire">
                                 <label for="contexte_matiere">Matière</label>
                                 <select id="contexte_matiere" name="matiere_id" required>
                                     <option value="">Sélectionner une matière</option>
-                                    <option value="1">Mathématiques</option>
-                                    <option value="2">Histoire</option>
+                                    <!-- Options injectées par JS -->
                                 </select>
                             </div>
                             <div class="champ-formulaire">
@@ -138,9 +136,7 @@
                             <div class="champ-formulaire">
                                 <label for="contexte_type">Type d'évaluation</label>
                                 <select id="contexte_type" name="type" required>
-                                    <option value="Contrôle">Contrôle</option>
-                                    <option value="Devoir maison">Devoir maison</option>
-                                    <option value="Oral">Oral</option>
+                                    <!-- Options injectées par JS -->
                                 </select>
                             </div>
                             <div class="champ-formulaire" style="flex: 0 0 auto; align-self: flex-end;">
@@ -185,7 +181,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
-    <script src="/js/scriptNotes-admin.js"></script>
+    <script src="/js/scriptNotes-Prof.js"></script>
 </body>
 
 </html>
