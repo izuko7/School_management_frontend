@@ -376,6 +376,55 @@ button {
   background: var(--violet-bouton-fonce);
 }
 
+/* ---------- STYLE POUR L'INPUT DE NOTE ---------- */
+.input-note {
+  width: 80px; /* Largeur fixe pour que tous les champs soient identiques */
+  padding: 8px 12px;
+  border: 1px solid var(--bordure);
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: center; /* Centre la note (ex: 15.5) */
+  color: #1f2937;
+  background-color: var(--gris-fond); /* Fond très léger pour le distinguer */
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+/* Quand l'enseignant clique dans l'input pour taper la note */
+.input-note:focus {
+  border-color: var(--violet-bouton);
+  background-color: var(--blanc);
+  box-shadow: 0 0 0 3px rgba(75, 60, 201, 0.1); /* Halo violet léger */
+}
+
+/* Astuce pro : Cacher les petites flèches du input number 
+   (ça fait plus propre sur un champ de note) */
+.input-note::-webkit-outer-spin-button,
+.input-note::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.input-note[type=number] {
+  -moz-appearance: textfield;
+}
+
+/* ---------- STYLE POUR LE BOUTON "ENREGISTRER" ---------- */
+/* (À ajouter si ce n'est pas déjà dans votre CSS) */
+.zone-bouton-enregistrer {
+  margin-top: 24px;
+  border-top: 1px solid var(--bordure);
+  padding-top: 24px;
+}
+
+.bouton-large {
+  width: 100%;
+  justify-content: center;
+  padding: 14px;
+  font-size: 15px;
+}
+
 /* ---------- TOAST (Notifications) ---------- */
 .toast {
   position: fixed;

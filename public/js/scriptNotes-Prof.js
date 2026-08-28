@@ -175,3 +175,24 @@ const remplirSelecteurType = async () => {
 }
 
 remplirSelecteurType();
+
+document.getElementById('formulaireContexteEval').addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const classeId = parseInt(document.getElementById('contexte_classe').value);
+    
+    const students = await fetchAuth('/students');
+    const elevesDeLaClasse = students.filter((eleve) => eleve.classe_id === classeId);
+
+    const lignesHTML = elevesDeLaClasse.map((eleve) => {
+        return `
+            <tr>
+                <td>${eleve.nom} ${eleve.prenom}</td>
+                <td><input type="number" class="input-note" data-eleve-id="${eleve.id}" min="0" max="20" step="0.5"></td>
+            </tr>
+        `;
+    }).join('');
+
+    document.getElementById('corpsTableauSaisie').innerHTML = lignesHTML;
+    document.getElementById('blocSaisieNotes').style.display = 'block';
+});
