@@ -132,14 +132,14 @@ const afficherStatMoyenne = async () => {
     const subjectId = mesMatieres.map((matiere) => matiere.id);
 
     const grades = await fetchAuth('/grades');
-    const mesNotes =  grades.filter((note) => subjectId.includes(note.subject_id));
+    const mesNotes = grades.filter((note) => subjectId.includes(note.subject_id));
 
-    if(mesNotes.length === 0){
-        return null
+    if (mesNotes.length === 0) {
+        return null;
     }
 
     const somme = mesNotes.reduce((total, note) => total + note.note, 0);
-    const moyenne = somme/mesNotes.length;
+    const moyenne = somme / mesNotes.length;
 
     const statMoyenne = document.getElementById('stat-chiffre-moyenne');
     statMoyenne.textContent = `${moyenne.toFixed(1)}/20`;
@@ -166,9 +166,6 @@ const remplirSelecteurClasse = async () => {
 remplirSelecteurClasse();
 
 const selecteur = document.getElementById('selecteur-classe');
-selecteur.addEventListener('change', ()=> {
-    const classeSelectionne = parseInt(selecteur.value);
-});
 
 const getElevesDeClasse = async (classeId) => {
     const students = await fetchAuth('/students');
@@ -187,28 +184,31 @@ const avoirMoyenneEleve = async (studentId) => {
     const grades = await fetchAuth('/grades');
     const mesNotes = grades.filter((note) => note.student_id === studentId);
 
-    if(mesNotes.length === 0){
+    if (mesNotes.length === 0) {
         return 0;
     }
 
     const somme = mesNotes.reduce((total, note) => total + note.note, 0);
-    const moyenne = somme/mesNotes.length;
+    const moyenne = somme / mesNotes.length;
     return moyenne;
 }
+
 const getDerniereNote = async (studentId) => {
     const grades = await fetchAuth('/grades');
     const mesNotes = grades.filter((note) => note.student_id === studentId);
-    
+
     if (mesNotes.length === 0) {
         return null;
     }
 
+    // parsing tolérant : gère à la fois "JJ/MM/AA" et "AAAA-MM-JJ"
+    const parseDate = (dateStr) => dayjs(dateStr, ["DD/MM/YY", "DD/MM/YYYY", "YYYY-MM-DD"]);
+
     // le tri modifie mesNotes sur place, ne renvoie rien lui-même
-    mesNotes.sort((a, b) => dayjs(b.date, "DD/MM/YYYY").valueOf() - dayjs(a.date, "DD/MM/YYYY").valueOf());
+    mesNotes.sort((a, b) => parseDate(b.date).valueOf() - parseDate(a.date).valueOf());
 
     // APRÈS le tri, on renvoie le premier élément (le plus récent)
     return mesNotes[0];
-
 }
 
 const afficherTableauEleves = async (classeId) => {
@@ -248,5 +248,3 @@ selecteur.addEventListener('change', () => {
     const classeSelectionne = parseInt(selecteur.value);
     afficherTableauEleves(classeSelectionne);
 });
-
-afficherTableauEleves();

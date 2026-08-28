@@ -3,8 +3,8 @@ import cors from 'cors';
 import 'dotenv/config';
 import path from 'path';
 
-
-
+// Port d'écoute 
+const PORT = process.env.PORT || 3000;
 
 
 // Routes 
@@ -89,6 +89,11 @@ app.get('/dashboard/admin/parametre', (req, res) =>{
     res.sendFile(path.join(import.meta.dirname, 'public/html/parametre-admin.html'))
 })
 
+// route page professeur 
+app.get('/dashboard/professeur/note', (req, res) => {
+    res.sendFile(path.join(import.meta.dirname, 'public/html/note-prof.html'))
+})
+
 
 
 // Route api 
@@ -108,6 +113,6 @@ app.use('/auth', authRouter);
 
 // Port d'écoute du serveur
 
-app.listen(3000, () => {
-    console.log(`Serveur démarré sur http://localhost:3000/accueil`)
+app.listen(PORT, () => {
+    console.log(`Serveur démarré sur http://localhost:${PORT}/accueil`);
 });
