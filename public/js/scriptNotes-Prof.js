@@ -83,3 +83,95 @@ const donneUsers = async () => {
 }
 
 donneUsers();
+
+// recupérer les identifiants du professeur connecté 
+const getTeacherId = async () => {
+    const teachers = await fetchAuth('/teachers');
+    const teacherConnected = teachers.find((teacher) => teacher.user_id === utilisateur.id);
+    return teacherConnected.id;
+}
+
+// remplir les #contexte-classe //
+
+// recuperation des matières de l'enseignant 
+const chargerMatieresProf = async () => {
+    const teacherId = await getTeacherId();
+    const subjects = await fetchAuth('/subjects');
+
+    const filtreMatiere = subjects.filter((matiere) => matiere.teacher_id === teacherId);
+    return filtreMatiere;
+}
+
+// extraire les classes de l'enseignant 
+const AvoirTouteLesClassesProf = async () => {
+    const mesMatieres = await chargerMatieresProf();
+    const classeId = mesMatieres.map((matiere) => matiere.classe_id);
+    const classeIdUniques = [... new Set(classeId)];
+    return classeIdUniques;
+}
+
+const remplirSelecteurClasse = async () => {
+    const classeIdUniques = await AvoirTouteLesClassesProf();
+    const classes = await fetchAuth('/classes');
+
+    const mesClasses = classes.filter((classe) => classeIdUniques.includes(classe.id));
+    const selecteur = document.getElementById('contexte_classe');
+
+    mesClasses.forEach((classe) => {
+        const option = document.createElement('option');
+        option.value = classe.id;
+        option.textContent = classe.nom;
+        selecteur.appendChild(option);
+    })
+}
+
+remplirSelecteurClasse();
+
+const selecteur = document.getElementById('contexte_classe');
+
+selecteur.addEventListener('change', async () => {
+    const classeId = parseInt(selecteur.value);
+    const selectMatiere = document.getElementById('contexte_matiere');
+
+    if (isNaN(classeId)) {
+        selectMatiere.innerHTML = '';
+        return;
+    }
+
+    const mesMatieres = await chargerMatieresProf();
+    const matieresDeCetteClasse = mesMatieres.filter((matiere) => matiere.classe_id === classeId);
+
+    selectMatiere.innerHTML = '';
+
+    matieresDeCetteClasse.forEach((matiere) => {
+        const option = document.createElement('option');
+        option.value = matiere.id;
+        option.textContent = matiere.nom;
+        selectMatiere.appendChild(option);
+    })
+})
+
+
+// remplir le selecteur type 
+const remplirSelecteurType = async () => {
+    const grades = await fetchAuth('/grades');
+    console.log('grades:', grades);
+
+    const gradeType = grades.map((grade) => grade.type);
+    console.log('gradeType:', gradeType);
+
+    const noteType = [...new Set(gradeType)];
+    console.log('noteType:', noteType);
+    
+    const selectType = document.getElementById('contexte_type');
+    console.log('selectType:', selectType);
+
+    noteType.forEach((type) => {
+        const option = document.createElement('option');
+        option.value = type;
+        option.textContent = type;
+        selectType.appendChild(option);
+    })
+}
+
+remplirSelecteurType();
