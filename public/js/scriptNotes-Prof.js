@@ -166,7 +166,13 @@ const remplirSelecteurType = async () => {
     const selectType = document.getElementById('contexte_type');
     console.log('selectType:', selectType);
 
+    const valeursExistantes = optionsExistantes.map((option) => option.value);
+
     noteType.forEach((type) => {
+        if (valeursExistantes.includes(type)) {
+            return; // on saute cette itération, l'option existe déjà
+        }
+
         const option = document.createElement('option');
         option.value = type;
         option.textContent = type;
