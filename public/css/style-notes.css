@@ -406,7 +406,16 @@ button {
   -webkit-appearance: none;
   margin: 0;
 }
+
+
+.input-note::-webkit-outer-spin-button,
+.input-note::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
 .input-note[type=number] {
+  appearance: textfield; 
   -moz-appearance: textfield;
 }
 
