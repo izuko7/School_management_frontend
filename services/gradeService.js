@@ -1,6 +1,6 @@
 import db from "../db/database.js";
 import Grade from "../models/gradeModel.js";
-import dayjs from "dayjs";
+import { dayjs } from "../config/date.js";
 
 
 // Créer une nouvelle note 

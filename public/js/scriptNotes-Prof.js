@@ -32,6 +32,16 @@ const fetchAuth = async (url, method = 'GET', body = null) => {
     return reponse.json();
 };
 
+const afficherToast = (message) => {
+    const toast = document.getElementById('toast');
+    toast.textContent = message;
+    toast.classList.add('afficher');
+
+    setTimeout(() => {
+        toast.classList.remove('afficher');
+    }, 3000);
+};
+
 const logOut = document.getElementById('boutonDeconnexion');
 logOut.addEventListener('click', (e) => {
     e.preventDefault();
@@ -61,7 +71,6 @@ function decoderToken(token) {
 const utilisateur = decoderToken(token);
 
 const donneUsers = async () => {
-    // Encore plus clean !
     const users = await fetchAuth(`/users/${utilisateur.id}`);
 
     let initial;
@@ -91,8 +100,6 @@ const getTeacherId = async () => {
     return teacherConnected.id;
 }
 
-// remplir les #contexte-classe //
-
 // recuperation des matières de l'enseignant 
 const chargerMatieresProf = async () => {
     const teacherId = await getTeacherId();
@@ -106,7 +113,7 @@ const chargerMatieresProf = async () => {
 const AvoirTouteLesClassesProf = async () => {
     const mesMatieres = await chargerMatieresProf();
     const classeId = mesMatieres.map((matiere) => matiere.classe_id);
-    const classeIdUniques = [... new Set(classeId)];
+    const classeIdUniques = [...new Set(classeId)];
     return classeIdUniques;
 }
 
@@ -151,22 +158,21 @@ selecteur.addEventListener('change', async () => {
     })
 })
 
-
 // remplir le selecteur type 
 const remplirSelecteurType = async () => {
     const grades = await fetchAuth('/grades');
-    console.log('grades:', grades);
-
     const gradeType = grades.map((grade) => grade.type);
-    console.log('gradeType:', gradeType);
-
     const noteType = [...new Set(gradeType)];
-    console.log('noteType:', noteType);
-    
+
     const selectType = document.getElementById('contexte_type');
-    console.log('selectType:', selectType);
+
+    const valeursExistantes = [...selectType.options].map((option) => option.value);
 
     noteType.forEach((type) => {
+        if (valeursExistantes.includes(type)) {
+            return;
+        }
+
         const option = document.createElement('option');
         option.value = type;
         option.textContent = type;
@@ -180,7 +186,7 @@ document.getElementById('formulaireContexteEval').addEventListener('submit', asy
     e.preventDefault();
 
     const classeId = parseInt(document.getElementById('contexte_classe').value);
-    
+
     const students = await fetchAuth('/students');
     const elevesDeLaClasse = students.filter((eleve) => eleve.classe_id === classeId);
 
@@ -195,4 +201,47 @@ document.getElementById('formulaireContexteEval').addEventListener('submit', asy
 
     document.getElementById('corpsTableauSaisie').innerHTML = lignesHTML;
     document.getElementById('blocSaisieNotes').style.display = 'block';
+});
+
+document.getElementById('boutonEnregistrerNotes').addEventListener('click', async () => {
+    // 1. Récupérer le contexte commun
+    const subjectId = parseInt(document.getElementById('contexte_matiere').value);
+    const dateBrute = document.getElementById('contexte_date').value;
+    const type = document.getElementById('contexte_type').value;
+
+    // Conversion de la date au format attendu par le backend
+    const dateFormatee = dateBrute ? dayjs(dateBrute).format('DD/MM/YYYY') : null;
+
+    const inputsNotes = document.querySelectorAll('.input-note');
+
+    const requetes = [...inputsNotes]
+        .filter((input) => input.value !== '')
+        .map((input) => {
+            const studentId = parseInt(input.dataset.eleveId);
+            const note = parseFloat(input.value);
+
+            return fetchAuth('/grades', 'POST', {
+                student_id: studentId,
+                subject_id: subjectId,
+                note: note,
+                date: dateFormatee,
+                type: type
+            });
+        });
+
+    if (requetes.length === 0) {
+        afficherToast('Aucune note à enregistrer');
+        return;
+    }
+
+    try {
+        await Promise.all(requetes);
+        afficherToast('Note(s) ajoutée(s) avec succès');
+        document.getElementById('corpsTableauSaisie').innerHTML = '';
+        document.getElementById('blocSaisieNotes').style.display = 'none';
+        document.getElementById('formulaireContexteEval').reset();
+    } catch (error) {
+        console.error(error);
+        afficherToast('Erreur lors de l\'enregistrement des notes');
+    }
 });

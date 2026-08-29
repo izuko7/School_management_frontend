@@ -434,6 +434,8 @@ button {
   font-size: 15px;
 }
 
+
+
 /* ---------- TOAST (Notifications) ---------- */
 .toast {
   position: fixed;
@@ -452,10 +454,17 @@ button {
   font-weight: 500;
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
 }
+
 .toast.afficher {
   opacity: 1;
   transform: translateY(0);
 }
+
+.toast.afficher {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 .toast.succes {
   background: var(--vert-positif);
 }
