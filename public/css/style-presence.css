@@ -73,6 +73,9 @@ button { font-family: inherit; cursor: pointer; border: none; }
 .tableau-liste td { padding: 14px 0; border-bottom: 1px solid var(--bordure); font-size: 14px; color: #374151; }
 .tableau-liste tr:last-child td { border-bottom: none; }
 
+.toast {  opacity: 0; transform: translateY(-20px);  }
+.toast.afficher { opacity: 1; transform: translateY(0); }
+
 /* ---------- FORMULAIRES & FILTRES ---------- */
 .formulaire-modale { display: flex; flex-direction: column; gap: 16px; }
 .ligne-champs { display: flex; gap: 20px; flex-wrap: wrap; align-items: flex-start; }
