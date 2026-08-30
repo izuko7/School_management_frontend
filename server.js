@@ -94,6 +94,9 @@ app.get('/dashboard/professeur/note', (req, res) => {
     res.sendFile(path.join(import.meta.dirname, 'public/html/note-prof.html'))
 })
 
+app.get('/dashboard/professeur/presence', (req, res) => {
+    res.sendFile(path.join(import.meta.dirname, 'public/html/presence-prof.html'))
+})
 
 
 // Route api 
