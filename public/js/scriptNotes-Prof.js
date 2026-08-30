@@ -32,10 +32,10 @@ const fetchAuth = async (url, method = 'GET', body = null) => {
     return reponse.json();
 };
 
-const afficherToast = (message) => {
+const afficherToast = (message, type = 'succes') => {
     const toast = document.getElementById('toast');
     toast.textContent = message;
-    toast.classList.add('afficher');
+    toast.className = `toast afficher ${type}`;
 
     setTimeout(() => {
         toast.classList.remove('afficher');
@@ -230,7 +230,7 @@ document.getElementById('boutonEnregistrerNotes').addEventListener('click', asyn
         });
 
     if (requetes.length === 0) {
-        afficherToast('Aucune note à enregistrer');
+        afficherToast('Aucune note à enregistrer', 'succes');
         return;
     }
 
@@ -242,6 +242,6 @@ document.getElementById('boutonEnregistrerNotes').addEventListener('click', asyn
         document.getElementById('formulaireContexteEval').reset();
     } catch (error) {
         console.error(error);
-        afficherToast('Erreur lors de l\'enregistrement des notes');
+        afficherToast('Erreur lors de l\'enregistrement des notes', 'erreur');
     }
 });

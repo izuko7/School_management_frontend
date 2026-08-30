@@ -1,11 +1,12 @@
 import db from "../db/database.js";
 import Student from "../models/studentModel.js";
-import dayjs from "dayjs";
-
+import { dayjs } from "../config/date.js";
 
 // Créer un étudiant
 const createStudent = (matricule, nom, prenom, date_naissance, classe_id, user_id) => {
 
+    console.log(date_naissance)
+    
     if(!dayjs(date_naissance, "DD/MM/YYYY", true).isValid()){
         throw new Error(`Date de naissance invalide : ${date_naissance}`);
     }

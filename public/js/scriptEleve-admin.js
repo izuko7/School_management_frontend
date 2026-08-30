@@ -257,6 +257,7 @@ document.getElementById('formulaireAjoutEleve').addEventListener('submit', async
     const motdepasse = document.getElementById('motdepasse').value;
     const matricule = document.getElementById('matricule').value;
     const dateNaissance = document.getElementById('date_naissance').value;
+    const dateNaissanceFormatee = dayjs(dateNaissance).format('DD/MM/YYYY');
     const classeId = document.getElementById('classe_id').value;
 
     if (idEnEdition) {
@@ -264,7 +265,7 @@ document.getElementById('formulaireAjoutEleve').addEventListener('submit', async
             matricule: matricule,
             nom: champNom,
             prenom: chamPrenom,
-            date_naissance: dateNaissance,
+            date_naissance: dateNaissanceFormatee,
         };
 
         await fetchAuth(`/students/${idEnEdition}`, 'PUT', bodyStudent);
@@ -308,7 +309,7 @@ document.getElementById('formulaireAjoutEleve').addEventListener('submit', async
             matricule: matricule,
             nom: champNom,
             prenom: chamPrenom,
-            date_naissance: dateNaissance,
+            date_naissance: dateNaissanceFormatee,
             classe_id: classeId,
             user_id: nouvelUserEleve.result.lastInsertRowid
         };
