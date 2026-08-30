@@ -7,7 +7,7 @@
     <title>EduSmart — Emploi du temps</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="shortcut icon" href="../images/favicon.svg" type="image/x-icon">
+     <link rel="shortcut icon" href="/images/favicon.svg" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
@@ -87,10 +87,10 @@
                 <div class="actions-haut">
                     <div class="profil">
                         <div class="profil-texte">
-                            <span class="profil-nom">Prof. Dupot</span>
-                            <span class="profil-role">Enseignant</span>
+                            <span id="profilNom" class="profil-nom"></span>
+                            <span id="profilRole" class="profil-role"></span>
                         </div>
-                        <div class="avatar">PD</div>
+                        <div id="profilAvatar" class="avatar"></div>
                     </div>
                 </div>
             </header>
@@ -128,7 +128,6 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
-    <script src="/js/dashboardProf.js"></script>
     <script src="/js/timerEmploiDuTemps.js"></script>
 </body>
 
