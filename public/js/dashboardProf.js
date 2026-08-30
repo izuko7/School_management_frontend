@@ -6,16 +6,22 @@ if (!token || role !== 'prof') {
     window.location.href = '/login';
 }
 
-const fetchAuth = async (url, method = 'GET') => {
+const fetchAuth = async (url, method = 'GET', body = null) => {
 
     const options = {
         method: method,
         headers: {
             'Authorization': `Bearer ${token}`
-        }
+        },
+        cache: 'no-store'
     };
 
-    const reponse = await fetch(url, options)
+    if (body) {
+        options.headers['Content-Type'] = 'application/json';
+        options.body = JSON.stringify(body);
+    }
+
+    const reponse = await fetch(url, options);
 
     if (reponse.status === 401) {
         localStorage.removeItem('token');
@@ -25,7 +31,16 @@ const fetchAuth = async (url, method = 'GET') => {
     }
 
     return reponse.json();
+};
 
+const afficherToast = (message) => {
+    const toast = document.getElementById('toast');
+    toast.textContent = message;
+    toast.classList.add('visible');
+
+    setTimeout(() => {
+        toast.classList.remove('visible');
+    }, 3000);
 };
 
 const logOut = document.getElementById('boutonDeconnexion');
@@ -48,6 +63,14 @@ boutonFermerSidebar.addEventListener('click', function () {
     sidebar.classList.remove('ouvert');
 });
 
+// gestion générique des modales
+document.querySelectorAll('.bouton-fermer-global').forEach(bouton => {
+    bouton.addEventListener('click', (e) => {
+        const modale = bouton.closest('.modale-overlay');
+        modale.classList.remove('ouverte');
+    });
+});
+
 function decoderToken(token) {
     const playLoad = token.split('.')[1];
     const decoded = JSON.parse(atob(playLoad));
@@ -57,7 +80,6 @@ function decoderToken(token) {
 const utilisateur = decoderToken(token);
 
 const donneUsers = async () => {
-    // Encore plus clean !
     const users = await fetchAuth(`/users/${utilisateur.id}`);
 
     let initial;
@@ -84,14 +106,12 @@ donneUsers();
 
 // -------------------------------------------- //
 
-// recuperer l'identifiant de l'enseignant 
 const getTeacherId = async () => {
     const teachers = await fetchAuth('/teachers');
     const teacherConnected = teachers.find(teacher => teacher.user_id === utilisateur.id);
     return teacherConnected.id;
 }
 
-// recuperation des matières de l'enseignant 
 const chargerMatieresProf = async () => {
     const teacherId = await getTeacherId();
     const subjects = await fetchAuth('/subjects');
@@ -100,15 +120,13 @@ const chargerMatieresProf = async () => {
     return filtreMatiere;
 }
 
-// extraire les classes de l'enseignant 
 const AvoirTouteLesClassesProf = async () => {
     const mesMatieres = await chargerMatieresProf();
     const classeId = mesMatieres.map((matiere) => matiere.classe_id);
-    const classeIdUniques = [... new Set(classeId)];
+    const classeIdUniques = [...new Set(classeId)];
     return classeIdUniques;
 }
 
-// Charger toutes les statistiques 
 const afficherStatClasse = async () => {
     const classeIdUniques = await AvoirTouteLesClassesProf();
     const statClasse = document.getElementById('stat-chiffre-classes');
@@ -134,20 +152,21 @@ const afficherStatMoyenne = async () => {
     const grades = await fetchAuth('/grades');
     const mesNotes = grades.filter((note) => subjectId.includes(note.subject_id));
 
+    const statMoyenne = document.getElementById('stat-chiffre-moyenne');
+
     if (mesNotes.length === 0) {
-        return null;
+        statMoyenne.textContent = '—/20';
+        return;
     }
 
     const somme = mesNotes.reduce((total, note) => total + note.note, 0);
     const moyenne = somme / mesNotes.length;
 
-    const statMoyenne = document.getElementById('stat-chiffre-moyenne');
     statMoyenne.textContent = `${moyenne.toFixed(1)}/20`;
 }
 
 afficherStatMoyenne();
 
-// remplir le selecteur dans le HMTL 
 const remplirSelecteurClasse = async () => {
     const classeIdUniques = await AvoirTouteLesClassesProf();
     const classes = await fetchAuth('/classes');
@@ -176,8 +195,7 @@ const getElevesDeClasse = async (classeId) => {
 const getNombreAbsences = async (studentId) => {
     const absences = await fetchAuth('/absences');
     const filtreAbsences = absences.filter((absence) => absence.student_id === studentId);
-    const longueurFiltre = filtreAbsences.length;
-    return longueurFiltre;
+    return filtreAbsences.length;
 }
 
 const avoirMoyenneEleve = async (studentId) => {
@@ -201,13 +219,10 @@ const getDerniereNote = async (studentId) => {
         return null;
     }
 
-    // parsing tolérant : gère à la fois "JJ/MM/AA" et "AAAA-MM-JJ"
     const parseDate = (dateStr) => dayjs(dateStr, ["DD/MM/YY", "DD/MM/YYYY", "YYYY-MM-DD"]);
 
-    // le tri modifie mesNotes sur place, ne renvoie rien lui-même
     mesNotes.sort((a, b) => parseDate(b.date).valueOf() - parseDate(a.date).valueOf());
 
-    // APRÈS le tri, on renvoie le premier élément (le plus récent)
     return mesNotes[0];
 }
 
@@ -228,6 +243,7 @@ const afficherTableauEleves = async (classeId) => {
     const tableauHTML = lignesData.map((ligne) => {
         const statut = ligne.moyenne >= 14 ? 'Excellent' : ligne.moyenne >= 10 ? 'Bien' : 'En difficulté';
         const noteAffichee = ligne.derniereNote ? ligne.derniereNote.note : '—';
+        const noteId = ligne.derniereNote ? ligne.derniereNote.id : null;
 
         return `
             <tr>
@@ -236,6 +252,9 @@ const afficherTableauEleves = async (classeId) => {
                 <td>${ligne.absences}</td>
                 <td>${noteAffichee}</td>
                 <td>${statut}</td>
+                <td>
+                    ${noteId ? `<button class="bouton-action bouton-modifier-note" data-id="${noteId}"><i class="fa-solid fa-pen"></i></button>` : ''}
+                </td>
             </tr>
         `;
     }).join('');
@@ -247,4 +266,32 @@ const afficherTableauEleves = async (classeId) => {
 selecteur.addEventListener('change', () => {
     const classeSelectionne = parseInt(selecteur.value);
     afficherTableauEleves(classeSelectionne);
+});
+
+let idNoteEnEdition = null;
+
+document.getElementById('tbody-eleves').addEventListener('click', async (e) => {
+    const bouton = e.target.closest('.bouton-modifier-note');
+    if (!bouton) return;
+
+    const id = bouton.dataset.id;
+    const grades = await fetchAuth('/grades');
+    const grade = grades.find(g => g.id === parseInt(id));
+
+    idNoteEnEdition = grade.id;
+    document.getElementById('modif_note').value = grade.note;
+    document.getElementById('modif_date').value = dayjs(grade.date, 'DD/MM/YYYY').format('YYYY-MM-DD');
+
+    document.getElementById('modaleModifierNote').classList.add('ouverte');
+});
+
+document.getElementById('formulaireModifierNote').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const note = parseFloat(document.getElementById('modif_note').value);
+    const date = dayjs(document.getElementById('modif_date').value).format('DD/MM/YYYY');
+
+    await fetchAuth(`/grades/${idNoteEnEdition}`, 'PUT', { note, date });
+    afficherToast('Note modifiée avec succès');
+    document.getElementById('modaleModifierNote').classList.remove('ouverte');
+    afficherTableauEleves(parseInt(selecteur.value));
 });

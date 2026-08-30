@@ -4,22 +4,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EduSmart — Espace Étudiant</title>
+    <title>EduSmart — Tableau de bord Élève</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
-        rel="stylesheet">
+    <link rel="shortcut icon" href="/images/favicon.svg" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-    <link rel="stylesheet" href="../css/dashboardEleve.css">
+    <link rel="stylesheet" href="/css/dashboardEleve.css">
 </head>
 
 <body>
 
+    <div id="toast" class="toast"></div>
+
     <div class="mise-en-page">
 
         <!-- ---------- SIDEBAR ---------- -->
-        <aside class="sidebar">
+        <aside class="sidebar" id="sidebar">
             <button class="bouton-fermer-sidebar" id="boutonFermerSidebar" aria-label="Fermer le menu">
                 <i class="fa-solid fa-xmark"></i>
             </button>
@@ -33,26 +35,27 @@
             </div>
 
             <nav class="nav-sidebar">
-                <button class="nav-item actif" id="nav-notes" onclick="afficherSection('notes')">
-                    <i class="fa-solid fa-chart-simple"></i>
-                    <span>Mes notes</span>
-                </button>
-                <button class="nav-item" id="nav-matieres" onclick="afficherSection('matieres')">
+                <a href="/dashboard/eleve" class="nav-item actif">
+                    <i class="fa-solid fa-table-cells"></i>
+                    <span>Tableau de bord</span>
+                    <span class="point-actif"></span>
+                </a>
+                <a href="/dashboard/eleve/matiere" class="nav-item">
                     <i class="fa-solid fa-book"></i>
                     <span>Mes matières</span>
-                </button>
-                <button class="nav-item" id="nav-emploi" onclick="afficherSection('emploi')">
+                </a>
+                <a href="/dashboard/eleve/emploi-du-temps" class="nav-item">
                     <i class="fa-solid fa-calendar-days"></i>
                     <span>Emploi du temps</span>
-                </button>
-                <button class="nav-item" id="nav-infos" onclick="afficherSection('infos')">
+                </a>
+                <a href="/dashboard/eleve/infos" class="nav-item">
                     <i class="fa-solid fa-circle-info"></i>
                     <span>Infos école</span>
-                </button>
+                </a>
             </nav>
 
             <div class="nav-sidebar nav-sidebar-bas">
-                <a href="#" class="nav-item">
+                <a href="/dashboard/eleve/parametre" class="nav-item">
                     <i class="fa-solid fa-gear"></i>
                     <span>Paramètres</span>
                 </a>
@@ -73,239 +76,94 @@
                 </button>
 
                 <div>
-                    <h1 id="titrePage">Mes notes</h1>
+                    <h1>Tableau de bord</h1>
                     <p class="date-jour" id="dateJour"></p>
                 </div>
 
                 <div class="actions-haut">
                     <div class="profil">
                         <div class="profil-texte">
-                            <span class="profil-nom" id="profilNom"></span>
-                            <span class="profil-role" id="profilRole"></span>
+                            <span id="spanprofilNom" class="profil-nom"></span>
+                            <span id="spanprofilRole" class="profil-role"></span>
                         </div>
-                        <div class="avatar" id="profilAvatar"></div>
+                        <div id="profilAvatar" class="avatar"></div>
                     </div>
                 </div>
             </header>
 
-            <main class="zone-scroll"></span></h2>
-                            <p>Voici un aperçu de tes résultats scolaires</p>
-                        </div>
-                    </div>
+            <main class="zone-scroll">
 
-                    <div class="grille-stats-dash grille-stats-notes">
-                        <div class="carte-stat-dash">
-                            <div class="stat-entete">
-                                <div class="icone-stat icone-indigo"><i class="fa-solid fa-star"></i></div>
-                                <span class="variation positive"><i class="fa-solid fa-arrow-trend-up"></i> +0.6</span>
-                            </div>
-                            <span class="stat-chiffre">15.4/20</span>
-                            <span class="stat-titre">Moyenne générale</span>
-                            <span class="stat-sous-titre">Trimestre en cours</span>
-                        </div>
-
-                        <div class="carte-stat-dash">
-                            <div class="stat-entete">
-                                <div class="icone-stat icone-violet"><i class="fa-solid fa-ranking-star"></i></div>
-                            </div>
-                            <span class="stat-chiffre">4<sup>e</sup></span>
-                            <span class="stat-titre">Rang de classe</span>
-                            <span class="stat-sous-titre">Sur 28 élèves</span>
-                        </div>
-
-                        <div class="carte-stat-dash">
-                            <div class="stat-entete">
-                                <div class="icone-stat icone-bleu"><i class="fa-solid fa-book-open"></i></div>
-                            </div>
-                            <span class="stat-chiffre">6</span>
-                            <span class="stat-titre">Matières évaluées</span>
-                            <span class="stat-sous-titre">Ce trimestre</span>
-                        </div>
-                    </div>
-
-                    <section class="carte-panneau">
-                        <div class="panneau-entete">
-                            <div>
-                                <h3>Détail des notes</h3>
-                                <p>Trimestre en cours</p>
-                            </div>
-                            <select class="selecteur-annee">
-                                <option>Trimestre 2</option>
-                                <option>Trimestre 1</option>
-                            </select>
-                        </div>
-
-                        <table class="tableau-eleves">
-                            <thead>
-                                <tr>
-                                    <th>Matière</th>
-                                    <th>Note</th>
-                                    <th>Coefficient</th>
-                                    <th>Date</th>
-                                    <th>Appréciation</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <div class="eleve-cell"><span class="avatar-eleve avatar-indigo"><i
-                                                    class="fa-solid fa-square-root-variable"></i></span>Mathématiques
-                                        </div>
-                                    </td>
-                                    <td class="note-cellule">16/20</td>
-                                    <td>4</td>
-                                    <td>12 nov. 2025</td>
-                                    <td><span class="badge badge-actif">Très bien</span></td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="eleve-cell"><span class="avatar-eleve avatar-violet"><i
-                                                    class="fa-solid fa-flask"></i></span>Physique-Chimie</div>
-                                    </td>
-                                    <td class="note-cellule">13.5/20</td>
-                                    <td>3</td>
-                                    <td>18 nov. 2025</td>
-                                    <td><span class="badge badge-actif">Bien</span></td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="eleve-cell"><span class="avatar-eleve avatar-rose"><i
-                                                    class="fa-solid fa-book"></i></span>Français</div>
-                                    </td>
-                                    <td class="note-cellule">14/20</td>
-                                    <td>3</td>
-                                    <td>22 nov. 2025</td>
-                                    <td><span class="badge badge-actif">Bien</span></td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="eleve-cell"><span class="avatar-eleve avatar-bleu"><i
-                                                    class="fa-solid fa-earth-africa"></i></span>Histoire-Géographie
-                                        </div>
-                                    </td>
-                                    <td class="note-cellule">17/20</td>
-                                    <td>2</td>
-                                    <td>25 nov. 2025</td>
-                                    <td><span class="badge badge-actif">Excellent</span></td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="eleve-cell"><span class="avatar-eleve avatar-vert"><i
-                                                    class="fa-solid fa-language"></i></span>Anglais</div>
-                                    </td>
-                                    <td class="note-cellule">15/20</td>
-                                    <td>2</td>
-                                    <td>28 nov. 2025</td>
-                                    <td><span class="badge badge-actif">Bien</span></td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="eleve-cell"><span class="avatar-eleve avatar-indigo"><i
-                                                    class="fa-solid fa-person-running"></i></span>Éducation physique
-                                        </div>
-                                    </td>
-                                    <td class="note-cellule">12/20</td>
-                                    <td>1</td>
-                                    <td>2 déc. 2025</td>
-                                    <td><span class="badge badge-inactif">Passable</span></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </section>
-                </section>
-
-                <!-- ============ SECTION MATIÈRES ============ -->
-                <section id="section-matieres" class="hidden">
-
-                    <div class="bienvenue">
-                        <div>
-                            <h2>Mes matières</h2>
-                            <p>Liste des matières suivies ce trimestre</p>
-                        </div>
-                    </div>
-
-                    <div class="grille-matieres">
-                        <div class="carte-matiere">
-                            <div class="icone-stat icone-indigo"><i class="fa-solid fa-square-root-variable"></i></div>
-                            <h3>Mathématiques</h3>
-                            <p class="matiere-enseignant">M. Smith</p>
-                            <span class="matiere-coefficient">Coefficient 4</span>
-                        </div>
-
-                        <div class="carte-matiere">
-                            <div class="icone-stat icone-violet"><i class="fa-solid fa-flask"></i></div>
-                            <h3>Physique-Chimie</h3>
-                            <p class="matiere-enseignant">Mme Laurent</p>
-                            <span class="matiere-coefficient">Coefficient 3</span>
-                        </div>
-
-                        <div class="carte-matiere">
-                            <div class="icone-stat icone-rose"><i class="fa-solid fa-book"></i></div>
-                            <h3>Français</h3>
-                            <p class="matiere-enseignant">Mme Dubois</p>
-                            <span class="matiere-coefficient">Coefficient 3</span>
-                        </div>
-
-                        <div class="carte-matiere">
-                            <div class="icone-stat icone-bleu"><i class="fa-solid fa-earth-africa"></i></div>
-                            <h3>Histoire-Géographie</h3>
-                            <p class="matiere-enseignant">M. Kouassi</p>
-                            <span class="matiere-coefficient">Coefficient 2</span>
-                        </div>
-
-                        <div class="carte-matiere">
-                            <div class="icone-stat icone-vert"><i class="fa-solid fa-language"></i></div>
-                            <h3>Anglais</h3>
-                            <p class="matiere-enseignant">Mme Johnson</p>
-                            <span class="matiere-coefficient">Coefficient 2</span>
-                        </div>
-
-                        <div class="carte-matiere">
-                            <div class="icone-stat icone-jaune"><i class="fa-solid fa-person-running"></i></div>
-                            <h3>Éducation physique</h3>
-                            <p class="matiere-enseignant">M. Traoré</p>
-                            <span class="matiere-coefficient">Coefficient 1</span>
-                        </div>
+                <!-- Message de bienvenue -->
+                <section class="bienvenue">
+                    <div>
+                        <h2 id="bienvenue-name"><span class="emoji-main"></span></h2>
+                        <p>Bienvenue sur votre espace étudiant</p>
                     </div>
                 </section>
 
-                <!-- ============ SECTION EMPLOI DU TEMPS ============ -->
-                <section id="section-emploi" class="hidden">
-                    <div class="bienvenue">
-                        <div>
-                            <h2>Emploi du temps</h2>
-                            <p>Ton planning de la semaine</p>
+                <!-- Cartes statistiques -->
+                <section class="grille-stats-dash">
+                    <div class="carte-stat-dash">
+                        <div class="stat-entete">
+                            <div class="icone-stat icone-indigo"><i class="fa-solid fa-star"></i></div>
                         </div>
+                        <span class="stat-chiffre" id="statMoyenne"></span>
+                        <span class="stat-titre">Moyenne générale</span>
+                        <span class="stat-sous-titre" id="statMoyenneSous"></span>
                     </div>
 
-                    <section class="carte-panneau placeholder-a-venir">
-                        <div class="placeholder-icone"><i class="fa-solid fa-calendar-days"></i></div>
-                        <h3>Bientôt disponible</h3>
-                        <p>L'emploi du temps sera consultable ici prochainement.</p>
-                    </section>
-                </section>
-
-                <!-- ============ SECTION INFOS ÉCOLE ============ -->
-                <section id="section-infos" class="hidden">
-                    <div class="bienvenue">
-                        <div>
-                            <h2>Infos école</h2>
-                            <p>Actualités et informations de l'établissement</p>
+                    <div class="carte-stat-dash">
+                        <div class="stat-entete">
+                            <div class="icone-stat icone-violet"><i class="fa-solid fa-ranking-star"></i></div>
                         </div>
+                        <span class="stat-chiffre" id="statRang"></span>
+                        <span class="stat-titre">Rang de classe</span>
+                        <span class="stat-sous-titre" id="statRangSous"></span>
                     </div>
 
-                    <section class="carte-panneau placeholder-a-venir">
-                        <div class="placeholder-icone"><i class="fa-solid fa-circle-info"></i></div>
-                        <h3>Bientôt disponible</h3>
-                        <p>Les informations de l'établissement seront publiées ici prochainement.</p>
-                    </section>
+                    <div class="carte-stat-dash">
+                        <div class="stat-entete">
+                            <div class="icone-stat icone-bleu"><i class="fa-solid fa-book-open"></i></div>
+                        </div>
+                        <span class="stat-chiffre" id="statMatieres"></span>
+                        <span class="stat-titre">Matières</span>
+                        <span class="stat-sous-titre" id="statMatieresSous"></span>
+                    </div>
                 </section>
+
+                <!-- Grille principale : contenu large -->
+                <div class="grille-contenu">
+                    <div class="colonne-large">
+                        <!-- Détail des notes -->
+                        <section class="carte-panneau">
+                            <div class="panneau-entete">
+                                <div>
+                                    <h3>Détails</h3>
+                                    <p>Liste des matières disponibles dans ta classe</p>
+                                </div>
+                            </div>
+
+                            <table class="tableau-eleves">
+                                <thead>
+                                    <tr>
+                                        <th>Matière</th>
+                                        <th>professeur</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="corpsTableauNotes">
+                                    <!-- Rempli par JS -->
+                                </tbody>
+                            </table>
+                        </section>
+                    </div>
+                </div>
 
             </main>
         </div>
     </div>
 
-    <script src="../js/dashboardEleve.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+    <script src="/js/dashboardEleve.js"></script>
 </body>
 
 </html>

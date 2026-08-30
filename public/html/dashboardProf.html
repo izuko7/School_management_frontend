@@ -11,7 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-    <link rel="stylesheet" href="../css/dashboardProfesseur.css">
+    <link rel="stylesheet" href="/css/dashboardProfesseur.css">
 </head>
 
 <body>
@@ -157,10 +157,27 @@
                                 <th>Absences</th>
                                 <th>Dernière note</th>
                                 <th>Statut</th>
+                                <!-- Ajout de la colonne Action pour le bouton crayon -->
+                                <th>Actions</th> 
                             </tr>
                         </thead>
                         <tbody id="tbody-eleves">
                             <!-- Rempli dynamiquement par JS -->
+                            <!-- 
+                            Exemple de ligne générée attendue pour le bouton modifier :
+                            <tr>
+                                <td>Jean Dupont</td>
+                                <td>14.5</td>
+                                <td>2</td>
+                                <td>15</td>
+                                <td>Présent</td>
+                                <td>
+                                    <button class="bouton-modifier-note">
+                                        <i class="fa-solid fa-pen"></i>
+                                    </button>
+                                </td>
+                            </tr> 
+                            -->
                         </tbody>
                     </table>
                 </section>
@@ -169,13 +186,37 @@
         </div>
     </div>
 
+    <!-- ---------- MODALE : MODIFIER UNE NOTE ---------- -->
+    <div id="modaleModifierNote" class="modale-overlay">
+        <div class="modale-contenu">
+            <button class="bouton-fermer-modale bouton-fermer-global" aria-label="Fermer">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <h2>Modifier la note</h2>
+            <form id="formulaireModifierNote" class="formulaire-modale">
+                <div class="champ-formulaire">
+                    <label for="modif_note">Note (/20)</label>
+                    <input type="number" id="modif_note" name="note" min="0" max="20" step="0.5" required>
+                </div>
+                <div class="champ-formulaire">
+                    <label for="modif_date">Date</label>
+                    <input type="date" id="modif_date" name="date" required>
+                </div>
+                <div class="actions-modale">
+                    <button type="button" class="bouton-annuler-modale bouton-fermer-global">Annuler</button>
+                    <button type="submit" class="bouton-valider-modale">Enregistrer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- Script Day.js -->
-     <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/dayjs@1/plugin/customParseFormat.js"></script>
     <script>
-    dayjs.extend(dayjs_plugin_customParseFormat);
+        dayjs.extend(dayjs_plugin_customParseFormat);
     </script>
-    <script src="../js/dashboardProf.js"></script>
+    <script src="/js/dashboardProf.js"></script>
 </body>
 
 </html>
