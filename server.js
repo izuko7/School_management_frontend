@@ -98,6 +98,10 @@ app.get('/dashboard/professeur/presence', (req, res) => {
     res.sendFile(path.join(import.meta.dirname, 'public/html/presence-prof.html'))
 })
 
+app.get('/dashboard/professeur/emploi_du_temps', (req, res) => {
+    res.sendFile(path.join(import.meta.dirname, 'public/html/emploiDuTemps.html'))
+})
+
 
 // Route api 
 app.use('/students', studentRouter);
