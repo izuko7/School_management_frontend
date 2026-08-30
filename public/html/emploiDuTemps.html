@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduSmart — Emploi du temps</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="shortcut icon" href="../images/favicon.svg" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <link rel="stylesheet" href="/css/dashboardProfesseur.css">
+    <link rel="stylesheet" href="/css/emploiDuTemps.css">
+</head>
+
+<body>
+
+    <div class="mise-en-page">
+
+        <!-- ---------- SIDEBAR ---------- -->
+        <aside class="sidebar" id="sidebar">
+            <button class="bouton-fermer-sidebar" id="boutonFermerSidebar" aria-label="Fermer le menu">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div class="logo">
+                <span class="logo-icone"><i class="fa-solid fa-graduation-cap"></i></span>
+                <div class="logo-texte">
+                    <span class="logo-nom">EduSmart</span>
+                    <span class="logo-slogan">Espace professeur</span>
+                </div>
+            </div>
+
+            <nav class="nav-sidebar">
+                <a href="/dashboard/prof" class="nav-item">
+                    <i class="fa-solid fa-users"></i>
+                    <span>Élèves</span>
+                </a>
+                <a href="/dashboard/professeur/note" class="nav-item">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                    <span>Notes</span>
+                </a>
+                <a href="/dashboard/professeur/presence" class="nav-item">
+                    <i class="fa-solid fa-clipboard-check"></i>
+                    <span>Présences</span>
+                </a>
+                <!-- ACTIF ICI -->
+                <a href="#" class="nav-item actif">
+                    <i class="fa-solid fa-calendar-days"></i>
+                    <span>Emploi du temps</span>
+                </a>
+            </nav>
+
+            <div class="nav-sidebar nav-sidebar-bas">
+                <a href="#" class="nav-item">
+                    <i class="fa-solid fa-gear"></i>
+                    <span>Paramètres</span>
+                </a>
+                <a href="/accueil" id="boutonDeconnexion" class="nav-item">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <span>Déconnexion</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- ---------- CONTENU PRINCIPAL ---------- -->
+        <div class="contenu-principal">
+
+            <!-- Barre du haut -->
+            <header class="barre-haut">
+                <button class="bouton-burger" id="boutonBurger" aria-label="Ouvrir le menu">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+
+                <div>
+                    <h1>Emploi du temps</h1>
+                    <p class="date-jour" id="dateJour"></p>
+                </div>
+
+                <div class="recherche">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" placeholder="Rechercher...">
+                </div>
+
+                <div class="actions-haut">
+                    <div class="profil">
+                        <div class="profil-texte">
+                            <span class="profil-nom">Prof. Dupont</span>
+                            <span class="profil-role">Enseignant</span>
+                        </div>
+                        <div class="avatar">PD</div>
+                    </div>
+                </div>
+            </header>
+
+            <main class="zone-scroll page-en-construction">
+                <div class="conteneur-construction">
+                    <div class="icone-construction">
+                        <i class="fa-solid fa-hourglass-half"></i>
+                    </div>
+                    <h1>Page à venir</h1>
+                    <p>Cette section est actuellement en cours de développement. Elle sera bientôt disponible !</p>
+                    
+                    <!-- Compte à rebours -->
+                    <div class="compte-a-rebours" id="compteARebours">
+                        <div class="boite-temps">
+                            <span id="jours">00</span>
+                            <small>Jours</small>
+                        </div>
+                        <div class="boite-temps">
+                            <span id="heures">00</span>
+                            <small>Heures</small>
+                        </div>
+                        <div class="boite-temps">
+                            <span id="minutes">00</span>
+                            <small>Minutes</small>
+                        </div>
+                        <div class="boite-temps">
+                            <span id="secondes">00</span>
+                            <small>Secondes</small>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+    <script src="/js/dashboardProf.js"></script>
+    <script src="/js/timerEmploiDuTemps.js"></script>
+</body>
+
+</html>
