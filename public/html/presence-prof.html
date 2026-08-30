@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduSmart — Saisie des Présences</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="shortcut icon" href="/images/favicon.svg" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="/css/style-presence.css">
+</head>
+
+<body>
+
+    <div id="toast" class="toast"></div>
+
+    <div class="mise-en-page">
+
+        <!-- ---------- SIDEBAR ---------- -->
+        <aside class="sidebar" id="sidebar">
+            <button class="bouton-fermer-sidebar" id="boutonFermerSidebar" aria-label="Fermer le menu">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div class="logo">
+                <span class="logo-icone"><i class="fa-solid fa-graduation-cap"></i></span>
+                <div class="logo-texte">
+                    <span class="logo-nom">EduSmart</span>
+                    <span class="logo-slogan">Gestion scolaire</span>
+                </div>
+            </div>
+
+            <nav class="nav-sidebar">
+                <a href="/dashboard/prof" class="nav-item">
+                    <i class="fa-solid fa-user-graduate"></i>
+                    <span>Élèves</span>
+                </a>
+                <a href="/dashboard/prof/note" class="nav-item">
+                    <i class="fa-solid fa-chart-simple"></i>
+                    <span>Notes</span>
+                </a>
+                <!-- Onglet Présences rendu actif -->
+                <a href="/dashboard/prof/presence" class="nav-item actif">
+                    <i class="fa-solid fa-calendar-check"></i>
+                    <span>Présences</span>
+                    <span class="point-actif"></span>
+                </a>
+                <a href="/dashboard/prof/emploi-du-temps" class="nav-item">
+                    <i class="fa-solid fa-calendar-days"></i>
+                    <span>Emploi du temps</span>
+                </a>
+            </nav>
+
+            <div class="nav-sidebar nav-sidebar-bas">
+                <a href="/dashboard/prof/parametre" class="nav-item">
+                    <i class="fa-solid fa-gear"></i>
+                    <span>Paramètres</span>
+                </a>
+                <a href="/accueil" id="boutonDeconnexion" class="nav-item">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <span>Déconnexion</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- ---------- CONTENU PRINCIPAL ---------- -->
+        <div class="contenu-principal">
+
+            <header class="barre-haut">
+                <button class="bouton-burger" id="boutonBurger">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+
+                <div>
+                    <h1>Présences</h1>
+                    <p class="date-jour" id="dateJour"></p>
+                </div>
+
+                <div class="recherche">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" placeholder="Rechercher un élève...">
+                </div>
+
+                <div class="actions-haut">
+                    <div class="profil">
+                        <div class="profil-texte">
+                            <span id="profilNom" class="profil-nom"></span>
+                            <span id="profilRole" class="profil-role"></span>
+                        </div>
+                        <div id="profilAvatar" class="avatar"></div>
+                    </div>
+                </div>
+            </header>
+
+            <main class="zone-scroll">
+
+                <!-- Titre de la section -->
+                <section class="entete-page">
+                    <div>
+                        <h2>Faire l'appel</h2>
+                        <p>Sélectionnez une classe et une date pour enregistrer les présences</p>
+                    </div>
+                </section>
+
+                <!-- Panneau de configuration de l'appel -->
+                <section class="carte-panneau">
+                    <div class="panneau-entete">
+                        <div>
+                            <h3>Contexte de l'appel</h3>
+                            <p>Sélectionnez la classe et la date pour faire l'appel</p>
+                        </div>
+                    </div>
+                    <form id="formulaireContextePresence" class="formulaire-modale">
+                        <div class="ligne-champs">
+                            <div class="champ-formulaire">
+                                <label for="contexte_classe">Classe</label>
+                                <select id="contexte_classe" name="classe_id" required>
+                                    <option value="">Sélectionner une classe</option>
+                                    <!-- Options injectées par JS -->
+                                </select>
+                            </div>
+                            <div class="champ-formulaire">
+                                <label for="contexte_date">Date</label>
+                                <input type="date" id="contexte_date" name="date" required>
+                            </div>
+                            <div class="champ-formulaire" style="flex: 0 0 auto; align-self: flex-end;">
+                                <button type="submit" class="bouton-valider-modale">
+                                    <i class="fa-solid fa-eye"></i> Afficher les élèves
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </section>
+
+                <!-- Tableau de saisie des présences -->
+                <section class="carte-panneau" id="blocSaisiePresences" style="display: none;">
+                    <div class="panneau-entete">
+                        <div>
+                            <h3>Liste des élèves</h3>
+                            <p>Marquez le statut de chaque élève pour cette séance</p>
+                        </div>
+                    </div>
+
+                    <table class="tableau-liste">
+                        <thead>
+                            <tr>
+                                <th>Nom de l'élève</th>
+                                <th style="width: 250px;">Statut</th>
+                            </tr>
+                        </thead>
+                        <tbody id="corpsTableauPresence">
+                            <!-- Les lignes seront injectées par JavaScript -->
+                        </tbody>
+                    </table>
+
+                    <div class="zone-bouton-enregistrer">
+                        <button id="boutonEnregistrerPresences" class="bouton-valider-modale bouton-large">
+                            <i class="fa-solid fa-floppy-disk"></i> Enregistrer l'appel
+                        </button>
+                    </div>
+                </section>
+
+            </main>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+    <script src="/js/scriptPresence-Prof.js"></script>
+</body>
+
+</html>
