@@ -102,6 +102,11 @@ app.get('/dashboard/professeur/emploi_du_temps', (req, res) => {
     res.sendFile(path.join(import.meta.dirname, 'public/html/emploiDuTemps.html'))
 })
 
+// route page eleve 
+app.get('/dashboard/etudiant/mesNotes', (req, res) => {
+    res.sendFile(path.join(import.meta.dirname, 'public/html/note-eleve.html'))
+})
+
 
 // Route api 
 app.use('/students', studentRouter);
