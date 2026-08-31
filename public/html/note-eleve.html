@@ -4,14 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EduSmart — Tableau de bord Élève</title>
+    <title>EduSmart — Mes matières</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="shortcut icon" href="/images/favicon.svg" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
-    <link rel="stylesheet" href="/css/dashboardEleve.css">
+    <link rel="stylesheet" href="/css/note-Eleve.css">
 </head>
 
 <body>
@@ -35,18 +34,14 @@
             </div>
 
             <nav class="nav-sidebar">
-                <a href="/dashboard/eleve" class="nav-item actif">
+                <a href="/dashboard/eleve" class="nav-item">
                     <i class="fa-solid fa-table-cells"></i>
                     <span>Tableau de bord</span>
+                </a>
+                <a href="/dashboard/eleve/matiere" class="nav-item actif">
+                    <i class="fa-solid fa-book"></i>
+                    <span>Mes matières</span>
                     <span class="point-actif"></span>
-                </a>
-                <a href="/dashboard/eleve/matiere" class="nav-item">
-                    <i class="fa-solid fa-book"></i>
-                    <span>Mes notes</span>
-                </a>
-                <a href="/dashboard/eleve/matiere" class="nav-item">
-                    <i class="fa-solid fa-book"></i>
-                    <span>Mes absences</span>
                 </a>
                 <a href="/dashboard/eleve/emploi-du-temps" class="nav-item">
                     <i class="fa-solid fa-calendar-days"></i>
@@ -73,14 +68,13 @@
         <!-- ---------- CONTENU PRINCIPAL ---------- -->
         <div class="contenu-principal">
 
-            <!-- Barre du haut -->
             <header class="barre-haut">
                 <button class="bouton-burger" id="boutonBurger" aria-label="Ouvrir le menu">
                     <i class="fa-solid fa-bars"></i>
                 </button>
 
                 <div>
-                    <h1>Tableau de bord</h1>
+                    <h1>Mes notes</h1>
                     <p class="date-jour" id="dateJour"></p>
                 </div>
 
@@ -97,77 +91,48 @@
 
             <main class="zone-scroll">
 
-                <!-- Message de bienvenue -->
-                <section class="bienvenue">
+                <section class="entete-page">
                     <div>
-                        <h2 id="bienvenue-name"><span class="emoji-main"></span></h2>
-                        <p>Bienvenue sur votre espace étudiant</p>
+                        <h2>Mes notes par matière</h2>
+                        <p>Sélectionnez une matière pour voir vos notes</p>
                     </div>
                 </section>
 
-                <!-- Cartes statistiques -->
-                <section class="grille-stats-dash">
-                    <div class="carte-stat-dash">
-                        <div class="stat-entete">
-                            <div class="icone-stat icone-indigo"><i class="fa-solid fa-star"></i></div>
-                        </div>
-                        <span class="stat-chiffre" id="statMoyenne"></span>
-                        <span class="stat-titre">Moyenne générale</span>
-                        <span class="stat-sous-titre" id="statMoyenneSous"></span>
-                    </div>
-
-                    <div class="carte-stat-dash">
-                        <div class="stat-entete">
-                            <div class="icone-stat icone-violet"><i class="fa-solid fa-ranking-star"></i></div>
-                        </div>
-                        <span class="stat-chiffre" id="statRang"></span>
-                        <span class="stat-titre">Rang de classe</span>
-                        <span class="stat-sous-titre" id="statRangSous"></span>
-                    </div>
-
-                    <div class="carte-stat-dash">
-                        <div class="stat-entete">
-                            <div class="icone-stat icone-bleu"><i class="fa-solid fa-book-open"></i></div>
-                        </div>
-                        <span class="stat-chiffre" id="statMatieres"></span>
-                        <span class="stat-titre">Matières</span>
-                        <span class="stat-sous-titre" id="statMatieresSous"></span>
+                <section class="carte-panneau">
+                    <div class="champ-formulaire" style="max-width: 300px;">
+                        <label for="filtre_matiere">Matière</label>
+                        <select id="filtre_matiere">
+                            <option value="">Sélectionner une matière</option>
+                        </select>
                     </div>
                 </section>
 
-                <!-- Grille principale : contenu large -->
-                <div class="grille-contenu">
-                    <div class="colonne-large">
-                        <!-- Détail des notes -->
-                        <section class="carte-panneau">
-                            <div class="panneau-entete">
-                                <div>
-                                    <h3>Détails</h3>
-                                    <p>Liste des matières disponibles dans ta classe</p>
-                                </div>
-                            </div>
-
-                            <table class="tableau-eleves">
-                                <thead>
-                                    <tr>
-                                        <th>Matière</th>
-                                        <th>professeur</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="corpsTableauNotes">
-                                    <!-- Rempli par JS -->
-                                </tbody>
-                            </table>
-                        </section>
+                <section class="carte-panneau">
+                    <div class="panneau-entete">
+                        <div>
+                            <h3>Détail des notes</h3>
+                        </div>
                     </div>
-                </div>
+
+                    <table class="tableau-eleves">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Type</th>
+                                <th>Note</th>
+                            </tr>
+                        </thead>
+                        <tbody id="corpsTableauMesNotes">
+                        </tbody>
+                    </table>
+                </section>
 
             </main>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
-    <script src="/js/dashboardEleve.js"></script>
+    <script src="/js/matiereEleve.js"></script>
 </body>
 
 </html>

@@ -1,0 +1,116 @@
+/* ===========================================
+   VARIABLES & RESET
+   =========================================== */
+:root { 
+    --violet-fonce: #241452; 
+    --violet-mi: #3d2a7d; 
+    --vert-lime: #b6f23a; 
+    --blanc: #fff; 
+    --gris-fond: #f4f5fa; 
+    --gris-texte: #6b7280; 
+    --gris-clair: #9ca3af; 
+    --bordure: #e5e7eb; 
+    --violet-bouton: #4b3cc9; 
+    --vert-positif: #16a34a; 
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Poppins', sans-serif; color: #1f2937; background: var(--gris-fond); }
+a { text-decoration: none; color: inherit; }
+button { font-family: inherit; cursor: pointer; }
+.hidden { display: none !important; }
+.mise-en-page { display: flex; height: 100vh; overflow: hidden; }
+
+/* ===========================================
+   SIDEBAR
+   =========================================== */
+.sidebar { width: 260px; flex-shrink: 0; background: var(--violet-fonce); display: flex; flex-direction: column; padding: 28px 20px; overflow-y: auto; position: relative; }
+.logo { display: flex; align-items: center; gap: 12px; margin-bottom: 36px; }
+.logo-icone { width: 42px; height: 42px; background: var(--vert-lime); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 19px; color: var(--violet-fonce); }
+.logo-texte { display: flex; flex-direction: column; }
+.logo-nom { font-weight: 700; font-size: 18px; color: var(--blanc); }
+.logo-slogan { font-size: 12px; color: #b9aee6; }
+.nav-sidebar { display: flex; flex-direction: column; gap: 4px; }
+.nav-sidebar-bas { margin-top: auto; padding-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.08); }
+.nav-item { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 10px; font-size: 14px; font-weight: 500; color: #b9aee6; position: relative; }
+.nav-item i { width: 18px; text-align: center; }
+.nav-item:hover { background: rgba(255, 255, 255, 0.06); color: var(--blanc); }
+.nav-item.actif { background: rgba(255, 255, 255, 0.1); color: var(--blanc); font-weight: 600; }
+.point-actif { width: 8px; height: 8px; background: var(--vert-lime); border-radius: 50%; margin-left: auto; }
+.bouton-fermer-sidebar { display: none; position: absolute; top: 20px; right: 20px; background: rgba(255, 255, 255, 0.1); border: none; border-radius: 8px; color: var(--blanc); font-size: 16px; width: 34px; height: 34px; align-items: center; justify-content: center; }
+
+/* ===========================================
+   CONTENU PRINCIPAL
+   =========================================== */
+.contenu-principal { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+.barre-haut { display: flex; align-items: center; gap: 24px; padding: 18px 32px; background: var(--blanc); border-bottom: 1px solid var(--bordure); }
+.barre-haut h1 { font-size: 22px; font-weight: 700; }
+.date-jour { font-size: 13px; color: var(--gris-texte); margin-top: 2px; }
+.bouton-burger { display: none; width: 40px; height: 40px; background: var(--blanc); border: 1px solid var(--bordure); border-radius: 10px; font-size: 18px; color: #374151; align-items: center; justify-content: center; flex-shrink: 0; }
+.actions-haut { display: flex; align-items: center; gap: 18px; flex-shrink: 0; margin-left: auto; }
+.profil { display: flex; align-items: center; gap: 10px; }
+.profil-texte { display: flex; flex-direction: column; text-align: right; }
+.profil-nom { font-size: 14px; font-weight: 600; }
+.profil-role { font-size: 12px; color: var(--gris-texte); }
+.avatar { width: 40px; height: 40px; border-radius: 50%; background: rgba(75, 60, 201, 0.12); color: var(--violet-bouton); display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; }
+.zone-scroll { flex: 1; overflow-y: auto; padding: 28px 32px 48px; display: flex; flex-direction: column; gap: 24px; }
+
+/* ===========================================
+   EN-TÊTE PAGE & CARTES
+   =========================================== */
+.entete-page h2 { font-size: 22px; font-weight: 700; color: var(--violet-fonce); }
+.entete-page p { color: var(--gris-texte); font-size: 14px; margin-top: 4px; }
+
+.carte-panneau { background: var(--blanc); border: 1px solid var(--bordure); border-radius: 16px; padding: 24px; }
+.panneau-entete { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; gap: 10px; flex-wrap: wrap; }
+.panneau-entete h3 { font-size: 16px; font-weight: 700; }
+
+/* ===========================================
+   FORMULAIRE (SELECTEUR MATIERE)
+   =========================================== */
+.champ-formulaire { display: flex; flex-direction: column; gap: 8px; }
+.champ-formulaire label { font-size: 0.9rem; font-weight: 500; color: #334155; }
+.champ-formulaire select { 
+    padding: 12px 15px; 
+    border: 1px solid var(--bordure); 
+    border-radius: 10px; 
+    font-family: 'Poppins', sans-serif; 
+    font-size: 0.95rem; 
+    color: #374151; 
+    background-color: var(--blanc); 
+    cursor: pointer; 
+    outline: none; 
+    transition: border-color 0.2s, box-shadow 0.2s; 
+}
+.champ-formulaire select:focus { 
+    border-color: var(--violet-bouton); 
+    box-shadow: 0 0 0 3px rgba(75, 60, 201, 0.1); 
+}
+
+/* ===========================================
+   TABLEAU
+   =========================================== */
+.tableau-eleves { width: 100%; border-collapse: collapse; }
+.tableau-eleves th { text-align: left; font-size: 12px; text-transform: uppercase; color: var(--gris-clair); padding: 0 16px 12px 16px; border-bottom: 1px solid var(--bordure); }
+.tableau-eleves td { padding: 14px 16px; border-bottom: 1px solid var(--bordure); font-size: 14px; }
+.tableau-eleves th:first-child, .tableau-eleves td:first-child { padding-left: 0; }
+.tableau-eleves th:last-child, .tableau-eleves td:last-child { padding-right: 0; }
+.tableau-eleves tr:last-child td { border-bottom: none; }
+
+/* ===========================================
+   TOAST
+   =========================================== */
+.toast { position: fixed; top: 30px; right: 30px; background: var(--violet-fonce); color: var(--blanc) !important; padding: 14px 22px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); z-index: 2000; opacity: 0; transform: translateY(-20px); transition: 0.3s ease; pointer-events: none; font-size: 14px; }
+.toast.visible { opacity: 1; transform: translateY(0); }
+
+/* ===========================================
+   RESPONSIVE
+   =========================================== */
+@media (max-width: 720px) { 
+    .bouton-burger { display: flex; } 
+    .bouton-fermer-sidebar { display: flex; } 
+    .sidebar { position: fixed; top: 0; left: 0; height: 100vh; z-index: 200; transform: translateX(-100%); transition: transform 0.25s ease; } 
+    .sidebar.ouvert { transform: translateX(0); } 
+    .profil-texte { display: none; } 
+    .zone-scroll { padding: 20px; }
+}
