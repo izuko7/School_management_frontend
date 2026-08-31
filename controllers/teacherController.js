@@ -2,61 +2,60 @@ import { getAllTeachers, getTeacherById, createTeacher, updateTeacher, deleteTea
 import { creerActivite } from "../services/activiteService.js";
 import { logInfo, logSuccess, logWarn, logError } from "../utils/logger.js";
 
-// Contrôller Student 
+// Contrôller teacher
 
-// avoir tout les enseignants 
-const getTeachers = (req, res) => {
+// avoir tout les enseignants
+const getTeachers = async (req, res) => {
     try {
-        const teachers = (getAllTeachers());
-        res.json(teachers)
+        const teachers = await getAllTeachers();
+        res.json(teachers);
     } catch (error) {
         logError(`Erreur lors de la récupération des enseignants : ${error.message}`);
-        res.status(500).json({error: `Une erreur est survenue`})
+        res.status(500).json({ error: `Une erreur est survenue` });
     }
 };
 
-// avoir un seul enseignant 
-const getTeacher = (req, res) => {
+// avoir un seul enseignant
+const getTeacher = async (req, res) => {
     try {
         const id = req.params.id;
-        const teacher = getTeacherById(id);
+        const teacher = await getTeacherById(id);
 
-        if(!teacher){
+        if (!teacher) {
             logWarn(`Enseignant introuvable`);
-            return res.status(404).json({error: `Enseignant avec id :${id} introuvable`})
+            return res.status(404).json({ error: `Enseignant avec id :${id} introuvable` });
         }
 
         res.json(teacher);
 
     } catch (error) {
         logError(`Erreur lors de la récupération de l'enseignant`);
-        res.status(500).json({error: 'Une erreur est survenue'});
+        res.status(500).json({ error: 'Une erreur est survenue' });
     }
 };
 
-
-// créer un enseignant 
-const createTeacherHandler = (req, res)=> {
+// créer un enseignant
+const createTeacherHandler = async (req, res) => {
     try {
         const { matricule, nom, prenom, user_id } = req.body;
-        const result = createTeacher(matricule, nom, prenom, user_id);
+        const result = await createTeacher(matricule, nom, prenom, user_id);
         logSuccess(`Enseignant créé : ${nom}, ${prenom}, ${matricule}`);
 
-        creerActivite(`${nom} ${prenom} a été inscrit(e)`, "inscription");
+        await creerActivite(`${nom} ${prenom} a été inscrit(e)`, "inscription");
 
-        res.status(201).json({ message: `Enseignant créer avec succès`, result});
+        res.status(201).json({ message: `Enseignant créer avec succès`, result });
     } catch (error) {
         logWarn(`Echec de création d'un enseignant : ${error.message}`);
-        res.status(400).json({message: error.message});
+        res.status(400).json({ message: error.message });
     }
-}
+};
 
-// modifier un enseignant 
-const updateTeacherHandler = (req, res)=> {
+// modifier un enseignant
+const updateTeacherHandler = async (req, res) => {
     try {
         const id = req.params.id;
         const data = req.body;
-        const result = updateTeacher(id, data);
+        const result = await updateTeacher(id, data);
         logSuccess(`Enseignant modifié`);
         res.json({ message: "Étudiant modifié avec succès", result });
     } catch (error) {
@@ -65,19 +64,17 @@ const updateTeacherHandler = (req, res)=> {
     }
 };
 
-
-// supprimer un enseignant 
-const deleteTeacherHandler = (req, res) => {
+// supprimer un enseignant
+const deleteTeacherHandler = async (req, res) => {
     try {
         const id = req.params.id;
-        const result = deleteTeacher(id);
+        const result = await deleteTeacher(id);
         logSuccess(`Enseignant supprimé`);
-        res.json({message : `Enseignant supprimé avec succès`, result});
+        res.json({ message: `Enseignant supprimé avec succès`, result });
     } catch (error) {
         logWarn(`Échec de suppression de l'enseignant (id: ${req.params.id}) : ${error.message}`);
-        res.status(400).json({message: error.message});
+        res.status(400).json({ message: error.message });
     }
 };
 
-
-export { getTeachers, getTeacher, createTeacherHandler, updateTeacherHandler, deleteTeacherHandler }
+export { getTeachers, getTeacher, createTeacherHandler, updateTeacherHandler, deleteTeacherHandler };

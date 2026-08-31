@@ -2,26 +2,26 @@ import db from "../db/database.js";
 import dayjs from "dayjs";
 
 // Créer une activité
-const creerActivite = (message, type) => {
+const creerActivite = async (message, type) => {
     const date_creation = dayjs().format("DD/MM/YYYY HH:mm:ss");
 
-    const insertActivite = db.prepare(`
+    const insertActivite = await db.prepare(`
         INSERT INTO activites (message, type, date_creation)
         VALUES (?, ?, ?)
     `);
 
-    const result = insertActivite.run(message, type, date_creation);
+    const result = await insertActivite.run([message, type, date_creation]);
     return result;
 };
 
-// Afficher les activités récentes 
-const getActivitiesRecentes = (limite = 5) => {
-    return db.prepare(`
+// Afficher les activités récentes
+const getActivitiesRecentes = async (limite = 5) => {
+    const stmt = await db.prepare(`
             SELECT * FROM activites
             ORDER BY id DESC
             LIMIT ?
-        `).all(limite);
+        `);
+    return await stmt.all([limite]);
 };
-
 
 export { creerActivite, getActivitiesRecentes };

@@ -2,86 +2,79 @@ import { getAllClasses, getClasseById, createClasse, updateClasse, deleteClasse 
 import { creerActivite } from "../services/activiteService.js";
 import { logSuccess, logWarn, logError } from '../utils/logger.js';
 
+// Contrôleur Classes
 
-// Contrôleur Classes 
-
-// avoir toutes les classes 
-const getClasses = (req, res) => {
+// avoir toutes les classes
+const getClasses = async (req, res) => {
     try {
-        const classes = (getAllClasses());
+        const classes = await getAllClasses();
         res.json(classes);
     } catch (error) {
         logError(`Erreur lors de la récupération des classes : ${error.message}`);
-        res.status(500).json({ error : `Une erreur est survenue` });
+        res.status(500).json({ error: `Une erreur est survenue` });
     }
 };
 
-
-// avoir une seule classe 
-const getclasse = (req, res) => {
+// avoir une seule classe
+const getclasse = async (req, res) => {
     try {
         const id = req.params.id;
-        const classe = getClasseById(id);
+        const classe = await getClasseById(id);
 
-        if(!classe){
+        if (!classe) {
             logWarn(`Classe introuvable (id: ${id})`);
             return res.status(404).json({ error: `Classe avec id ${id} introuvable` });
         }
 
-        res.json(classe)
+        res.json(classe);
 
     } catch (error) {
         logError(`Erreur lors de la récupération de la classe (id: ${req.params.id}) : ${error.message}`);
-        res.status(500).json({ error : `Une erreur est survenue` });
+        res.status(500).json({ error: `Une erreur est survenue` });
     }
 };
 
-
-// créer une classe 
-const createClasseHandler = (req, res) => {
+// créer une classe
+const createClasseHandler = async (req, res) => {
     try {
         const { nom, niveau, capacite } = req.body;
-        const result = createClasse(nom, niveau, capacite);
+        const result = await createClasse(nom, niveau, capacite);
         logSuccess(`Classe créée : ${nom} (niveau: ${niveau}, capacité: ${capacite})`);
 
-        creerActivite(`${nom} ${niveau} a été créée`, "inscription");
+        await creerActivite(`${nom} ${niveau} a été créée`, "inscription");
 
-
-        res.status(201).json({ message: `Classe créée avec succès`, result});
+        res.status(201).json({ message: `Classe créée avec succès`, result });
     } catch (error) {
         logWarn(`Échec de création d'une classe : ${error.message}`);
-        res.status(400).json({message : error.message});
+        res.status(400).json({ message: error.message });
     }
 };
 
-
-// modifier une classe 
-const updateClasseHandler = (req, res) => {
+// modifier une classe
+const updateClasseHandler = async (req, res) => {
     try {
         const id = req.params.id;
         const data = req.body;
-        const result = updateClasse(id, data);
+        const result = await updateClasse(id, data);
         logSuccess(`Classe modifiée (id: ${id})`);
-        res.json({message: "Classe modifiée avec succès", result})
+        res.json({ message: "Classe modifiée avec succès", result });
     } catch (error) {
         logWarn(`Échec de modification de la classe (id: ${req.params.id}) : ${error.message}`);
-        res.status(400).json({message: error.message});
+        res.status(400).json({ message: error.message });
     }
 };
 
-
-// supprimer une classe 
-const deleteClasseHandler  = (req, res) => {
+// supprimer une classe
+const deleteClasseHandler = async (req, res) => {
     try {
         const id = req.params.id;
-        const result= deleteClasse(id);
+        const result = await deleteClasse(id);
         logSuccess(`Classe supprimée (id: ${id})`);
-        res.json({message: `Classe supprimée avec succès`});
+        res.json({ message: `Classe supprimée avec succès` });
     } catch (error) {
         logWarn(`Échec de suppression de la classe (id: ${req.params.id}) : ${error.message}`);
-        res.status(400).json({message: error.message});
+        res.status(400).json({ message: error.message });
     }
 };
 
-
-export { getClasses, getclasse, updateClasseHandler, createClasseHandler, deleteClasseHandler }
+export { getClasses, getclasse, updateClasseHandler, createClasseHandler, deleteClasseHandler };
