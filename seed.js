@@ -1,4 +1,6 @@
+import 'dotenv/config';
 import db from "./db/database.js";
+
 import { createUser } from "./services/userService.js";
 import { createTeacher } from "./services/teacherService.js";
 import { createSubject } from "./services/subjectService.js";
