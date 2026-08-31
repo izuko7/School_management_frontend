@@ -45,17 +45,23 @@ function decoderToken(token) {
 const utilisateur = decoderToken(token);
 
 const donneUsers = async () => {
-    // Encore plus clean !
     const users = await fetchAuth(`/users/${utilisateur.id}`);
 
-    let initial;
-    const mot = users.name.split(' ');
+    let initial = '';
+    const mot = users.name.trim().split(' ');
 
     if (mot.length >= 2) {
-        initial = `${mot[0][0]}${mot[1][0]}`
+        for (let i = 0; i < mot.length; i++) {
+            // Sécurité : on prend la lettre SEULEMENT si le mot n'est pas vide
+            if (mot[i]) { 
+                initial += mot[i][0]; 
+            }
+        }
     } else {
-        initial = mot[0].substring(0, 2).toUpperCase();
+        initial = mot[0].substring(0, 2);
     }
+
+    initial = initial.toUpperCase();
 
     const profilNom = document.getElementById('profilNom');
     const profilRole = document.getElementById('profilRole');
@@ -65,9 +71,8 @@ const donneUsers = async () => {
     profilNom.textContent = users.name;
     profilRole.textContent = users.role;
     profilInitial.textContent = initial;
-    messageBienvenue.textContent = `Bonjour, ${users.name} ! `
+    messageBienvenue.textContent = `Bonjour, ${users.name} ! `;
 }
-
 donneUsers();
 
 // Récupérer les infos de l'élève connecté
