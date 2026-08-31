@@ -28,6 +28,7 @@ const login = async (req, res) => {
         res.json({ token, role: user.role });
 
     } catch (error) {
+        console.error('Erreur login:', error);
         logError(`Erreur lors de la connexion : ${error.message}`);
         res.status(500).json({ error: 'Une erreur est survenue' });
     }
