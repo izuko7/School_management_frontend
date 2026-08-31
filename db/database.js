@@ -1,10 +1,11 @@
-import Database from "better-sqlite3";
-import path from "path";
+import { connect } from "@tursodatabase/serverless";
 
-// création de la base de donnée
-const db = new Database(path.join(import.meta.dirname, 'database.db'));
+const db = connect({
+    url: process.env.TURSO_DATABASE_URL,
+    authToken: process.env.TURSO_AUTH_TOKEN,
+});
 
-// activation des clés étrangères
-db.pragma('foreign_keys = ON');
+// équivalent de db.pragma('foreign_keys = ON') en asynchrone
+await (await db.prepare("PRAGMA foreign_keys = ON")).run();
 
 export default db;
